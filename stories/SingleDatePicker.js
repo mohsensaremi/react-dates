@@ -58,6 +58,7 @@ storiesOf('SingleDatePicker (SDP)', module)
   }))
   .add('non-english locale (Persian)', withInfo()(() => {
     moment.locale('fa');
+    momentJalaali.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
     return (
       <SingleDatePickerWrapper
         placeholder="تقویم فارسی"
