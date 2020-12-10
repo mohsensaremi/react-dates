@@ -34,7 +34,7 @@ import {
   INFO_POSITION_BOTTOM,
   FANG_HEIGHT_PX,
   DEFAULT_VERTICAL_SPACING,
-  NAV_POSITION_TOP,
+  NAV_POSITION_TOP, CALENDAR_SYSTEM_GREGORIAN,
 } from '../constants';
 
 const propTypes = forbidExtraProps({
@@ -80,6 +80,7 @@ const defaultProps = {
   appendToBody: false,
   disableScroll: false,
   initialVisibleMonth: null,
+  defaultInitialVisibleMonth: null,
   firstDayOfWeek: null,
   numberOfMonths: 2,
   keepOpenOnDateSelect: false,
@@ -124,6 +125,8 @@ const defaultProps = {
   weekDayFormat: 'dd',
   phrases: SingleDatePickerPhrases,
   dayAriaLabelFormat: undefined,
+
+  calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
 };
 
 class SingleDatePicker extends React.PureComponent {
@@ -418,6 +421,7 @@ class SingleDatePicker extends React.PureComponent {
       withFullScreenPortal,
       keepOpenOnDateSelect,
       initialVisibleMonth,
+      defaultInitialVisibleMonth,
       renderMonthText,
       renderWeekHeaderElement,
       renderCalendarDay,
@@ -443,6 +447,7 @@ class SingleDatePicker extends React.PureComponent {
       horizontalMonthPadding,
       small,
       theme: { reactDates },
+      calendarSystem,
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
@@ -494,6 +499,7 @@ class SingleDatePicker extends React.PureComponent {
           keepOpenOnDateSelect={keepOpenOnDateSelect}
           hideKeyboardShortcutsPanel={hideKeyboardShortcutsPanel}
           initialVisibleMonth={initialVisibleMonth}
+          defaultInitialVisibleMonth={defaultInitialVisibleMonth}
           dayPickerNavigationInlineStyles={dayPickerNavigationInlineStyles}
           navPosition={navPosition}
           navPrev={navPrev}
@@ -525,6 +531,7 @@ class SingleDatePicker extends React.PureComponent {
           verticalHeight={verticalHeight}
           transitionDuration={transitionDuration}
           horizontalMonthPadding={horizontalMonthPadding}
+          calendarSystem={calendarSystem}
         />
 
         {withFullScreenPortal && (

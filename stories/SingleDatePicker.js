@@ -13,9 +13,10 @@ import {
 } from '../src/constants';
 
 import SingleDatePickerWrapper from '../examples/SingleDatePickerWrapper';
+import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
 
-const TestInput = props => (
-  <div style={{ marginTop: 16 }} >
+const TestInput = (props) => (
+  <div style={{ marginTop: 16 }}>
     <input
       {...props}
       type="text"
@@ -41,7 +42,7 @@ storiesOf('SingleDatePicker (SDP)', module)
       <TestInput placeholder="Input 2" />
       <TestInput placeholder="Input 3" />
     </div>
-   )))
+  )))
   .add('non-english locale (Chinese)', withInfo()(() => {
     moment.locale('zh-cn');
     return (
@@ -60,8 +61,11 @@ storiesOf('SingleDatePicker (SDP)', module)
     return (
       <SingleDatePickerWrapper
         placeholder="تقویم فارسی"
-        renderMonthText={month => momentJalaali(month).format('jMMMM jYYYY')}
-        renderDayContents={day => momentJalaali(day).format('jD')}
+        defaultInitialVisibleMonth={momentJalaali()}
+        renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
+        renderDayContents={(day) => momentJalaali(day).format('jD')}
+        calendarSystem="jalali"
+        isRTL
       />
     );
   }))
@@ -83,16 +87,17 @@ storiesOf('SingleDatePicker (SDP)', module)
     />
   )))
   .add('with custom isOutsideRange and month navigation and blocked navigation (minDate and maxDate)', withInfo()(() => {
-    const minDate = moment().subtract(2, 'months').startOf('month')
-    const maxDate = moment().add(2, 'months').endOf('month')
-    const isOutsideRange = day => isInclusivelyBeforeDay(day, minDate) || isInclusivelyAfterDay(day, maxDate)
+    const minDate = moment().subtract(2, 'months').startOf('month');
+    const maxDate = moment().add(2, 'months').endOf('month');
+    const isOutsideRange = (day) => isInclusivelyBeforeDay(day, minDate) || isInclusivelyAfterDay(day, maxDate);
     return (
-    <SingleDatePickerWrapper
-      minDate={minDate}
-      maxDate={maxDate}
-      isOutsideRange={isOutsideRange}
-    />
-  )}))
+      <SingleDatePickerWrapper
+        minDate={minDate}
+        maxDate={maxDate}
+        isOutsideRange={isOutsideRange}
+      />
+    );
+  }))
   .add('vertical with custom height', withInfo()(() => (
     <SingleDatePickerWrapper
       orientation={VERTICAL_ORIENTATION}

@@ -27,7 +27,7 @@ import {
   HORIZONTAL_ORIENTATION,
   VERTICAL_ORIENTATION,
   VERTICAL_SCROLLABLE,
-  DAY_SIZE,
+  DAY_SIZE, CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI,
 } from '../constants';
 
 const propTypes = forbidExtraProps({
@@ -64,6 +64,8 @@ const propTypes = forbidExtraProps({
   monthFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
   dayAriaLabelFormat: PropTypes.string,
+
+  calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
 });
 
 const defaultProps = {
@@ -99,6 +101,8 @@ const defaultProps = {
   monthFormat: 'MMMM YYYY', // english locale
   phrases: CalendarDayPhrases,
   dayAriaLabelFormat: undefined,
+
+  calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
 };
 
 function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths) {
@@ -264,6 +268,7 @@ class CalendarMonthGrid extends React.PureComponent {
       transitionDuration,
       verticalBorderSpacing,
       setMonthTitleHeight,
+      calendarSystem,
     } = this.props;
 
     const { months } = this.state;
@@ -307,7 +312,7 @@ class CalendarMonthGrid extends React.PureComponent {
             && (i < firstVisibleMonthIndex + numberOfMonths);
           const hideForAnimation = i === 0 && !isVisible;
           const showForAnimation = i === 0 && isAnimating && isVisible;
-          const monthString = toISOMonthString(month);
+          const monthString = toISOMonthString(month, undefined, calendarSystem);
           return (
             <div
               key={monthString}
@@ -354,6 +359,7 @@ class CalendarMonthGrid extends React.PureComponent {
                 dayAriaLabelFormat={dayAriaLabelFormat}
                 verticalBorderSpacing={verticalBorderSpacing}
                 horizontalMonthPadding={horizontalMonthPadding}
+                calendarSystem={calendarSystem}
               />
             </div>
           );

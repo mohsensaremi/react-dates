@@ -44,8 +44,9 @@ import {
   INFO_POSITION_AFTER,
   MODIFIER_KEY_NAMES,
   NAV_POSITION_TOP,
-  NAV_POSITION_BOTTOM,
+  NAV_POSITION_BOTTOM, CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI,
 } from '../constants';
+import { getMonthUnit } from '../utils/calendarSystem';
 
 const MONTH_PADDING = 23;
 const PREV_TRANSITION = 'prev';
@@ -125,6 +126,8 @@ const propTypes = forbidExtraProps({
   weekDayFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(DayPickerPhrases)),
   dayAriaLabelFormat: PropTypes.string,
+
+  calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
 });
 
 export const defaultProps = {
@@ -195,6 +198,8 @@ export const defaultProps = {
   weekDayFormat: 'dd',
   phrases: DayPickerPhrases,
   dayAriaLabelFormat: undefined,
+
+  calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
 };
 
 class DayPicker extends React.PureComponent {
@@ -678,14 +683,15 @@ class DayPicker extends React.PureComponent {
   }
 
   getFocusedDay(newMonth) {
-    const { getFirstFocusableDay, numberOfMonths } = this.props;
+    const { getFirstFocusableDay, numberOfMonths, calendarSystem } = this.props;
 
     let focusedDate;
     if (getFirstFocusableDay) {
       focusedDate = getFirstFocusableDay(newMonth);
     }
 
-    if (newMonth && (!focusedDate || !isDayVisible(focusedDate, newMonth, numberOfMonths))) {
+    // eslint-disable-next-line max-len
+    if (newMonth && (!focusedDate || !isDayVisible(focusedDate, newMonth, numberOfMonths, calendarSystem))) {
       focusedDate = newMonth.clone().startOf('month');
     }
 
@@ -701,15 +707,16 @@ class DayPicker extends React.PureComponent {
   }
 
   setCalendarMonthWeeks(currentMonth) {
-    const { numberOfMonths } = this.props;
+    const { numberOfMonths, calendarSystem } = this.props;
 
     this.calendarMonthWeeks = [];
-    let month = currentMonth.clone().subtract(1, 'months');
+    const monthUnit = getMonthUnit(calendarSystem);
+    let month = currentMonth.clone().subtract(1, getMonthUnit(monthUnit));
     const firstDayOfWeek = this.getFirstDayOfWeek();
     for (let i = 0; i < numberOfMonths + 2; i += 1) {
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(month, firstDayOfWeek);
+      const numberOfWeeks = getNumberOfCalendarMonthWeeks(month, firstDayOfWeek, monthUnit);
       this.calendarMonthWeeks.push(numberOfWeeks);
-      month = month.add(1, 'months');
+      month = month.add(1, monthUnit);
     }
   }
 
@@ -749,12 +756,13 @@ class DayPicker extends React.PureComponent {
   }
 
   maybeTransitionNextMonth(newFocusedDate) {
-    const { numberOfMonths } = this.props;
+    const { numberOfMonths, calendarSystem } = this.props;
     const { currentMonth, focusedDate } = this.state;
 
     const newFocusedDateMonth = newFocusedDate.month();
     const focusedDateMonth = focusedDate.month();
-    const isNewFocusedDateVisible = isDayVisible(newFocusedDate, currentMonth, numberOfMonths);
+    // eslint-disable-next-line max-len
+    const isNewFocusedDateVisible = isDayVisible(newFocusedDate, currentMonth, numberOfMonths, calendarSystem);
     if (newFocusedDateMonth !== focusedDateMonth && !isNewFocusedDateVisible) {
       this.onNextMonthTransition(newFocusedDate);
       return true;
@@ -764,12 +772,13 @@ class DayPicker extends React.PureComponent {
   }
 
   maybeTransitionPrevMonth(newFocusedDate) {
-    const { numberOfMonths } = this.props;
+    const { numberOfMonths, calendarSystem } = this.props;
     const { currentMonth, focusedDate } = this.state;
 
     const newFocusedDateMonth = newFocusedDate.month();
     const focusedDateMonth = focusedDate.month();
-    const isNewFocusedDateVisible = isDayVisible(newFocusedDate, currentMonth, numberOfMonths);
+    // eslint-disable-next-line max-len
+    const isNewFocusedDateVisible = isDayVisible(newFocusedDate, currentMonth, numberOfMonths, calendarSystem);
     if (newFocusedDateMonth !== focusedDateMonth && !isNewFocusedDateVisible) {
       this.onPrevMonthTransition(newFocusedDate);
       return true;
@@ -796,6 +805,7 @@ class DayPicker extends React.PureComponent {
       onMonthChange,
       onYearChange,
       isRTL,
+      calendarSystem,
     } = this.props;
 
     const {
@@ -809,19 +819,22 @@ class DayPicker extends React.PureComponent {
 
     if (!monthTransition) return;
 
+    const monthUnit = getMonthUnit(calendarSystem);
     const newMonth = currentMonth.clone();
     const firstDayOfWeek = this.getFirstDayOfWeek();
     if (monthTransition === PREV_TRANSITION) {
       newMonth.subtract(1, 'month');
       if (onPrevMonthClick) onPrevMonthClick(newMonth);
       const newInvisibleMonth = newMonth.clone().subtract(1, 'month');
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek);
+      // eslint-disable-next-line max-len
+      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, monthUnit);
       this.calendarMonthWeeks = [numberOfWeeks, ...this.calendarMonthWeeks.slice(0, -1)];
     } else if (monthTransition === NEXT_TRANSITION) {
       newMonth.add(1, 'month');
       if (onNextMonthClick) onNextMonthClick(newMonth);
       const newInvisibleMonth = newMonth.clone().add(numberOfMonths, 'month');
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek);
+      // eslint-disable-next-line max-len
+      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, monthUnit);
       this.calendarMonthWeeks = [...this.calendarMonthWeeks.slice(1), numberOfWeeks];
     } else if (monthTransition === MONTH_SELECTION_TRANSITION) {
       if (onMonthChange) onMonthChange(newMonth);
@@ -1061,6 +1074,7 @@ class DayPicker extends React.PureComponent {
       verticalBorderSpacing,
       horizontalMonthPadding,
       navPosition,
+      calendarSystem,
     } = this.props;
 
     const { reactDates: { spacing: { dayPickerHorizontalPadding } } } = theme;
@@ -1225,6 +1239,7 @@ class DayPicker extends React.PureComponent {
                   transitionDuration={transitionDuration}
                   verticalBorderSpacing={verticalBorderSpacing}
                   horizontalMonthPadding={horizontalMonthPadding}
+                  calendarSystem={calendarSystem}
                 />
                 {verticalScrollable && this.renderNavigation(NEXT_NAV)}
               </div>

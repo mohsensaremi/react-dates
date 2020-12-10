@@ -10,12 +10,13 @@ const endCacheOutsideDays = new Map();
 const startCacheInsideDays = new Map();
 const endCacheInsideDays = new Map();
 
-export default function isDayVisible(day, month, numberOfMonths, enableOutsideDays) {
+// eslint-disable-next-line max-len
+export default function isDayVisible(day, month, numberOfMonths, enableOutsideDays, calendarSystem) {
   if (!moment.isMoment(day)) return false;
 
   // Cloning is a little expensive, so we want to do it as little as possible.
 
-  const startKey = toISOMonthString(month);
+  const startKey = toISOMonthString(month, undefined, calendarSystem);
   // eslint-disable-next-line prefer-template
   const endKey = startKey + '+' + numberOfMonths;
 

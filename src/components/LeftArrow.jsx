@@ -1,3 +1,4 @@
+import React from 'react';
 import LeftArrow from '../svg/arrow-left.svg';
 
-export default LeftArrow;
+export default (props) => <LeftArrow {...props} />;

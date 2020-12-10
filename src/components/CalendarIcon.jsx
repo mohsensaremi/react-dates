@@ -1,3 +1,4 @@
+import React from 'react';
 import CalendarIcon from '../svg/calendar.svg';
 
-export default CalendarIcon;
+export default (props) => <CalendarIcon {...props} />;

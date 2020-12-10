@@ -12,7 +12,7 @@ import {
 
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
 
-const TestInput = props => (
+const TestInput = (props) => (
   <div style={{ marginTop: 16 }}>
     <input
       {...props}
@@ -95,8 +95,10 @@ storiesOf('DateRangePicker (DRP)', module)
         stateDateWrapper={momentJalaali}
         startDatePlaceholderText="تاریخ شروع"
         endDatePlaceholderText="تاریخ پایان"
-        renderMonthText={month => momentJalaali(month).format('jMMMM jYYYY')}
-        renderDayContents={day => momentJalaali(day).format('jD')}
+        defaultInitialVisibleMonth={momentJalaali()}
+        renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
+        renderDayContents={(day) => momentJalaali(day).format('jD')}
+        calendarSystem="jalali"
       />
     );
   }))

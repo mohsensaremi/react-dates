@@ -36,7 +36,7 @@ import {
   INFO_POSITION_BOTTOM,
   FANG_HEIGHT_PX,
   DEFAULT_VERTICAL_SPACING,
-  NAV_POSITION_TOP,
+  NAV_POSITION_TOP, CALENDAR_SYSTEM_GREGORIAN,
 } from '../constants';
 
 const propTypes = forbidExtraProps({
@@ -87,6 +87,7 @@ const defaultProps = {
   appendToBody: false,
   disableScroll: false,
   initialVisibleMonth: null,
+  defaultInitialVisibleMonth: null,
   numberOfMonths: 2,
   keepOpenOnDateSelect: false,
   reopenPickerOnClearDates: false,
@@ -109,10 +110,13 @@ const defaultProps = {
   renderNavPrevButton: null,
   renderNavNextButton: null,
 
-  onPrevMonthClick() {},
-  onNextMonthClick() {},
+  onPrevMonthClick() {
+  },
+  onNextMonthClick() {
+  },
 
-  onClose() {},
+  onClose() {
+  },
 
   // day presentation and interaction related props
   renderCalendarDay: undefined,
@@ -127,11 +131,14 @@ const defaultProps = {
   maxDate: undefined,
 
   // internationalization
-  displayFormat: () => moment.localeData().longDateFormat('L'),
+  displayFormat: () => moment.localeData()
+    .longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
   phrases: DateRangePickerPhrases,
   dayAriaLabelFormat: undefined,
+
+  calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
 };
 
 class DateRangePicker extends React.PureComponent {
@@ -217,7 +224,10 @@ class DateRangePicker extends React.PureComponent {
     });
 
     onFocusChange(null);
-    onClose({ startDate, endDate });
+    onClose({
+      startDate,
+      endDate,
+    });
   }
 
   onDateRangePickerInputFocus(focusedInput) {
@@ -442,6 +452,7 @@ class DateRangePicker extends React.PureComponent {
       calendarInfoPosition,
       firstDayOfWeek,
       initialVisibleMonth,
+      defaultInitialVisibleMonth,
       hideKeyboardShortcutsPanel,
       customCloseIcon,
       onClose,
@@ -458,6 +469,7 @@ class DateRangePicker extends React.PureComponent {
       small,
       disabled,
       theme: { reactDates },
+      calendarSystem,
     } = this.props;
 
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
@@ -466,7 +478,7 @@ class DateRangePicker extends React.PureComponent {
       ? this.onOutsideClick
       : undefined;
     const initialVisibleMonthThunk = initialVisibleMonth || (
-      () => (startDate || endDate || moment())
+      () => (startDate || endDate || defaultInitialVisibleMonth || moment())
     );
 
     const closeIcon = customCloseIcon || (
@@ -553,6 +565,7 @@ class DateRangePicker extends React.PureComponent {
           transitionDuration={transitionDuration}
           disabled={disabled}
           horizontalMonthPadding={horizontalMonthPadding}
+          calendarSystem={calendarSystem}
         />
 
         {withFullScreenPortal && (

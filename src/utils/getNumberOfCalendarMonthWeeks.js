@@ -8,8 +8,9 @@ function getBlankDaysBeforeFirstDay(firstDayOfMonth, firstDayOfWeek) {
 export default function getNumberOfCalendarMonthWeeks(
   month,
   firstDayOfWeek = moment.localeData().firstDayOfWeek(),
+  monthUnit,
 ) {
-  const firstDayOfMonth = month.clone().startOf('month');
+  const firstDayOfMonth = month.clone().startOf(monthUnit);
   const numBlankDays = getBlankDaysBeforeFirstDay(firstDayOfMonth, firstDayOfWeek);
   return Math.ceil((numBlankDays + month.daysInMonth()) / 7);
 }

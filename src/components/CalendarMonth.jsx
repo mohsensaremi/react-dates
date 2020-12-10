@@ -25,8 +25,9 @@ import DayOfWeekShape from '../shapes/DayOfWeekShape';
 import {
   HORIZONTAL_ORIENTATION,
   VERTICAL_SCROLLABLE,
-  DAY_SIZE,
+  DAY_SIZE, CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI,
 } from '../constants';
+import { getMonthUnit } from '../utils/calendarSystem';
 
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
@@ -57,6 +58,8 @@ const propTypes = forbidExtraProps({
   monthFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(CalendarDayPhrases)),
   dayAriaLabelFormat: PropTypes.string,
+
+  calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
 });
 
 const defaultProps = {
@@ -67,11 +70,16 @@ const defaultProps = {
   modifiers: {},
   orientation: HORIZONTAL_ORIENTATION,
   daySize: DAY_SIZE,
-  onDayClick() {},
-  onDayMouseEnter() {},
-  onDayMouseLeave() {},
-  onMonthSelect() {},
-  onYearSelect() {},
+  onDayClick() {
+  },
+  onDayMouseEnter() {
+  },
+  onDayMouseLeave() {
+  },
+  onMonthSelect() {
+  },
+  onYearSelect() {
+  },
   renderMonthText: null,
   renderCalendarDay: (props) => (<CalendarDay {...props} />),
   renderDayContents: null,
@@ -87,17 +95,23 @@ const defaultProps = {
   phrases: CalendarDayPhrases,
   dayAriaLabelFormat: undefined,
   verticalBorderSpacing: undefined,
+
+  calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
 };
 
 class CalendarMonth extends React.PureComponent {
   constructor(props) {
     super(props);
 
+    const { calendarSystem } = this.props;
+
     this.state = {
       weeks: getCalendarMonthWeeks(
         props.month,
         props.enableOutsideDays,
-        props.firstDayOfWeek == null ? moment.localeData().firstDayOfWeek() : props.firstDayOfWeek,
+        props.firstDayOfWeek == null ? moment.localeData()
+          .firstDayOfWeek() : props.firstDayOfWeek,
+        calendarSystem,
       ),
     };
 
@@ -115,6 +129,7 @@ class CalendarMonth extends React.PureComponent {
       month: prevMonth,
       enableOutsideDays: prevEnableOutsideDays,
       firstDayOfWeek: prevFirstDayOfWeek,
+      calendarSystem,
     } = this.props;
     if (
       !month.isSame(prevMonth)
@@ -125,7 +140,9 @@ class CalendarMonth extends React.PureComponent {
         weeks: getCalendarMonthWeeks(
           month,
           enableOutsideDays,
-          firstDayOfWeek == null ? moment.localeData().firstDayOfWeek() : firstDayOfWeek,
+          firstDayOfWeek == null ? moment.localeData()
+            .firstDayOfWeek() : firstDayOfWeek,
+          calendarSystem,
         ),
       });
     }
@@ -173,6 +190,7 @@ class CalendarMonth extends React.PureComponent {
       renderMonthText,
       styles,
       verticalBorderSpacing,
+      calendarSystem,
     } = this.props;
 
     const { weeks } = this.state;
@@ -224,7 +242,8 @@ class CalendarMonth extends React.PureComponent {
                   key: dayOfWeek,
                   day,
                   daySize,
-                  isOutsideDay: !day || day.month() !== month.month(),
+                  // eslint-disable-next-line max-len
+                  isOutsideDay: !day || day[getMonthUnit(calendarSystem)]() !== month[getMonthUnit(calendarSystem)](),
                   tabIndex: isVisible && isSameDay(day, focusedDate) ? 0 : -1,
                   isFocused,
                   onDayMouseEnter,
@@ -232,7 +251,7 @@ class CalendarMonth extends React.PureComponent {
                   onDayClick,
                   renderDayContents,
                   phrases,
-                  modifiers: modifiers[toISODateString(day)],
+                  modifiers: modifiers[toISODateString(day, undefined, calendarSystem)],
                   ariaLabelFormat: dayAriaLabelFormat,
                 }))}
               </CalendarWeek>

@@ -1,3 +1,4 @@
+import React from 'react';
 import CloseButton from '../svg/close.svg';
 
-export default CloseButton;
+export default (props) => <CloseButton {...props} />;

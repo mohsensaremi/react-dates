@@ -14,6 +14,7 @@ import openDirectionShape from './OpenDirectionShape';
 import DayOfWeekShape from './DayOfWeekShape';
 import CalendarInfoPositionShape from './CalendarInfoPositionShape';
 import NavPositionShape from './NavPositionShape';
+import { CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI } from '../constants';
 
 export default {
   // required props for a functional interactive DateRangePicker
@@ -69,6 +70,7 @@ export default {
   isRTL: PropTypes.bool,
   firstDayOfWeek: DayOfWeekShape,
   initialVisibleMonth: PropTypes.func,
+  defaultInitialVisibleMonth: momentPropTypes.momentObj,
   numberOfMonths: PropTypes.number,
   keepOpenOnDateSelect: PropTypes.bool,
   reopenPickerOnClearDates: PropTypes.bool,
@@ -107,4 +109,6 @@ export default {
   weekDayFormat: PropTypes.string,
   phrases: PropTypes.shape(getPhrasePropTypes(DateRangePickerPhrases)),
   dayAriaLabelFormat: PropTypes.string,
+
+  calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
 };

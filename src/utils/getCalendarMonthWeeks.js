@@ -1,11 +1,13 @@
 import moment from 'moment';
 
 import { WEEKDAYS } from '../constants';
+import { getMonthUnit } from './calendarSystem';
 
 export default function getCalendarMonthWeeks(
   month,
   enableOutsideDays,
   firstDayOfWeek = moment.localeData().firstDayOfWeek(),
+  calendarSystem,
 ) {
   if (!moment.isMoment(month) || !month.isValid()) {
     throw new TypeError('`month` must be a valid moment object');
@@ -15,8 +17,8 @@ export default function getCalendarMonthWeeks(
   }
 
   // set utc offset to get correct dates in future (when timezone changes)
-  const firstOfMonth = month.clone().startOf('month').hour(12);
-  const lastOfMonth = month.clone().endOf('month').hour(12);
+  const firstOfMonth = month.clone().startOf(getMonthUnit(calendarSystem)).hour(12);
+  const lastOfMonth = month.clone().endOf(getMonthUnit(calendarSystem)).hour(12);
 
   // calculate the exact first and last days to fill the entire matrix
   // (considering days outside month)

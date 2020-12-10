@@ -6,7 +6,9 @@ import getPreviousMonthMemoLast from './getPreviousMonthMemoLast';
 import { VERTICAL_SCROLLABLE } from '../constants';
 
 export function addModifier(updatedDays, day, modifier, props, state) {
-  const { numberOfMonths: numberOfVisibleMonths, enableOutsideDays, orientation } = props;
+  const {
+    numberOfMonths: numberOfVisibleMonths, enableOutsideDays, orientation, calendarSystem,
+  } = props;
   const { currentMonth: firstVisibleMonth, visibleDays } = state;
 
   let currentMonth = firstVisibleMonth;
@@ -17,11 +19,11 @@ export function addModifier(updatedDays, day, modifier, props, state) {
     currentMonth = getPreviousMonthMemoLast(currentMonth);
     numberOfMonths += 2;
   }
-  if (!day || !isDayVisible(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+  if (!day || !isDayVisible(day, currentMonth, numberOfMonths, enableOutsideDays, calendarSystem)) {
     return updatedDays;
   }
 
-  const iso = toISODateString(day);
+  const iso = toISODateString(day, undefined, calendarSystem);
 
   let updatedDaysAfterAddition = { ...updatedDays };
   if (enableOutsideDays) {
@@ -44,7 +46,7 @@ export function addModifier(updatedDays, day, modifier, props, state) {
       return acc;
     }, updatedDaysAfterAddition);
   } else {
-    const monthIso = toISOMonthString(day);
+    const monthIso = toISOMonthString(day, undefined, calendarSystem);
     const month = updatedDays[monthIso] || visibleDays[monthIso] || {};
 
     if (!month[iso] || !month[iso].has(modifier)) {
@@ -61,7 +63,9 @@ export function addModifier(updatedDays, day, modifier, props, state) {
 }
 
 export function deleteModifier(updatedDays, day, modifier, props, state) {
-  const { numberOfMonths: numberOfVisibleMonths, enableOutsideDays, orientation } = props;
+  const {
+    numberOfMonths: numberOfVisibleMonths, enableOutsideDays, orientation, calendarSystem,
+  } = props;
   const { currentMonth: firstVisibleMonth, visibleDays } = state;
 
   let currentMonth = firstVisibleMonth;
@@ -72,11 +76,11 @@ export function deleteModifier(updatedDays, day, modifier, props, state) {
     currentMonth = getPreviousMonthMemoLast(currentMonth);
     numberOfMonths += 2;
   }
-  if (!day || !isDayVisible(day, currentMonth, numberOfMonths, enableOutsideDays)) {
+  if (!day || !isDayVisible(day, currentMonth, numberOfMonths, enableOutsideDays, calendarSystem)) {
     return updatedDays;
   }
 
-  const iso = toISODateString(day);
+  const iso = toISODateString(day, undefined, calendarSystem);
 
   let updatedDaysAfterDeletion = { ...updatedDays };
   if (enableOutsideDays) {
@@ -99,7 +103,7 @@ export function deleteModifier(updatedDays, day, modifier, props, state) {
       return acc;
     }, updatedDaysAfterDeletion);
   } else {
-    const monthIso = toISOMonthString(day);
+    const monthIso = toISOMonthString(day, undefined, calendarSystem);
     const month = updatedDays[monthIso] || visibleDays[monthIso] || {};
 
     if (month[iso] && month[iso].has(modifier)) {
