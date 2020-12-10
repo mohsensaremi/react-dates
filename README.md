@@ -1,3 +1,41 @@
+# IMPORTANT NOTES
+
+`calendarSystem` prop added to `DateRangePicker` and `SingleDatePicker` components for supporting JALALI calendar system
+
+## DateRangePicker
+
+[Live demo is available here](https://mohsensaremi.github.io/react-dates/?path=/story/daterangepicker-drp--non-english-locale-persian)
+
+```
+<DateRangePickerWrapper
+    isRTL
+    stateDateWrapper={momentJalaali}
+    startDatePlaceholderText="تاریخ شروع"
+    endDatePlaceholderText="تاریخ پایان"
+    defaultInitialVisibleMonth={momentJalaali()}
+    renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
+    renderDayContents={(day) => momentJalaali(day).format('jD')}
+    calendarSystem="jalali"
+/>
+```
+
+## SingleDatePicker
+
+[Live demo is available here](https://mohsensaremi.github.io/react-dates/?path=/story/singledatepicker-sdp--non-english-locale-persian)
+
+```
+<SingleDatePickerWrapper
+    placeholder="تقویم فارسی"
+    defaultInitialVisibleMonth={momentJalaali()}
+    renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
+    renderDayContents={(day) => momentJalaali(day).format('jD')}
+    calendarSystem="jalali"
+    isRTL
+/>
+```
+
+---
+
 # react-dates <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
 
 [![Build Status][travis-svg]][travis-url]
@@ -14,7 +52,7 @@
 
 ## Live Playground
 
-For examples of the datepicker in action, go to http://airbnb.io/react-dates.
+For examples of the datepicker in action, go to https://mohsensaremi.github.io/react-dates.
 
 OR
 
