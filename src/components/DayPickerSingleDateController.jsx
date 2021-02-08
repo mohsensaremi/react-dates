@@ -438,7 +438,13 @@ export default class DayPickerSingleDateController extends React.PureComponent {
 
     const prevMonth = currentMonth.clone()
       .subtract(1, 'month');
-    const prevMonthVisibleDays = getVisibleDays(prevMonth, 1, enableOutsideDays, undefined, calendarSystem);
+    const prevMonthVisibleDays = getVisibleDays(
+      prevMonth,
+      1,
+      enableOutsideDays,
+      undefined,
+      calendarSystem,
+    );
     const newCurrentMonth = currentMonth.clone()
       .subtract(1, 'month');
 
@@ -481,7 +487,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       1,
       enableOutsideDays,
       undefined,
-      calendarSystem
+      calendarSystem,
     );
 
     const newCurrentMonth = currentMonth.clone()
