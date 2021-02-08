@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
 import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import throttle from 'lodash/throttle';
-import isTouchDevice from 'is-touch-device';
+import TextField from '@material-ui/core/TextField';
 
+import isTouchDevice from 'is-touch-device';
 import noflip from '../utils/noflip';
 import getInputHeight from '../utils/getInputHeight';
 import openDirectionShape from '../shapes/OpenDirectionShape';
@@ -71,13 +72,19 @@ const defaultProps = {
   block: false,
   regular: false,
 
-  onChange() {},
-  onFocus() {},
-  onKeyDownShiftTab() {},
-  onKeyDownTab() {},
+  onChange() {
+  },
+  onFocus() {
+  },
+  onKeyDownShiftTab() {
+  },
+  onKeyDownTab() {
+  },
 
-  onKeyDownArrowDown() {},
-  onKeyDownQuestionMark() {},
+  onKeyDownArrowDown() {
+  },
+  onKeyDownQuestionMark() {
+  },
 
   // accessibility
   isFocused: false,
@@ -214,31 +221,42 @@ class DateInput extends React.PureComponent {
           withFang && openDirection === OPEN_UP && styles.DateInput__openUp,
         )}
       >
-        <input
+        <TextField
           {...css(
-            styles.DateInput_input,
-            small && styles.DateInput_input__small,
-            regular && styles.DateInput_input__regular,
-            readOnly && styles.DateInput_input__readOnly,
-            focused && styles.DateInput_input__focused,
-            disabled && styles.DateInput_input__disabled,
+            styles.DateInput_textField,
+            small && styles.DateInput_textField__small,
+            regular && styles.DateInput_textField__regular,
+            readOnly && styles.DateInput_textField__readOnly,
+            focused && styles.DateInput_textField__focused,
+            disabled && styles.DateInput_textField__disabled,
           )}
-          aria-label={ariaLabel === undefined ? placeholder : ariaLabel}
-          title={titleText}
-          type="text"
+          InputProps={{
+            // eslint-disable-next-line react-with-styles/only-spread-css
+            ...css(
+              styles.DateInput_input,
+              small && styles.DateInput_input__small,
+              regular && styles.DateInput_input__regular,
+              readOnly && styles.DateInput_input__readOnly,
+              focused && styles.DateInput_input__focused,
+              disabled && styles.DateInput_input__disabled,
+            ),
+            ref: this.setInputRef,
+            name: id,
+            'aria-label': ariaLabel === undefined ? placeholder : ariaLabel,
+            onKeyDown: this.onKeyDown,
+            onFocus,
+            autoComplete: 'off',
+            readOnly: typeof readOnly === 'boolean' ? readOnly : isTouch,
+            'aria-describedby': screenReaderMessage && screenReaderMessageId,
+          }}
+          focused={focused}
           id={id}
-          name={id}
-          ref={this.setInputRef}
           value={value}
           onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          onFocus={onFocus}
-          placeholder={placeholder}
-          autoComplete="off"
+          label={placeholder}
           disabled={disabled}
-          readOnly={typeof readOnly === 'boolean' ? readOnly : isTouch}
           required={required}
-          aria-describedby={screenReaderMessage && screenReaderMessageId}
+          variant="outlined"
         />
 
         {withFang && (
@@ -307,25 +325,19 @@ export default withStyles(({
     color: color.textDisabled,
   },
 
-  DateInput_input: {
-    fontWeight: font.input.weight,
-    fontSize: font.input.size,
-    lineHeight: font.input.lineHeight,
-    color: color.text,
-    backgroundColor: color.background,
-    width: '100%',
-    padding: `${spacing.displayTextPaddingVertical}px ${spacing.displayTextPaddingHorizontal}px`,
-    paddingTop: spacing.displayTextPaddingTop,
-    paddingBottom: spacing.displayTextPaddingBottom,
-    paddingLeft: noflip(spacing.displayTextPaddingLeft),
-    paddingRight: noflip(spacing.displayTextPaddingRight),
-    border: border.input.border,
-    borderTop: border.input.borderTop,
-    borderRight: noflip(border.input.borderRight),
-    borderBottom: border.input.borderBottom,
-    borderLeft: noflip(border.input.borderLeft),
-    borderRadius: border.input.borderRadius,
-  },
+  DateInput_textField: {},
+
+  DateInput_textField__small: {},
+
+  DateInput_textField__regular: {},
+
+  DateInput_textField__readOnly: {},
+
+  DateInput_textField__focused: {},
+
+  DateInput_textField__disabled: {},
+
+  DateInput_input: {},
 
   DateInput_input__small: {
     fontSize: font.input.size_small,
@@ -347,13 +359,10 @@ export default withStyles(({
   },
 
   DateInput_input__focused: {
-    outline: border.input.outlineFocused,
     background: color.backgroundFocused,
-    border: border.input.borderFocused,
-    borderTop: border.input.borderTopFocused,
-    borderRight: noflip(border.input.borderRightFocused),
-    borderBottom: border.input.borderBottomFocused,
-    borderLeft: noflip(border.input.borderLeftFocused),
+    '& fieldset': {
+      borderColor: 'red',
+    },
   },
 
   DateInput_input__disabled: {

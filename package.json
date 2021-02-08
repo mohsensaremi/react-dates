@@ -136,6 +136,7 @@
   },
   "peerDependencies": {
     "@babel/runtime": "^7.0.0",
+    "@material-ui/core": "^4.11.3",
     "moment": "^2.18.1",
     "react": "^0.14 || ^15.5.4 || ^16.1.1",
     "react-dom": "^0.14 || ^15.5.4 || ^16.1.1",
