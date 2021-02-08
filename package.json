@@ -42,14 +42,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/airbnb/react-dates.git"
+    "url": "git+https://github.com/mohsensaremi/react-dates.git"
   },
   "author": "Maja Wichrowska <maja.wichrowska@airbnb.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/airbnb/react-dates/issues"
+    "url": "https://github.com/mohsensaremi/react-dates/issues"
   },
-  "homepage": "https://github.com/airbnb/react-dates#readme",
+  "homepage": "https://github.com/mohsensaremi/react-dates#readme",
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
