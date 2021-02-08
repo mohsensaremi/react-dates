@@ -53,6 +53,11 @@ const propTypes = forbidExtraProps({
 
   // accessibility
   isFocused: PropTypes.bool, // describes actual DOM focus
+
+  isStartDate: PropTypes.bool,
+  isEndDate: PropTypes.bool,
+  startAdornment: PropTypes.node,
+  endAdornment: PropTypes.node,
 });
 
 const defaultProps = {
@@ -88,6 +93,11 @@ const defaultProps = {
 
   // accessibility
   isFocused: false,
+
+  isStartDate: false,
+  isEndDate: false,
+  startAdornment: undefined,
+  endAdornment: undefined,
 };
 
 class DateInput extends React.PureComponent {
@@ -200,6 +210,10 @@ class DateInput extends React.PureComponent {
       block,
       styles,
       theme: { reactDates },
+      isStartDate,
+      isEndDate,
+      startAdornment,
+      endAdornment,
     } = this.props;
 
     const value = dateString || displayValue || '';
@@ -240,6 +254,14 @@ class DateInput extends React.PureComponent {
               focused && styles.DateInput_input__focused,
               disabled && styles.DateInput_input__disabled,
             ),
+            classes: {
+              // eslint-disable-next-line react-with-styles/only-spread-css
+              notchedOutline: css(
+                isStartDate && styles.DateInput_notchedOutline__isStartDate,
+                isEndDate && styles.DateInput_notchedOutline__isEndDate,
+              ).className,
+            },
+            title: titleText,
             ref: this.setInputRef,
             name: id,
             'aria-label': ariaLabel === undefined ? placeholder : ariaLabel,
@@ -248,6 +270,8 @@ class DateInput extends React.PureComponent {
             autoComplete: 'off',
             readOnly: typeof readOnly === 'boolean' ? readOnly : isTouch,
             'aria-describedby': screenReaderMessage && screenReaderMessageId,
+            startAdornment,
+            endAdornment,
           }}
           focused={focused}
           id={id}
@@ -257,6 +281,7 @@ class DateInput extends React.PureComponent {
           disabled={disabled}
           required={required}
           variant="outlined"
+          fullWidth
         />
 
         {withFang && (
@@ -299,7 +324,7 @@ DateInput.defaultProps = defaultProps;
 
 export default withStyles(({
   reactDates: {
-    border, color, sizing, spacing, font, zIndex,
+    color, sizing, spacing, font, zIndex,
   },
 }) => ({
   DateInput: {
@@ -360,14 +385,23 @@ export default withStyles(({
 
   DateInput_input__focused: {
     background: color.backgroundFocused,
-    '& fieldset': {
-      borderColor: 'red',
-    },
   },
 
   DateInput_input__disabled: {
     background: color.disabled,
     fontStyle: font.input.styleDisabled,
+  },
+
+  DateInput_notchedOutline__isStartDate: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    borderRight: 'none',
+  },
+
+  DateInput_notchedOutline__isEndDate: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    borderLeft: 'none',
   },
 
   DateInput_screenReaderMessage: {
