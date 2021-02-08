@@ -4,6 +4,10 @@
 - []  ([#](https://github.com/airbnb/react-dates/pull/))
 -->
 
+## 21.8.1
+
+- [new] `calendarSystem` prop added to `DateRangePicker` and `SingleDatePicker` components for supporting JALALI calendar system
+
 ## 21.8.0
 
 - [new] Add option to allow days violating min nights to be clicked ([#1913](https://github.com/airbnb/react-dates/pull/1913))
