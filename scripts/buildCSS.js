@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+const React = require('react');
+
+React.useLayoutEffect = React.useEffect;
 
 const fs = require('fs');
 const CleanCSS = require('clean-css');
