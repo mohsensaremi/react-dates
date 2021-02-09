@@ -261,17 +261,19 @@ class DateInput extends React.PureComponent {
                 isEndDate && styles.DateInput_notchedOutline__isEndDate,
               ).className,
             },
-            title: titleText,
             ref: this.setInputRef,
             name: id,
-            'aria-label': ariaLabel === undefined ? placeholder : ariaLabel,
             onKeyDown: this.onKeyDown,
             onFocus,
-            autoComplete: 'off',
             readOnly: typeof readOnly === 'boolean' ? readOnly : isTouch,
-            'aria-describedby': screenReaderMessage && screenReaderMessageId,
             startAdornment,
             endAdornment,
+            inputProps: {
+              'aria-label': ariaLabel === undefined ? placeholder : ariaLabel,
+              'aria-describedby': screenReaderMessage && screenReaderMessageId,
+              autoComplete: 'off',
+              title: titleText,
+            },
           }}
           focused={focused}
           id={id}
