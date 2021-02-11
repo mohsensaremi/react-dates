@@ -54,6 +54,8 @@ const propTypes = forbidExtraProps({
   // accessibility
   isFocused: PropTypes.bool, // describes actual DOM focus
 
+  isRTL: PropTypes.bool,
+
   isStartDate: PropTypes.bool,
   isEndDate: PropTypes.bool,
   startAdornment: PropTypes.node,
@@ -93,6 +95,8 @@ const defaultProps = {
 
   // accessibility
   isFocused: false,
+
+  isRTL: false,
 
   isStartDate: false,
   isEndDate: false,
@@ -210,6 +214,7 @@ class DateInput extends React.PureComponent {
       block,
       styles,
       theme: { reactDates },
+      isRTL,
       isStartDate,
       isEndDate,
       startAdornment,
@@ -257,8 +262,14 @@ class DateInput extends React.PureComponent {
             classes: {
               // eslint-disable-next-line react-with-styles/only-spread-css
               notchedOutline: css(
-                isStartDate && styles.DateInput_notchedOutline__isStartDate,
-                isEndDate && styles.DateInput_notchedOutline__isEndDate,
+                isStartDate && (isRTL
+                  ? styles.DateInput_notchedOutline__isStartDateRTL
+                  : styles.DateInput_notchedOutline__isStartDate
+                ),
+                isEndDate && (isRTL
+                  ? styles.DateInput_notchedOutline__isEndDateRTL
+                  : styles.DateInput_notchedOutline__isEndDate
+                ),
               ).className,
             },
             ref: this.setInputRef,
@@ -400,10 +411,22 @@ export default withStyles(({
     borderRight: 'none',
   },
 
+  DateInput_notchedOutline__isStartDateRTL: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+    borderLeft: 'none',
+  },
+
   DateInput_notchedOutline__isEndDate: {
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
     borderLeft: 'none',
+  },
+
+  DateInput_notchedOutline__isEndDateRTL: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    borderRight: 'none',
   },
 
   DateInput_screenReaderMessage: {

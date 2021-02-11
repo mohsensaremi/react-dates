@@ -5,14 +5,15 @@ import { Portal } from 'react-portal';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { addEventListener } from 'consolidated-events';
 import isTouchDevice from 'is-touch-device';
-import OutsideClickHandler from 'react-outside-click-handler';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { darken } from 'color2k';
+import Popper from '@material-ui/core/Popper';
 
 import DateRangePickerShape from '../shapes/DateRangePickerShape';
 import { DateRangePickerPhrases } from '../defaultPhrases';
 
-import getResponsiveContainerStyles from '../utils/getResponsiveContainerStyles';
-import getDetachedContainerStyles from '../utils/getDetachedContainerStyles';
+// import getResponsiveContainerStyles from '../utils/getResponsiveContainerStyles';
+// import getDetachedContainerStyles from '../utils/getDetachedContainerStyles';
 import getInputHeight from '../utils/getInputHeight';
 import isInclusivelyAfterDay from '../utils/isInclusivelyAfterDay';
 import disableScroll from '../utils/disableScroll';
@@ -211,11 +212,12 @@ class DateRangePicker extends React.PureComponent {
       onClose,
       startDate,
       endDate,
-      appendToBody,
+      // appendToBody,
     } = this.props;
 
     if (!this.isOpened()) return;
-    if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    // if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    if (this.dayPickerContainer.contains(event.target)) return;
 
     this.setState({
       isDateRangePickerInputFocused: false,
@@ -339,49 +341,49 @@ class DateRangePicker extends React.PureComponent {
   responsivizePickerPosition() {
     // It's possible the portal props have been changed in response to window resizes
     // So let's ensure we reset this back to the base state each time
-    const { dayPickerContainerStyles } = this.state;
+    // const { dayPickerContainerStyles } = this.state;
 
-    if (Object.keys(dayPickerContainerStyles).length > 0) {
-      this.setState({ dayPickerContainerStyles: {} });
-    }
+    // if (Object.keys(dayPickerContainerStyles).length > 0) {
+    //   this.setState({ dayPickerContainerStyles: {} });
+    // }
 
-    if (!this.isOpened()) {
-      return;
-    }
+    // if (!this.isOpened()) {
+    //   return;
+    // }
 
-    const {
-      openDirection,
-      anchorDirection,
-      horizontalMargin,
-      withPortal,
-      withFullScreenPortal,
-      appendToBody,
-    } = this.props;
+    // const {
+    //   openDirection,
+    //   anchorDirection,
+    //   horizontalMargin,
+    //   withPortal,
+    //   withFullScreenPortal,
+    //   appendToBody,
+    // } = this.props;
 
-    const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
-    if (!withPortal && !withFullScreenPortal) {
-      const containerRect = this.dayPickerContainer.getBoundingClientRect();
-      const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
-      const containerEdge = isAnchoredLeft
-        ? containerRect[ANCHOR_RIGHT]
-        : containerRect[ANCHOR_LEFT];
-
-      this.setState({
-        dayPickerContainerStyles: {
-          ...getResponsiveContainerStyles(
-            anchorDirection,
-            currentOffset,
-            containerEdge,
-            horizontalMargin,
-          ),
-          ...(appendToBody && getDetachedContainerStyles(
-            openDirection,
-            anchorDirection,
-            this.container,
-          )),
-        },
-      });
-    }
+    // const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
+    // if (!withPortal && !withFullScreenPortal) {
+    //   const containerRect = this.dayPickerContainer.getBoundingClientRect();
+    //   const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
+    //   const containerEdge = isAnchoredLeft
+    //     ? containerRect[ANCHOR_RIGHT]
+    //     : containerRect[ANCHOR_LEFT];
+    //
+    //   this.setState({
+    //     dayPickerContainerStyles: {
+    //       ...getResponsiveContainerStyles(
+    //         anchorDirection,
+    //         currentOffset,
+    //         containerEdge,
+    //         horizontalMargin,
+    //       ),
+    //       ...(appendToBody && getDetachedContainerStyles(
+    //         openDirection,
+    //         anchorDirection,
+    //         this.container,
+    //       )),
+    //     },
+    //   });
+    // }
   }
 
   showKeyboardShortcutsPanel() {
@@ -395,11 +397,11 @@ class DateRangePicker extends React.PureComponent {
   maybeRenderDayPickerWithPortal() {
     const { withPortal, withFullScreenPortal, appendToBody } = this.props;
 
-    if (!this.isOpened()) {
-      return null;
-    }
 
     if (withPortal || withFullScreenPortal || appendToBody) {
+      if (!this.isOpened()) {
+        return null;
+      }
       return (
         <Portal>
           {this.renderDayPicker()}
@@ -407,7 +409,11 @@ class DateRangePicker extends React.PureComponent {
       );
     }
 
-    return this.renderDayPicker();
+    return (
+      <Popper open={this.isOpened()} anchorEl={this.container}>
+        {this.renderDayPicker()}
+      </Popper>
+    );
   }
 
   renderDayPicker() {
@@ -694,9 +700,9 @@ class DateRangePicker extends React.PureComponent {
         )}
       >
         {enableOutsideClick && (
-          <OutsideClickHandler onOutsideClick={this.onOutsideClick}>
+          <ClickAwayListener onClickAway={this.onOutsideClick}>
             {input}
-          </OutsideClickHandler>
+          </ClickAwayListener>
         )}
         {enableOutsideClick || input}
       </div>
@@ -721,7 +727,6 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
   DateRangePicker_picker: {
     zIndex: zIndex + 1,
     backgroundColor: color.background,
-    position: 'absolute',
   },
 
   DateRangePicker_picker__rtl: {

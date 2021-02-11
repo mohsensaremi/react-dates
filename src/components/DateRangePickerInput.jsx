@@ -259,6 +259,7 @@ function DateRangePickerInput({
         small={small}
         regular={regular}
         isStartDate
+        isRTL={isRTL}
         startAdornment={inputIconPosition === ICON_BEFORE_POSITION && inputIcon}
         endAdornment={(
           <div
@@ -295,6 +296,7 @@ function DateRangePickerInput({
         verticalSpacing={verticalSpacing}
         small={small}
         regular={regular}
+        isRTL={isRTL}
         isEndDate
         endAdornment={showClearDates && (
           <>

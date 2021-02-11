@@ -6,7 +6,7 @@ import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import moment from 'moment';
 import throttle from 'lodash/throttle';
 import isTouchDevice from 'is-touch-device';
-import OutsideClickHandler from 'react-outside-click-handler';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { DayPickerPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -1163,108 +1163,110 @@ class DayPicker extends React.PureComponent {
           !noBorder && styles.DayPicker__withBorder,
         )}
       >
-        <OutsideClickHandler onOutsideClick={onOutsideClick}>
-          {(calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo}
-
-          <div
-            {...css(
-              dayPickerWrapperStyle,
-              calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal,
-            )}
-          >
+        <ClickAwayListener onClickAway={onOutsideClick}>
+          <div>
+            {(calendarInfoPositionTop || calendarInfoPositionBefore) && calendarInfo}
 
             <div
               {...css(
-                styles.DayPicker_weekHeaders,
-                isHorizontal && styles.DayPicker_weekHeaders__horizontal,
+                dayPickerWrapperStyle,
+                calendarInfoIsInline && isHorizontal && styles.DayPicker_wrapper__horizontal,
               )}
-              aria-hidden="true"
-              role="presentation"
             >
-              {weekHeaders}
-            </div>
-
-            <div // eslint-disable-line jsx-a11y/no-noninteractive-element-interactions
-              {...css(styles.DayPicker_focusRegion)}
-              ref={this.setContainerRef}
-              onClick={(e) => { e.stopPropagation(); }}
-              onKeyDown={this.onKeyDown}
-              onMouseUp={() => { this.setState({ withMouseInteractions: true }); }}
-              tabIndex={-1}
-              role="application"
-              aria-roledescription={phrases.roleDescription}
-              aria-label={phrases.calendarLabel}
-            >
-              {!verticalScrollable && navPosition === NAV_POSITION_TOP && this.renderNavigation()}
 
               <div
                 {...css(
-                  styles.DayPicker_transitionContainer,
-                  shouldAnimateHeight && styles.DayPicker_transitionContainer__horizontal,
-                  this.isVertical() && styles.DayPicker_transitionContainer__vertical,
-                  verticalScrollable && styles.DayPicker_transitionContainer__verticalScrollable,
-                  transitionContainerStyle,
+                  styles.DayPicker_weekHeaders,
+                  isHorizontal && styles.DayPicker_weekHeaders__horizontal,
                 )}
-                ref={this.setTransitionContainerRef}
+                aria-hidden="true"
+                role="presentation"
               >
-                {verticalScrollable && this.renderNavigation(PREV_NAV)}
-                <CalendarMonthGrid
-                  setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
-                  translationValue={translationValue}
-                  enableOutsideDays={enableOutsideDays}
-                  firstVisibleMonthIndex={firstVisibleMonthIndex}
-                  initialMonth={currentMonth}
-                  isAnimating={isCalendarMonthGridAnimating}
-                  modifiers={modifiers}
-                  orientation={orientation}
-                  numberOfMonths={numberOfMonths * scrollableMonthMultiple}
-                  onDayClick={onDayClick}
-                  onDayMouseEnter={onDayMouseEnter}
-                  onDayMouseLeave={onDayMouseLeave}
-                  onMonthChange={this.onMonthChange}
-                  onYearChange={this.onYearChange}
-                  renderMonthText={renderMonthText}
-                  renderCalendarDay={renderCalendarDay}
-                  renderDayContents={renderDayContents}
-                  renderMonthElement={renderMonthElement}
-                  onMonthTransitionEnd={this.updateStateAfterMonthTransition}
-                  monthFormat={monthFormat}
-                  daySize={daySize}
-                  firstDayOfWeek={firstDayOfWeek}
-                  isFocused={shouldFocusDate}
-                  focusedDate={focusedDate}
-                  phrases={phrases}
-                  isRTL={isRTL}
-                  dayAriaLabelFormat={dayAriaLabelFormat}
-                  transitionDuration={transitionDuration}
-                  verticalBorderSpacing={verticalBorderSpacing}
-                  horizontalMonthPadding={horizontalMonthPadding}
-                  calendarSystem={calendarSystem}
-                />
-                {verticalScrollable && this.renderNavigation(NEXT_NAV)}
+                {weekHeaders}
               </div>
 
-              {!verticalScrollable
+              <div // eslint-disable-line jsx-a11y/no-noninteractive-element-interactions
+                {...css(styles.DayPicker_focusRegion)}
+                ref={this.setContainerRef}
+                onClick={(e) => { e.stopPropagation(); }}
+                onKeyDown={this.onKeyDown}
+                onMouseUp={() => { this.setState({ withMouseInteractions: true }); }}
+                tabIndex={-1}
+                role="application"
+                aria-roledescription={phrases.roleDescription}
+                aria-label={phrases.calendarLabel}
+              >
+                {!verticalScrollable && navPosition === NAV_POSITION_TOP && this.renderNavigation()}
+
+                <div
+                  {...css(
+                    styles.DayPicker_transitionContainer,
+                    shouldAnimateHeight && styles.DayPicker_transitionContainer__horizontal,
+                    this.isVertical() && styles.DayPicker_transitionContainer__vertical,
+                    verticalScrollable && styles.DayPicker_transitionContainer__verticalScrollable,
+                    transitionContainerStyle,
+                  )}
+                  ref={this.setTransitionContainerRef}
+                >
+                  {verticalScrollable && this.renderNavigation(PREV_NAV)}
+                  <CalendarMonthGrid
+                    setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
+                    translationValue={translationValue}
+                    enableOutsideDays={enableOutsideDays}
+                    firstVisibleMonthIndex={firstVisibleMonthIndex}
+                    initialMonth={currentMonth}
+                    isAnimating={isCalendarMonthGridAnimating}
+                    modifiers={modifiers}
+                    orientation={orientation}
+                    numberOfMonths={numberOfMonths * scrollableMonthMultiple}
+                    onDayClick={onDayClick}
+                    onDayMouseEnter={onDayMouseEnter}
+                    onDayMouseLeave={onDayMouseLeave}
+                    onMonthChange={this.onMonthChange}
+                    onYearChange={this.onYearChange}
+                    renderMonthText={renderMonthText}
+                    renderCalendarDay={renderCalendarDay}
+                    renderDayContents={renderDayContents}
+                    renderMonthElement={renderMonthElement}
+                    onMonthTransitionEnd={this.updateStateAfterMonthTransition}
+                    monthFormat={monthFormat}
+                    daySize={daySize}
+                    firstDayOfWeek={firstDayOfWeek}
+                    isFocused={shouldFocusDate}
+                    focusedDate={focusedDate}
+                    phrases={phrases}
+                    isRTL={isRTL}
+                    dayAriaLabelFormat={dayAriaLabelFormat}
+                    transitionDuration={transitionDuration}
+                    verticalBorderSpacing={verticalBorderSpacing}
+                    horizontalMonthPadding={horizontalMonthPadding}
+                    calendarSystem={calendarSystem}
+                  />
+                  {verticalScrollable && this.renderNavigation(NEXT_NAV)}
+                </div>
+
+                {!verticalScrollable
                 && navPosition === NAV_POSITION_BOTTOM
                 && this.renderNavigation()}
 
-              {!isTouch && !hideKeyboardShortcutsPanel && (
-                <DayPickerKeyboardShortcuts
-                  block={this.isVertical() && !withPortal}
-                  buttonLocation={keyboardShortcutButtonLocation}
-                  showKeyboardShortcutsPanel={showKeyboardShortcuts}
-                  openKeyboardShortcutsPanel={this.openKeyboardShortcutsPanel}
-                  closeKeyboardShortcutsPanel={this.closeKeyboardShortcutsPanel}
-                  phrases={phrases}
-                  renderKeyboardShortcutsButton={renderKeyboardShortcutsButton}
-                  renderKeyboardShortcutsPanel={renderKeyboardShortcutsPanel}
-                />
-              )}
+                {!isTouch && !hideKeyboardShortcutsPanel && (
+                  <DayPickerKeyboardShortcuts
+                    block={this.isVertical() && !withPortal}
+                    buttonLocation={keyboardShortcutButtonLocation}
+                    showKeyboardShortcutsPanel={showKeyboardShortcuts}
+                    openKeyboardShortcutsPanel={this.openKeyboardShortcutsPanel}
+                    closeKeyboardShortcutsPanel={this.closeKeyboardShortcutsPanel}
+                    phrases={phrases}
+                    renderKeyboardShortcutsButton={renderKeyboardShortcutsButton}
+                    renderKeyboardShortcutsPanel={renderKeyboardShortcutsPanel}
+                  />
+                )}
+              </div>
             </div>
-          </div>
 
-          {(calendarInfoPositionBottom || calendarInfoPositionAfter) && calendarInfo}
-        </OutsideClickHandler>
+            {(calendarInfoPositionBottom || calendarInfoPositionAfter) && calendarInfo}
+          </div>
+        </ClickAwayListener>
       </div>
     );
   }

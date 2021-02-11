@@ -5,7 +5,7 @@ import { Portal } from 'react-portal';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { addEventListener } from 'consolidated-events';
 import isTouchDevice from 'is-touch-device';
-import OutsideClickHandler from 'react-outside-click-handler';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { darken } from 'color2k';
 
 import SingleDatePickerShape from '../shapes/SingleDatePickerShape';
@@ -36,6 +36,7 @@ import {
   DEFAULT_VERTICAL_SPACING,
   NAV_POSITION_TOP, CALENDAR_SYSTEM_GREGORIAN,
 } from '../constants';
+import Popper from '@material-ui/core/Popper';
 
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
@@ -202,11 +203,11 @@ class SingleDatePicker extends React.PureComponent {
       onFocusChange,
       onClose,
       date,
-      appendToBody,
     } = this.props;
 
     if (!focused) return;
-    if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    // if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    if (this.dayPickerContainer.contains(event.target)) return;
 
     this.setState({
       isInputFocused: false,
@@ -318,49 +319,49 @@ class SingleDatePicker extends React.PureComponent {
   responsivizePickerPosition() {
     // It's possible the portal props have been changed in response to window resizes
     // So let's ensure we reset this back to the base state each time
-    this.setState({ dayPickerContainerStyles: {} });
+    // this.setState({ dayPickerContainerStyles: {} });
 
-    const {
-      openDirection,
-      anchorDirection,
-      horizontalMargin,
-      withPortal,
-      withFullScreenPortal,
-      appendToBody,
-      focused,
-    } = this.props;
+    // const {
+    //   openDirection,
+    //   anchorDirection,
+    //   horizontalMargin,
+    //   withPortal,
+    //   withFullScreenPortal,
+    //   appendToBody,
+    //   focused,
+    // } = this.props;
 
-    const { dayPickerContainerStyles } = this.state;
+    // const { dayPickerContainerStyles } = this.state;
 
-    if (!focused) {
-      return;
-    }
+    // if (!focused) {
+    //   return;
+    // }
 
-    const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
+    // const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
 
-    if (!withPortal && !withFullScreenPortal) {
-      const containerRect = this.dayPickerContainer.getBoundingClientRect();
-      const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
-      const containerEdge = isAnchoredLeft
-        ? containerRect[ANCHOR_RIGHT]
-        : containerRect[ANCHOR_LEFT];
-
-      this.setState({
-        dayPickerContainerStyles: {
-          ...getResponsiveContainerStyles(
-            anchorDirection,
-            currentOffset,
-            containerEdge,
-            horizontalMargin,
-          ),
-          ...(appendToBody && getDetachedContainerStyles(
-            openDirection,
-            anchorDirection,
-            this.container,
-          )),
-        },
-      });
-    }
+    // if (!withPortal && !withFullScreenPortal) {
+    //   const containerRect = this.dayPickerContainer.getBoundingClientRect();
+    //   const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
+    //   const containerEdge = isAnchoredLeft
+    //     ? containerRect[ANCHOR_RIGHT]
+    //     : containerRect[ANCHOR_LEFT];
+    //
+    //   this.setState({
+    //     dayPickerContainerStyles: {
+    //       ...getResponsiveContainerStyles(
+    //         anchorDirection,
+    //         currentOffset,
+    //         containerEdge,
+    //         horizontalMargin,
+    //       ),
+    //       ...(appendToBody && getDetachedContainerStyles(
+    //         openDirection,
+    //         anchorDirection,
+    //         this.container,
+    //       )),
+    //     },
+    //   });
+    // }
   }
 
   showKeyboardShortcutsPanel() {
@@ -379,11 +380,11 @@ class SingleDatePicker extends React.PureComponent {
       appendToBody,
     } = this.props;
 
-    if (!focused) {
-      return null;
-    }
-
     if (withPortal || withFullScreenPortal || appendToBody) {
+
+      if (!focused) {
+        return null;
+      }
       return (
         <Portal>
           {this.renderDayPicker()}
@@ -391,7 +392,11 @@ class SingleDatePicker extends React.PureComponent {
       );
     }
 
-    return this.renderDayPicker();
+    return (
+      <Popper open={focused} anchorEl={this.container}>
+        {this.renderDayPicker()}
+      </Popper>
+    );
   }
 
   renderDayPicker() {
@@ -644,9 +649,9 @@ class SingleDatePicker extends React.PureComponent {
         )}
       >
         {enableOutsideClick && (
-          <OutsideClickHandler onOutsideClick={this.onOutsideClick}>
+          <ClickAwayListener onClickAway={this.onOutsideClick}>
             {input}
-          </OutsideClickHandler>
+          </ClickAwayListener>
         )}
         {enableOutsideClick || input}
       </div>
@@ -671,7 +676,6 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
   SingleDatePicker_picker: {
     zIndex: zIndex + 1,
     backgroundColor: color.background,
-    position: 'absolute',
   },
 
   SingleDatePicker_picker__rtl: {
