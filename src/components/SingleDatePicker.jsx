@@ -8,11 +8,12 @@ import isTouchDevice from 'is-touch-device';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { darken } from 'color2k';
 
+import Popper from '@material-ui/core/Popper';
 import SingleDatePickerShape from '../shapes/SingleDatePickerShape';
 import { SingleDatePickerPhrases } from '../defaultPhrases';
 
-import getResponsiveContainerStyles from '../utils/getResponsiveContainerStyles';
-import getDetachedContainerStyles from '../utils/getDetachedContainerStyles';
+// import getResponsiveContainerStyles from '../utils/getResponsiveContainerStyles';
+// import getDetachedContainerStyles from '../utils/getDetachedContainerStyles';
 import getInputHeight from '../utils/getInputHeight';
 import isInclusivelyAfterDay from '../utils/isInclusivelyAfterDay';
 import disableScroll from '../utils/disableScroll';
@@ -36,7 +37,6 @@ import {
   DEFAULT_VERTICAL_SPACING,
   NAV_POSITION_TOP, CALENDAR_SYSTEM_GREGORIAN,
 } from '../constants';
-import Popper from '@material-ui/core/Popper';
 
 const propTypes = forbidExtraProps({
   ...withStylesPropTypes,
@@ -103,9 +103,12 @@ const defaultProps = {
   renderNavPrevButton: null,
   renderNavNextButton: null,
 
-  onPrevMonthClick() {},
-  onNextMonthClick() {},
-  onClose() {},
+  onPrevMonthClick() {
+  },
+  onNextMonthClick() {
+  },
+  onClose() {
+  },
 
   // month presentation and interaction related props
   renderMonthText: null,
@@ -118,10 +121,12 @@ const defaultProps = {
   enableOutsideDays: false,
   isDayBlocked: () => false,
   isOutsideRange: (day) => !isInclusivelyAfterDay(day, moment()),
-  isDayHighlighted: () => {},
+  isDayHighlighted: () => {
+  },
 
   // internationalization props
-  displayFormat: () => moment.localeData().longDateFormat('L'),
+  displayFormat: () => moment.localeData()
+    .longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
   weekDayFormat: 'dd',
   phrases: SingleDatePickerPhrases,
@@ -150,7 +155,7 @@ class SingleDatePicker extends React.PureComponent {
     this.onDayPickerBlur = this.onDayPickerBlur.bind(this);
     this.showKeyboardShortcutsPanel = this.showKeyboardShortcutsPanel.bind(this);
 
-    this.responsivizePickerPosition = this.responsivizePickerPosition.bind(this);
+    // this.responsivizePickerPosition = this.responsivizePickerPosition.bind(this);
     this.disableScroll = this.disableScroll.bind(this);
 
     this.setDayPickerContainerRef = this.setDayPickerContainerRef.bind(this);
@@ -159,14 +164,14 @@ class SingleDatePicker extends React.PureComponent {
 
   /* istanbul ignore next */
   componentDidMount() {
-    this.removeResizeEventListener = addEventListener(
-      window,
-      'resize',
-      this.responsivizePickerPosition,
-      { passive: true },
-    );
+    // this.removeResizeEventListener = addEventListener(
+    //   window,
+    //   'resize',
+    //   this.responsivizePickerPosition,
+    //   { passive: true },
+    // );
 
-    this.responsivizePickerPosition();
+    // this.responsivizePickerPosition();
     this.disableScroll();
 
     const { focused } = this.props;
@@ -183,7 +188,7 @@ class SingleDatePicker extends React.PureComponent {
   componentDidUpdate(prevProps) {
     const { focused } = this.props;
     if (!prevProps.focused && focused) {
-      this.responsivizePickerPosition();
+      // this.responsivizePickerPosition();
       this.disableScroll();
     } else if (prevProps.focused && !focused) {
       if (this.enableScroll) this.enableScroll();
@@ -192,7 +197,7 @@ class SingleDatePicker extends React.PureComponent {
 
   /* istanbul ignore next */
   componentWillUnmount() {
-    if (this.removeResizeEventListener) this.removeResizeEventListener();
+    // if (this.removeResizeEventListener) this.removeResizeEventListener();
     if (this.removeFocusOutEventListener) this.removeFocusOutEventListener();
     if (this.enableScroll) this.enableScroll();
   }
@@ -207,7 +212,7 @@ class SingleDatePicker extends React.PureComponent {
 
     if (!focused) return;
     // if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
-    if (this.dayPickerContainer.contains(event.target)) return;
+    if (this.dayPickerContainer && this.dayPickerContainer.contains(event.target)) return;
 
     this.setState({
       isInputFocused: false,
@@ -316,53 +321,53 @@ class SingleDatePicker extends React.PureComponent {
   }
 
   /* istanbul ignore next */
-  responsivizePickerPosition() {
-    // It's possible the portal props have been changed in response to window resizes
-    // So let's ensure we reset this back to the base state each time
-    // this.setState({ dayPickerContainerStyles: {} });
+  // responsivizePickerPosition() {
+  // It's possible the portal props have been changed in response to window resizes
+  // So let's ensure we reset this back to the base state each time
+  // this.setState({ dayPickerContainerStyles: {} });
 
-    // const {
-    //   openDirection,
-    //   anchorDirection,
-    //   horizontalMargin,
-    //   withPortal,
-    //   withFullScreenPortal,
-    //   appendToBody,
-    //   focused,
-    // } = this.props;
+  // const {
+  //   openDirection,
+  //   anchorDirection,
+  //   horizontalMargin,
+  //   withPortal,
+  //   withFullScreenPortal,
+  //   appendToBody,
+  //   focused,
+  // } = this.props;
 
-    // const { dayPickerContainerStyles } = this.state;
+  // const { dayPickerContainerStyles } = this.state;
 
-    // if (!focused) {
-    //   return;
-    // }
+  // if (!focused) {
+  //   return;
+  // }
 
-    // const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
+  // const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
 
-    // if (!withPortal && !withFullScreenPortal) {
-    //   const containerRect = this.dayPickerContainer.getBoundingClientRect();
-    //   const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
-    //   const containerEdge = isAnchoredLeft
-    //     ? containerRect[ANCHOR_RIGHT]
-    //     : containerRect[ANCHOR_LEFT];
-    //
-    //   this.setState({
-    //     dayPickerContainerStyles: {
-    //       ...getResponsiveContainerStyles(
-    //         anchorDirection,
-    //         currentOffset,
-    //         containerEdge,
-    //         horizontalMargin,
-    //       ),
-    //       ...(appendToBody && getDetachedContainerStyles(
-    //         openDirection,
-    //         anchorDirection,
-    //         this.container,
-    //       )),
-    //     },
-    //   });
-    // }
-  }
+  // if (!withPortal && !withFullScreenPortal) {
+  //   const containerRect = this.dayPickerContainer.getBoundingClientRect();
+  //   const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
+  //   const containerEdge = isAnchoredLeft
+  //     ? containerRect[ANCHOR_RIGHT]
+  //     : containerRect[ANCHOR_LEFT];
+  //
+  //   this.setState({
+  //     dayPickerContainerStyles: {
+  //       ...getResponsiveContainerStyles(
+  //         anchorDirection,
+  //         currentOffset,
+  //         containerEdge,
+  //         horizontalMargin,
+  //       ),
+  //       ...(appendToBody && getDetachedContainerStyles(
+  //         openDirection,
+  //         anchorDirection,
+  //         this.container,
+  //       )),
+  //     },
+  //   });
+  // }
+  // }
 
   showKeyboardShortcutsPanel() {
     this.setState({
@@ -380,11 +385,11 @@ class SingleDatePicker extends React.PureComponent {
       appendToBody,
     } = this.props;
 
-    if (withPortal || withFullScreenPortal || appendToBody) {
+    if (!focused) {
+      return null;
+    }
 
-      if (!focused) {
-        return null;
-      }
+    if (withPortal || withFullScreenPortal || appendToBody) {
       return (
         <Portal>
           {this.renderDayPicker()}
@@ -392,11 +397,11 @@ class SingleDatePicker extends React.PureComponent {
       );
     }
 
-    return (
+    return this.container ? (
       <Popper open={focused} anchorEl={this.container}>
         {this.renderDayPicker()}
       </Popper>
-    );
+    ) : this.renderDayPicker();
   }
 
   renderDayPicker() {
@@ -650,7 +655,9 @@ class SingleDatePicker extends React.PureComponent {
       >
         {enableOutsideClick && (
           <ClickAwayListener onClickAway={this.onOutsideClick}>
-            {input}
+            <div>
+              {input}
+            </div>
           </ClickAwayListener>
         )}
         {enableOutsideClick || input}
