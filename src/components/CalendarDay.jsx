@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
-import { withStylesPropTypes } from 'react-with-styles';
 import moment from 'moment';
 import raf from 'raf';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -17,7 +16,7 @@ import ModifiersShape from '../shapes/ModifiersShape';
 import { DAY_SIZE } from '../constants';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   day: momentPropTypes.momentObj,
   daySize: nonNegativeInteger,
   isOutsideDay: PropTypes.bool,
@@ -115,9 +114,7 @@ class CalendarDay extends React.PureComponent {
       classes: styles,
     } = this.props;
 
-    console.log('this.props', this.props);
-
-    if (!day) return <td/>;
+    if (!day) return <td />;
 
     const {
       daySizeStyles,
