@@ -7,13 +7,11 @@ import { addEventListener } from 'consolidated-events';
 import isTouchDevice from 'is-touch-device';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { darken } from 'color2k';
-import Popper from '@material-ui/core/Popper';
 
 import DateRangePickerShape from '../shapes/DateRangePickerShape';
 import { DateRangePickerPhrases } from '../defaultPhrases';
-
-// import getResponsiveContainerStyles from '../utils/getResponsiveContainerStyles';
-// import getDetachedContainerStyles from '../utils/getDetachedContainerStyles';
+import getResponsiveContainerStyles from '../utils/getResponsiveContainerStyles';
+import getDetachedContainerStyles from '../utils/getDetachedContainerStyles';
 import getInputHeight from '../utils/getInputHeight';
 import isInclusivelyAfterDay from '../utils/isInclusivelyAfterDay';
 import disableScroll from '../utils/disableScroll';
@@ -24,20 +22,21 @@ import DayPickerRangeController from './DayPickerRangeController';
 import CloseButton from './CloseButton';
 
 import {
-  START_DATE,
-  END_DATE,
-  HORIZONTAL_ORIENTATION,
-  VERTICAL_ORIENTATION,
   ANCHOR_LEFT,
   ANCHOR_RIGHT,
-  OPEN_DOWN,
-  OPEN_UP,
+  CALENDAR_SYSTEM_GREGORIAN,
   DAY_SIZE,
+  DEFAULT_VERTICAL_SPACING,
+  END_DATE,
+  FANG_HEIGHT_PX,
+  HORIZONTAL_ORIENTATION,
   ICON_BEFORE_POSITION,
   INFO_POSITION_BOTTOM,
-  FANG_HEIGHT_PX,
-  DEFAULT_VERTICAL_SPACING,
-  NAV_POSITION_TOP, CALENDAR_SYSTEM_GREGORIAN,
+  NAV_POSITION_TOP,
+  OPEN_DOWN,
+  OPEN_UP,
+  START_DATE,
+  VERTICAL_ORIENTATION,
 } from '../constants';
 
 const propTypes = forbidExtraProps({
@@ -161,7 +160,7 @@ class DateRangePicker extends React.PureComponent {
     this.onDayPickerBlur = this.onDayPickerBlur.bind(this);
     this.showKeyboardShortcutsPanel = this.showKeyboardShortcutsPanel.bind(this);
 
-    // this.responsivizePickerPosition = this.responsivizePickerPosition.bind(this);
+    this.responsivizePickerPosition = this.responsivizePickerPosition.bind(this);
     this.disableScroll = this.disableScroll.bind(this);
 
     this.setDayPickerContainerRef = this.setDayPickerContainerRef.bind(this);
@@ -169,13 +168,13 @@ class DateRangePicker extends React.PureComponent {
   }
 
   componentDidMount() {
-    // this.removeEventListener = addEventListener(
-    //   window,
-    //   'resize',
-    //   this.responsivizePickerPosition,
-    //   { passive: true },
-    // );
-    // this.responsivizePickerPosition();
+    this.removeEventListener = addEventListener(
+      window,
+      'resize',
+      this.responsivizePickerPosition,
+      { passive: true },
+    );
+    this.responsivizePickerPosition();
     this.disableScroll();
 
     const { focusedInput } = this.props;
@@ -192,7 +191,7 @@ class DateRangePicker extends React.PureComponent {
     const { focusedInput } = this.props;
     if (!prevProps.focusedInput && focusedInput && this.isOpened()) {
       // The date picker just changed from being closed to being open.
-      // this.responsivizePickerPosition();
+      this.responsivizePickerPosition();
       this.disableScroll();
     } else if (prevProps.focusedInput && !focusedInput && !this.isOpened()) {
       // The date picker just changed from being open to being closed.
@@ -202,7 +201,7 @@ class DateRangePicker extends React.PureComponent {
 
   componentWillUnmount() {
     this.removeDayPickerEventListeners();
-    // if (this.removeEventListener) this.removeEventListener();
+    if (this.removeEventListener) this.removeEventListener();
     if (this.enableScroll) this.enableScroll();
   }
 
@@ -212,12 +211,11 @@ class DateRangePicker extends React.PureComponent {
       onClose,
       startDate,
       endDate,
-      // appendToBody,
+      appendToBody,
     } = this.props;
 
     if (!this.isOpened()) return;
-    // if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
-    if (this.dayPickerContainer && this.dayPickerContainer.contains(event.target)) return;
+    if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
 
     this.setState({
       isDateRangePickerInputFocused: false,
@@ -338,53 +336,53 @@ class DateRangePicker extends React.PureComponent {
     this.enableScroll = disableScroll(this.container);
   }
 
-  // responsivizePickerPosition() {
-  // It's possible the portal props have been changed in response to window resizes
-  // So let's ensure we reset this back to the base state each time
-  // const { dayPickerContainerStyles } = this.state;
+  responsivizePickerPosition() {
+    // It's possible the portal props have been changed in response to window resizes
+    // So let's ensure we reset this back to the base state each time
+    const { dayPickerContainerStyles } = this.state;
 
-  // if (Object.keys(dayPickerContainerStyles).length > 0) {
-  //   this.setState({ dayPickerContainerStyles: {} });
-  // }
+    if (Object.keys(dayPickerContainerStyles).length > 0) {
+      this.setState({ dayPickerContainerStyles: {} });
+    }
 
-  // if (!this.isOpened()) {
-  //   return;
-  // }
+    if (!this.isOpened()) {
+      return;
+    }
 
-  // const {
-  //   openDirection,
-  //   anchorDirection,
-  //   horizontalMargin,
-  //   withPortal,
-  //   withFullScreenPortal,
-  //   appendToBody,
-  // } = this.props;
+    const {
+      openDirection,
+      anchorDirection,
+      horizontalMargin,
+      withPortal,
+      withFullScreenPortal,
+      appendToBody,
+    } = this.props;
 
-  // const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
-  // if (!withPortal && !withFullScreenPortal) {
-  //   const containerRect = this.dayPickerContainer.getBoundingClientRect();
-  //   const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
-  //   const containerEdge = isAnchoredLeft
-  //     ? containerRect[ANCHOR_RIGHT]
-  //     : containerRect[ANCHOR_LEFT];
-  //
-  //   this.setState({
-  //     dayPickerContainerStyles: {
-  //       ...getResponsiveContainerStyles(
-  //         anchorDirection,
-  //         currentOffset,
-  //         containerEdge,
-  //         horizontalMargin,
-  //       ),
-  //       ...(appendToBody && getDetachedContainerStyles(
-  //         openDirection,
-  //         anchorDirection,
-  //         this.container,
-  //       )),
-  //     },
-  //   });
-  // }
-  // }
+    const isAnchoredLeft = anchorDirection === ANCHOR_LEFT;
+    if (!withPortal && !withFullScreenPortal) {
+      const containerRect = this.dayPickerContainer.getBoundingClientRect();
+      const currentOffset = dayPickerContainerStyles[anchorDirection] || 0;
+      const containerEdge = isAnchoredLeft
+        ? containerRect[ANCHOR_RIGHT]
+        : containerRect[ANCHOR_LEFT];
+
+      this.setState({
+        dayPickerContainerStyles: {
+          ...getResponsiveContainerStyles(
+            anchorDirection,
+            currentOffset,
+            containerEdge,
+            horizontalMargin,
+          ),
+          ...(appendToBody && getDetachedContainerStyles(
+            openDirection,
+            anchorDirection,
+            this.container,
+          )),
+        },
+      });
+    }
+  }
 
   showKeyboardShortcutsPanel() {
     this.setState({
@@ -409,11 +407,7 @@ class DateRangePicker extends React.PureComponent {
       );
     }
 
-    return this.container ? (
-      <Popper open={this.isOpened()} anchorEl={this.container}>
-        {this.renderDayPicker()}
-      </Popper>
-    ) : this.renderDayPicker();
+    return this.renderDayPicker();
   }
 
   renderDayPicker() {
@@ -729,6 +723,7 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
   DateRangePicker_picker: {
     zIndex: zIndex + 1,
     backgroundColor: color.background,
+    position: 'absolute',
   },
 
   DateRangePicker_picker__rtl: {
