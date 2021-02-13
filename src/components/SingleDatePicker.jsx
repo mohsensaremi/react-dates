@@ -76,7 +76,7 @@ const defaultProps = {
   horizontalMargin: 0,
   withPortal: false,
   withFullScreenPortal: false,
-  appendToBody: true,
+  appendToBody: false,
   disableScroll: false,
   initialVisibleMonth: null,
   defaultInitialVisibleMonth: null,
