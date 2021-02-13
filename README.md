@@ -4,7 +4,7 @@
 
 ## DateRangePicker
 
-[Live demo is available here](https://mohsensaremi.github.io/react-dates/?path=/story/daterangepicker-drp--non-english-locale-persian)
+[Live demo is available here](https://mohsensaremi.github.io/react-dates/master/?path=/story/daterangepicker-drp--non-english-locale-persian)
 
 ```
 <DateRangePickerWrapper
@@ -21,7 +21,7 @@
 
 ## SingleDatePicker
 
-[Live demo is available here](https://mohsensaremi.github.io/react-dates/?path=/story/singledatepicker-sdp--non-english-locale-persian)
+[Live demo is available here](https://mohsensaremi.github.io/react-dates/master/?path=/story/singledatepicker-sdp--non-english-locale-persian)
 
 ```
 <SingleDatePickerWrapper
@@ -52,7 +52,7 @@
 
 ## Live Playground
 
-For examples of the datepicker in action, go to https://mohsensaremi.github.io/react-dates.
+For examples of the datepicker in action, go to https://mohsensaremi.github.io/react-dates/master.
 
 OR
 
