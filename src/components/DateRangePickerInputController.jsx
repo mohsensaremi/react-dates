@@ -112,7 +112,7 @@ const defaultProps = {
   required: false,
   readOnly: false,
   openDirection: OPEN_DOWN,
-  noBorder: false,
+  noBorder: true,
   block: false,
   small: false,
   regular: false,

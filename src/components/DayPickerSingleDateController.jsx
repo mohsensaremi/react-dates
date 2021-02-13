@@ -138,7 +138,7 @@ const defaultProps = {
   firstDayOfWeek: null,
   daySize: DAY_SIZE,
   verticalHeight: null,
-  noBorder: false,
+  noBorder: true,
   verticalBorderSpacing: undefined,
   transitionDuration: undefined,
   horizontalMonthPadding: 13,

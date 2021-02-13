@@ -77,7 +77,7 @@ const defaultProps = {
   customCloseIcon: null,
   customInputIcon: null,
   isRTL: false,
-  noBorder: false,
+  noBorder: true,
   block: false,
   small: false,
   regular: false,

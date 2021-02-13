@@ -178,7 +178,7 @@ const defaultProps = {
   calendarInfoPosition: INFO_POSITION_BOTTOM,
   firstDayOfWeek: null,
   verticalHeight: null,
-  noBorder: false,
+  noBorder: true,
   transitionDuration: undefined,
   verticalBorderSpacing: undefined,
   horizontalMonthPadding: 13,

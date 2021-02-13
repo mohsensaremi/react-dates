@@ -62,7 +62,7 @@ const defaultProps = {
   inputIconPosition: ICON_BEFORE_POSITION,
   customInputIcon: null,
   customCloseIcon: null,
-  noBorder: false,
+  noBorder: true,
   block: false,
   small: false,
   regular: false,

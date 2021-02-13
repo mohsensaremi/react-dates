@@ -148,7 +148,7 @@ export const defaultProps = {
   daySize: DAY_SIZE,
   isRTL: false,
   verticalHeight: null,
-  noBorder: false,
+  noBorder: true,
   transitionDuration: undefined,
   verticalBorderSpacing: undefined,
   horizontalMonthPadding: 13,

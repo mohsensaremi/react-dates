@@ -69,7 +69,7 @@ const defaultProps = {
   customInputIcon: null,
   customArrowIcon: null,
   customCloseIcon: null,
-  noBorder: false,
+  noBorder: true,
   block: false,
   small: false,
   regular: false,
