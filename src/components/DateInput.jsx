@@ -56,8 +56,6 @@ const propTypes = forbidExtraProps({
   // accessibility
   isFocused: PropTypes.bool, // describes actual DOM focus
 
-  isRTL: PropTypes.bool,
-
   isStartDate: PropTypes.bool,
   isEndDate: PropTypes.bool,
   startAdornment: PropTypes.node,
@@ -97,8 +95,6 @@ const defaultProps = {
 
   // accessibility
   isFocused: false,
-
-  isRTL: false,
 
   isStartDate: false,
   isEndDate: false,
@@ -216,7 +212,6 @@ class DateInput extends React.PureComponent {
       block,
       classes: styles,
       theme: { reactDates },
-      isRTL,
       isStartDate,
       isEndDate,
       startAdornment,
@@ -256,15 +251,9 @@ class DateInput extends React.PureComponent {
               [styles.DateInput_input__readOnly]: readOnly,
               [styles.DateInput_input__focused]: focused,
               [styles.DateInput_input__disabled]: disabled,
+              [styles.DateInput_input__isStartDate]: isStartDate,
+              [styles.DateInput_input__isEndDate]: isEndDate,
             }),
-            classes: {
-              notchedOutline: clsx({
-                [styles.DateInput_notchedOutline__isStartDateRTL]: isStartDate && isRTL,
-                [styles.DateInput_notchedOutline__isStartDate]: isStartDate && !isRTL,
-                [styles.DateInput_notchedOutline__isEndDateRTL]: isEndDate && isRTL,
-                [styles.DateInput_notchedOutline__isEndDate]: isEndDate && !isRTL,
-              }),
-            },
             ref: this.setInputRef,
             name: id,
             onKeyDown: this.onKeyDown,
@@ -398,28 +387,20 @@ export default withStyles(({
     fontStyle: font.input.styleDisabled,
   },
 
-  DateInput_notchedOutline__isStartDate: {
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    borderRight: 'none',
+  DateInput_input__isStartDate: {
+    '& > fieldset': {
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+      borderRight: 'none',
+    },
   },
 
-  DateInput_notchedOutline__isStartDateRTL: {
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-    borderLeft: 'none',
-  },
-
-  DateInput_notchedOutline__isEndDate: {
-    borderTopLeftRadius: 0,
-    borderBottomLeftRadius: 0,
-    borderLeft: 'none',
-  },
-
-  DateInput_notchedOutline__isEndDateRTL: {
-    borderTopRightRadius: 0,
-    borderBottomRightRadius: 0,
-    borderRight: 'none',
+  DateInput_input__isEndDate: {
+    '& > fieldset': {
+      borderTopLeftRadius: 0,
+      borderBottomLeftRadius: 0,
+      borderLeft: 'none',
+    },
   },
 
   DateInput_screenReaderMessage: {

@@ -129,7 +129,7 @@ const defaultProps = {
   customInputIcon: null,
   customArrowIcon: null,
   customCloseIcon: null,
-  noBorder: false,
+  noBorder: true,
   block: false,
   small: false,
   regular: false,
@@ -259,7 +259,6 @@ function DateRangePickerInput({
         small={small}
         regular={regular}
         isStartDate
-        isRTL={isRTL}
         startAdornment={inputIconPosition === ICON_BEFORE_POSITION && inputIcon}
         endAdornment={(
           <div
@@ -296,7 +295,6 @@ function DateRangePickerInput({
         verticalSpacing={verticalSpacing}
         small={small}
         regular={regular}
-        isRTL={isRTL}
         isEndDate
         endAdornment={showClearDates && (
           <>
@@ -357,7 +355,6 @@ export default withStyles(({ reactDates: { border, color, sizing } }) => ({
     display: 'inline-block',
     verticalAlign: 'middle',
     color: color.text,
-    marginLeft: -24,
   },
 
   DateRangePickerInput_arrow_svg: {

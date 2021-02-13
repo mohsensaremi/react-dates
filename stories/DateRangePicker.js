@@ -11,6 +11,7 @@ import {
 } from '../src/constants';
 
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
+import MuiThemeRTL from '../examples/MuiThemeRTL';
 
 const TestInput = (props) => (
   <div style={{ marginTop: 16 }}>
@@ -90,16 +91,20 @@ storiesOf('DateRangePicker (DRP)', module)
     moment.locale('fa');
     momentJalaali.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
     return (
-      <DateRangePickerWrapper
-        isRTL
-        stateDateWrapper={momentJalaali}
-        startDatePlaceholderText="تاریخ شروع"
-        endDatePlaceholderText="تاریخ پایان"
-        defaultInitialVisibleMonth={momentJalaali()}
-        renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
-        renderDayContents={(day) => momentJalaali(day).format('jD')}
-        calendarSystem="jalali"
-      />
+      <div dir="rtl">
+        <MuiThemeRTL>
+          <DateRangePickerWrapper
+            isRTL
+            stateDateWrapper={momentJalaali}
+            startDatePlaceholderText="تاریخ شروع"
+            endDatePlaceholderText="تاریخ پایان"
+            defaultInitialVisibleMonth={momentJalaali()}
+            renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
+            renderDayContents={(day) => momentJalaali(day).format('jD')}
+            calendarSystem="jalali"
+          />
+        </MuiThemeRTL>
+      </div>
     );
   }))
   .add('with DirectionProvider', withInfo()(() => (

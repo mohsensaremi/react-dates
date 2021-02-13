@@ -14,6 +14,7 @@ import {
 
 import SingleDatePickerWrapper from '../examples/SingleDatePickerWrapper';
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
+import MuiThemeRTL from '../examples/MuiThemeRTL';
 
 const TestInput = (props) => (
   <div style={{ marginTop: 16 }}>
@@ -60,14 +61,18 @@ storiesOf('SingleDatePicker (SDP)', module)
     moment.locale('fa');
     momentJalaali.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
     return (
-      <SingleDatePickerWrapper
-        placeholder="تقویم فارسی"
-        defaultInitialVisibleMonth={momentJalaali()}
-        renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
-        renderDayContents={(day) => momentJalaali(day).format('jD')}
-        calendarSystem="jalali"
-        isRTL
-      />
+      <div dir="rtl">
+        <MuiThemeRTL>
+          <SingleDatePickerWrapper
+            placeholder="تقویم فارسی"
+            defaultInitialVisibleMonth={momentJalaali()}
+            renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
+            renderDayContents={(day) => momentJalaali(day).format('jD')}
+            calendarSystem="jalali"
+            isRTL
+          />
+        </MuiThemeRTL>
+      </div>
     );
   }))
   .add('with DirectionProvider', withInfo()(() => (
