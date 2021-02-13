@@ -1019,7 +1019,10 @@ class DayPicker extends React.PureComponent {
           [styles.DayPicker_weekHeader__vertical]: this.isVertical(),
           [styles.DayPicker_weekHeader__verticalScrollable]: verticalScrollable,
         })}
-        style={{ padding: `0 ${horizontalMonthPadding}px` }}
+        style={{
+          ...weekHeaderStyle,
+          ...{ padding: `0 ${horizontalMonthPadding}px` },
+        }}
         key={`week-${index}`}
       >
         <ul className={styles.DayPicker_weekHeader_ul}>
@@ -1122,7 +1125,7 @@ class DayPicker extends React.PureComponent {
       <div
         ref={this.setCalendarInfoRef}
         className={clsx({
-          [styles.DayPicker_calendarInfo__horizontal]: calendarInfoIsInline
+          [styles.DayPicker_calendarInfo__horizontal]: calendarInfoIsInline,
         })}
       >
         {renderCalendarInfo()}

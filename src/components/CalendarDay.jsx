@@ -113,7 +113,7 @@ class CalendarDay extends React.PureComponent {
       classes: styles,
     } = this.props;
 
-    if (!day) return <td/>;
+    if (!day) return <td />;
 
     const {
       daySizeStyles,

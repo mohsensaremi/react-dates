@@ -8,7 +8,6 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { darken } from 'color2k';
 import withStyles from '@material-ui/core/styles/withStyles';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
 
 import DateRangePickerShape from '../shapes/DateRangePickerShape';
 import { DateRangePickerPhrases } from '../defaultPhrases';
@@ -42,8 +41,6 @@ import {
 } from '../constants';
 
 const propTypes = forbidExtraProps({
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
   ...DateRangePickerShape,
 });
 

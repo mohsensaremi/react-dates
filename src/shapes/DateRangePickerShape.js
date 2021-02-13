@@ -17,6 +17,8 @@ import NavPositionShape from './NavPositionShape';
 import { CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI } from '../constants';
 
 export default {
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   // required props for a functional interactive DateRangePicker
   startDate: momentPropTypes.momentObj,
   endDate: momentPropTypes.momentObj,

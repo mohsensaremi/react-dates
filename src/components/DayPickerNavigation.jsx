@@ -152,7 +152,9 @@ class DayPickerNavigation extends React.PureComponent {
           [styles.DayPickerNavigation__vertical]: isVertical,
           [styles.DayPickerNavigation__verticalDefault]: isVertical && isDefaultNav,
           [styles.DayPickerNavigation__verticalScrollable]: isVerticalScrollable,
+          // eslint-disable-next-line max-len
           [styles.DayPickerNavigation__verticalScrollableDefault]: isVerticalScrollable && isDefaultNav,
+          // eslint-disable-next-line max-len
           [styles.DayPickerNavigation__verticalScrollable_prevNav]: isVerticalScrollable && showNavPrevButton,
           [styles.DayPickerNavigation__bottom]: isBottomNavPosition,
           [styles.DayPickerNavigation__bottomDefault]: isBottomNavPosition && isDefaultNav,

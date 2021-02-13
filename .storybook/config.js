@@ -1,24 +1,17 @@
 import React from 'react';
-import {createMuiTheme} from "@material-ui/core/styles";
-import defaultTheme from '../src/theme/DefaultTheme';
+import MuiTheme from '../examples/MuiTheme';
+import moment from 'moment';
 
-const theme = createMuiTheme({
-  reactDates: defaultTheme.reactDates,
-});
+import { addDecorator, configure, setAddon } from '@storybook/react';
+import infoAddon from '@storybook/addon-info';
+import { setOptions } from '@storybook/addon-options';
+
+import '../css/storybook.scss';
 
 if (process.env.NODE_ENV !== 'production') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
   whyDidYouRender(React);
 }
-
-import moment from 'moment';
-
-import { configure, addDecorator, setAddon } from '@storybook/react';
-import infoAddon from '@storybook/addon-info';
-import { setOptions } from '@storybook/addon-options';
-
-import '../css/storybook.scss';
-import { ThemeProvider } from '@material-ui/core/styles';
 
 addDecorator((story) => {
   moment.locale('en');
@@ -37,7 +30,7 @@ const helperText = `All examples are built using a wrapper component that is not
   the ${wrapperSource} to see how to integrate react-dates into your own app.`;
 
 addDecorator(story => (
-  <ThemeProvider theme={theme}>
+  <MuiTheme>
     <div>
       <div
         style={{
@@ -57,7 +50,7 @@ addDecorator(story => (
         {story()}
       </div>
     </div>
-  </ThemeProvider>
+  </MuiTheme>
 ));
 
 setOptions({

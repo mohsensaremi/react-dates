@@ -36,10 +36,8 @@ import {
   OPEN_UP,
   VERTICAL_ORIENTATION,
 } from '../constants';
-import PropTypes from 'prop-types';
 
 const propTypes = forbidExtraProps({
-  classes: PropTypes.object.isRequired,
   ...SingleDatePickerShape,
 });
 
@@ -458,7 +456,7 @@ class SingleDatePicker extends React.PureComponent {
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
     const onOutsideClick = (!withFullScreenPortal && withPortal) ? this.onOutsideClick : undefined;
-    const closeIcon = customCloseIcon || (<CloseButton/>);
+    const closeIcon = customCloseIcon || (<CloseButton />);
 
     const inputHeight = getInputHeight(reactDates, small);
 
@@ -738,4 +736,7 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
     width: 15,
     fill: color.core.grayLighter,
   },
-}), { pureComponent: typeof React.PureComponent !== 'undefined' })(SingleDatePicker);
+}), {
+  pureComponent: typeof React.PureComponent !== 'undefined',
+  withTheme: true,
+})(SingleDatePicker);

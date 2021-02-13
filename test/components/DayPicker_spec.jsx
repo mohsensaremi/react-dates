@@ -13,9 +13,9 @@ import DayPickerNavigation from '../../src/components/DayPickerNavigation';
 import DayPickerKeyboardShortcuts from '../../src/components/DayPickerKeyboardShortcuts';
 import {
   HORIZONTAL_ORIENTATION,
+  NAV_POSITION_BOTTOM,
   VERTICAL_ORIENTATION,
   VERTICAL_SCROLLABLE,
-  NAV_POSITION_BOTTOM,
 } from '../../src/constants';
 
 const today = moment().locale('en');
@@ -110,10 +110,11 @@ describe('DayPicker', () => {
     describe('DayPickerNavigation', () => {
       it('is rendered before CalendarMonthGrid in DayPicker_focusRegion', () => {
         const wrapper = shallow(<DayPicker />).dive();
+        const className = wrapper.instance().props.classes.DayPicker_focusRegion;
         expect(wrapper.find(DayPickerNavigation)).to.have.lengthOf(1);
         expect(
           wrapper
-            .find('[className^="DayPicker_focusRegion"]')
+            .find(`[className^="${className}"]`)
             .childAt(0)
             .type(),
         ).to.equal(DayPickerNavigation);
@@ -122,10 +123,11 @@ describe('DayPicker', () => {
       describe('navPosition === NAV_POSITION_BOTTOM', () => {
         it('is rendered after CalendarMonthGrid in DayPicker_focusRegion', () => {
           const wrapper = shallow(<DayPicker navPosition={NAV_POSITION_BOTTOM} />).dive();
+          const className = wrapper.instance().props.classes.DayPicker_focusRegion;
           expect(wrapper.find(DayPickerNavigation)).to.have.lengthOf(1);
           expect(
             wrapper
-              .find('[className^="DayPicker_focusRegion"]')
+              .find(`[className^="${className}"]`)
               .childAt(1)
               .type(),
           ).to.equal(DayPickerNavigation);
