@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 import { DayPickerKeyboardShortcutsPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -14,7 +15,7 @@ export const TOP_RIGHT = 'top-right';
 export const BOTTOM_RIGHT = 'bottom-right';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   block: PropTypes.bool,
   // TODO: rename button location to be direction-agnostic
   buttonLocation: PropTypes.oneOf([TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT]),
@@ -30,8 +31,10 @@ const defaultProps = {
   block: false,
   buttonLocation: BOTTOM_RIGHT,
   showKeyboardShortcutsPanel: false,
-  openKeyboardShortcutsPanel() {},
-  closeKeyboardShortcutsPanel() {},
+  openKeyboardShortcutsPanel() {
+  },
+  closeKeyboardShortcutsPanel() {
+  },
   phrases: DayPickerKeyboardShortcutsPhrases,
   renderKeyboardShortcutsButton: undefined,
   renderKeyboardShortcutsPanel: undefined,
@@ -149,7 +152,9 @@ class DayPickerKeyboardShortcuts extends React.PureComponent {
     const { openKeyboardShortcutsPanel } = this.props;
 
     // we want to return focus to this button after closing the keyboard shortcuts panel
-    openKeyboardShortcutsPanel(() => { this.showKeyboardShortcutsButton.focus(); });
+    openKeyboardShortcutsPanel(() => {
+      this.showKeyboardShortcutsButton.focus();
+    });
   }
 
   setShowKeyboardShortcutsButtonRef(ref) {
@@ -166,7 +171,7 @@ class DayPickerKeyboardShortcuts extends React.PureComponent {
       buttonLocation,
       showKeyboardShortcutsPanel,
       closeKeyboardShortcutsPanel,
-      styles,
+      classes: styles,
       phrases,
       renderKeyboardShortcutsButton,
       renderKeyboardShortcutsPanel,
@@ -183,21 +188,22 @@ class DayPickerKeyboardShortcuts extends React.PureComponent {
     return (
       <div>
         {renderKeyboardShortcutsButton
-          && renderKeyboardShortcutsButton({
-            // passing in context-specific props
-            ref: this.setShowKeyboardShortcutsButtonRef,
-            onClick: this.onShowKeyboardShortcutsButtonClick,
-            ariaLabel: toggleButtonText,
-          })}
+        && renderKeyboardShortcutsButton({
+          // passing in context-specific props
+          ref: this.setShowKeyboardShortcutsButtonRef,
+          onClick: this.onShowKeyboardShortcutsButtonClick,
+          ariaLabel: toggleButtonText,
+        })}
         {!renderKeyboardShortcutsButton && (
           <button
             ref={this.setShowKeyboardShortcutsButtonRef}
-            {...css(
+            className={clsx(
               styles.DayPickerKeyboardShortcuts_buttonReset,
-              styles.DayPickerKeyboardShortcuts_show,
-              bottomRight && styles.DayPickerKeyboardShortcuts_show__bottomRight,
-              topRight && styles.DayPickerKeyboardShortcuts_show__topRight,
-              topLeft && styles.DayPickerKeyboardShortcuts_show__topLeft,
+              styles.DayPickerKeyboardShortcuts_show, {
+                [styles.DayPickerKeyboardShortcuts_show__bottomRight]: bottomRight,
+                [styles.DayPickerKeyboardShortcuts_show__topRight]: topRight,
+                [styles.DayPickerKeyboardShortcuts_show__topLeft]: topLeft,
+              },
             )}
             type="button"
             aria-label={toggleButtonText}
@@ -207,12 +213,11 @@ class DayPickerKeyboardShortcuts extends React.PureComponent {
             }}
           >
             <span
-              {...css(
-                styles.DayPickerKeyboardShortcuts_showSpan,
-                bottomRight && styles.DayPickerKeyboardShortcuts_showSpan__bottomRight,
-                topRight && styles.DayPickerKeyboardShortcuts_showSpan__topRight,
-                topLeft && styles.DayPickerKeyboardShortcuts_showSpan__topLeft,
-              )}
+              className={clsx(styles.DayPickerKeyboardShortcuts_showSpan, {
+                [styles.DayPickerKeyboardShortcuts_showSpan__bottomRight]: bottomRight,
+                [styles.DayPickerKeyboardShortcuts_showSpan__topRight]: topRight,
+                [styles.DayPickerKeyboardShortcuts_showSpan__topLeft]: topLeft,
+              })}
             >
               ?
             </span>
@@ -229,13 +234,13 @@ class DayPickerKeyboardShortcuts extends React.PureComponent {
             })
           ) : (
             <div
-              {...css(styles.DayPickerKeyboardShortcuts_panel)}
+              className={styles.DayPickerKeyboardShortcuts_panel}
               role="dialog"
               aria-labelledby="DayPickerKeyboardShortcuts_title"
               aria-describedby="DayPickerKeyboardShortcuts_description"
             >
               <div
-                {...css(styles.DayPickerKeyboardShortcuts_title)}
+                className={styles.DayPickerKeyboardShortcuts_title}
                 id="DayPickerKeyboardShortcuts_title"
               >
                 {phrases.keyboardShortcuts}
@@ -243,7 +248,7 @@ class DayPickerKeyboardShortcuts extends React.PureComponent {
 
               <button
                 ref={this.setHideKeyboardShortcutsButtonRef}
-                {...css(
+                className={clsx(
                   styles.DayPickerKeyboardShortcuts_buttonReset,
                   styles.DayPickerKeyboardShortcuts_close,
                 )}
@@ -253,11 +258,11 @@ class DayPickerKeyboardShortcuts extends React.PureComponent {
                 onClick={closeKeyboardShortcutsPanel}
                 onKeyDown={this.onKeyDown}
               >
-                <CloseButton {...css(styles.DayPickerKeyboardShortcuts_closeSvg)} />
+                <CloseButton className={styles.DayPickerKeyboardShortcuts_closeSvg} />
               </button>
 
               <ul
-                {...css(styles.DayPickerKeyboardShortcuts_list)}
+                className={styles.DayPickerKeyboardShortcuts_list}
                 id="DayPickerKeyboardShortcuts_description"
               >
                 {this.keyboardShortcuts.map(({ unicode, label, action }) => (

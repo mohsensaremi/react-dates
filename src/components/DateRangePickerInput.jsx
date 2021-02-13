@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 import { DateRangePickerInputPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -26,7 +27,7 @@ import {
 } from '../constants';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
 
   children: PropTypes.node,
 
@@ -186,22 +187,22 @@ function DateRangePickerInput({
   verticalSpacing,
   small,
   regular,
-  styles,
+  classes: styles,
 }) {
   const calendarIcon = customInputIcon || (
-    <CalendarIcon {...css(styles.DateRangePickerInput_calendarIcon_svg)} />
+    <CalendarIcon className={styles.DateRangePickerInput_calendarIcon_svg} />
   );
 
-  let arrowIcon = customArrowIcon || <RightArrow {...css(styles.DateRangePickerInput_arrow_svg)} />;
-  if (isRTL) arrowIcon = <LeftArrow {...css(styles.DateRangePickerInput_arrow_svg)} />;
+  // eslint-disable-next-line max-len
+  let arrowIcon = customArrowIcon || <RightArrow className={styles.DateRangePickerInput_arrow_svg} />;
+  if (isRTL) arrowIcon = <LeftArrow className={styles.DateRangePickerInput_arrow_svg} />;
   if (small) arrowIcon = '-';
 
   const closeIcon = customCloseIcon || (
     <CloseButton
-      {...css(
-        styles.DateRangePickerInput_clearDates_svg,
-        small && styles.DateRangePickerInput_clearDates_svg__small,
-      )}
+      className={clsx(styles.DateRangePickerInput_clearDates_svg, {
+        [styles.DateRangePickerInput_clearDates_svg__small]: small,
+      })}
     />
   );
 
@@ -212,7 +213,7 @@ function DateRangePickerInput({
 
   const inputIcon = (showDefaultInputIcon || customInputIcon !== null) && (
     <button
-      {...css(styles.DateRangePickerInput_calendarIcon)}
+      className={styles.DateRangePickerInput_calendarIcon}
       type="button"
       disabled={disabled}
       aria-label={phrases.focusStartDate}
@@ -227,14 +228,13 @@ function DateRangePickerInput({
 
   return (
     <div
-      {...css(
-        styles.DateRangePickerInput,
-        disabled && styles.DateRangePickerInput__disabled,
-        isRTL && styles.DateRangePickerInput__rtl,
-        !noBorder && styles.DateRangePickerInput__withBorder,
-        block && styles.DateRangePickerInput__block,
-        showClearDates && styles.DateRangePickerInput__showClearDates,
-      )}
+      className={clsx(styles.DateRangePickerInput, {
+        [styles.DateRangePickerInput__disabled]: disabled,
+        [styles.DateRangePickerInput__rtl]: isRTL,
+        [styles.DateRangePickerInput__withBorder]: !noBorder,
+        [styles.DateRangePickerInput__block]: block,
+        [styles.DateRangePickerInput__showClearDates]: showClearDates,
+      })}
     >
       <DateInput
         id={startDateId}
@@ -263,7 +263,7 @@ function DateRangePickerInput({
         startAdornment={inputIconPosition === ICON_BEFORE_POSITION && inputIcon}
         endAdornment={(
           <div
-            {...css(styles.DateRangePickerInput_arrow)}
+            className={styles.DateRangePickerInput_arrow}
             aria-hidden="true"
             role="presentation"
           >
@@ -303,12 +303,11 @@ function DateRangePickerInput({
             <button
               type="button"
               aria-label={phrases.clearDates}
-              {...css(
-                styles.DateRangePickerInput_clearDates,
-                small && styles.DateRangePickerInput_clearDates__small,
-                !customCloseIcon && styles.DateRangePickerInput_clearDates_default,
-                !(startDate || endDate) && styles.DateRangePickerInput_clearDates__hide,
-              )}
+              className={clsx(styles.DateRangePickerInput_clearDates, {
+                [styles.DateRangePickerInput_clearDates__small]: small,
+                [styles.DateRangePickerInput_clearDates_default]: !customCloseIcon,
+                [styles.DateRangePickerInput_clearDates__hide]: !(startDate || endDate),
+              })}
               onClick={onClearDates}
               disabled={disabled}
             >

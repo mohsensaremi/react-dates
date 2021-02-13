@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import throttle from 'lodash/throttle';
 import TextField from '@material-ui/core/TextField';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 import isTouchDevice from 'is-touch-device';
 import noflip from '../utils/noflip';
@@ -25,7 +26,8 @@ const FANG_PATH_BOTTOM = `M0,0 ${FANG_WIDTH_PX},0 ${FANG_WIDTH_PX / 2},${FANG_HE
 const FANG_STROKE_BOTTOM = `M0,0 ${FANG_WIDTH_PX / 2},${FANG_HEIGHT_PX} ${FANG_WIDTH_PX},0`;
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
   displayValue: PropTypes.string,
@@ -212,7 +214,7 @@ class DateInput extends React.PureComponent {
       small,
       regular,
       block,
-      styles,
+      classes: styles,
       theme: { reactDates },
       isRTL,
       isStartDate,
@@ -230,47 +232,38 @@ class DateInput extends React.PureComponent {
 
     return (
       <div
-        {...css(
-          styles.DateInput,
-          small && styles.DateInput__small,
-          block && styles.DateInput__block,
-          withFang && styles.DateInput__withFang,
-          disabled && styles.DateInput__disabled,
-          withFang && openDirection === OPEN_DOWN && styles.DateInput__openDown,
-          withFang && openDirection === OPEN_UP && styles.DateInput__openUp,
-        )}
+        className={clsx(styles.DateInput, {
+          [styles.DateInput__small]: small,
+          [styles.DateInput__block]: block,
+          [styles.DateInput__withFang]: withFang,
+          [styles.DateInput__disabled]: disabled,
+          [styles.DateInput__openDown]: withFang && openDirection === OPEN_DOWN,
+          [styles.DateInput__openUp]: withFang && openDirection === OPEN_UP,
+        })}
       >
         <TextField
-          {...css(
-            styles.DateInput_textField,
-            small && styles.DateInput_textField__small,
-            regular && styles.DateInput_textField__regular,
-            readOnly && styles.DateInput_textField__readOnly,
-            focused && styles.DateInput_textField__focused,
-            disabled && styles.DateInput_textField__disabled,
-          )}
+          className={clsx(styles.DateInput_textField, {
+            [styles.DateInput_textField__small]: small,
+            [styles.DateInput_textField__regular]: regular,
+            [styles.DateInput_textField__readOnly]: readOnly,
+            [styles.DateInput_textField__focused]: focused,
+            [styles.DateInput_textField__disabled]: disabled,
+          })}
           InputProps={{
-            // eslint-disable-next-line react-with-styles/only-spread-css
-            ...css(
-              styles.DateInput_input,
-              small && styles.DateInput_input__small,
-              regular && styles.DateInput_input__regular,
-              readOnly && styles.DateInput_input__readOnly,
-              focused && styles.DateInput_input__focused,
-              disabled && styles.DateInput_input__disabled,
-            ),
+            className: clsx(styles.DateInput_input, {
+              [styles.DateInput_input__small]: small,
+              [styles.DateInput_input__regular]: regular,
+              [styles.DateInput_input__readOnly]: readOnly,
+              [styles.DateInput_input__focused]: focused,
+              [styles.DateInput_input__disabled]: disabled,
+            }),
             classes: {
-              // eslint-disable-next-line react-with-styles/only-spread-css
-              notchedOutline: css(
-                isStartDate && (isRTL
-                  ? styles.DateInput_notchedOutline__isStartDateRTL
-                  : styles.DateInput_notchedOutline__isStartDate
-                ),
-                isEndDate && (isRTL
-                  ? styles.DateInput_notchedOutline__isEndDateRTL
-                  : styles.DateInput_notchedOutline__isEndDate
-                ),
-              ).className,
+              notchedOutline: clsx({
+                [styles.DateInput_notchedOutline__isStartDateRTL]: isStartDate && isRTL,
+                [styles.DateInput_notchedOutline__isStartDate]: isStartDate && !isRTL,
+                [styles.DateInput_notchedOutline__isEndDateRTL]: isEndDate && isRTL,
+                [styles.DateInput_notchedOutline__isEndDate]: isEndDate && !isRTL,
+              }),
             },
             ref: this.setInputRef,
             name: id,
@@ -301,29 +294,29 @@ class DateInput extends React.PureComponent {
           <svg
             role="presentation"
             focusable="false"
-            {...css(
-              styles.DateInput_fang,
-              openDirection === OPEN_DOWN && {
+            className={styles.DateInput_fang}
+            style={{
+              ...(openDirection === OPEN_DOWN && {
                 top: inputHeight + verticalSpacing - FANG_HEIGHT_PX - 1,
-              },
-              openDirection === OPEN_UP && {
+              }),
+              ...(openDirection === OPEN_UP && {
                 bottom: inputHeight + verticalSpacing - FANG_HEIGHT_PX - 1,
-              },
-            )}
+              }),
+            }}
           >
             <path
-              {...css(styles.DateInput_fangShape)}
+              className={styles.DateInput_fangShape}
               d={openDirection === OPEN_DOWN ? FANG_PATH_TOP : FANG_PATH_BOTTOM}
             />
             <path
-              {...css(styles.DateInput_fangStroke)}
+              className={styles.DateInput_fangStroke}
               d={openDirection === OPEN_DOWN ? FANG_STROKE_TOP : FANG_STROKE_BOTTOM}
             />
           </svg>
         )}
 
         {screenReaderMessage && (
-          <p {...css(styles.DateInput_screenReaderMessage)} id={screenReaderMessageId}>
+          <p className={styles.DateInput_screenReaderMessage} id={screenReaderMessageId}>
             {screenReaderMessage}
           </p>
         )}
@@ -456,4 +449,7 @@ export default withStyles(({
     stroke: color.core.border,
     fill: 'transparent',
   },
-}), { pureComponent: typeof React.PureComponent !== 'undefined' })(DateInput);
+}), {
+  pureComponent: typeof React.PureComponent !== 'undefined',
+  withTheme: true,
+})(DateInput);

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   unicode: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   action: PropTypes.string.isRequired,
@@ -20,23 +21,21 @@ function KeyboardShortcutRow({
   label,
   action,
   block,
-  styles,
+  classes: styles,
 }) {
   return (
     <li
-      {...css(
-        styles.KeyboardShortcutRow,
-        block && styles.KeyboardShortcutRow__block,
-      )}
+      className={clsx(styles.KeyboardShortcutRow, {
+        [styles.KeyboardShortcutRow__block]: block,
+      })}
     >
       <div
-        {...css(
-          styles.KeyboardShortcutRow_keyContainer,
-          block && styles.KeyboardShortcutRow_keyContainer__block,
-        )}
+        className={clsx(styles.KeyboardShortcutRow_keyContainer, {
+          [styles.KeyboardShortcutRow_keyContainer__block]: block,
+        })}
       >
         <span
-          {...css(styles.KeyboardShortcutRow_key)}
+          className={styles.KeyboardShortcutRow_key}
           role="img"
           aria-label={`${label},`} // add comma so screen readers will pause before reading action
         >
@@ -44,7 +43,7 @@ function KeyboardShortcutRow({
         </span>
       </div>
 
-      <div {...css(styles.KeyboardShortcutRow_action)}>
+      <div className={styles.KeyboardShortcutRow_action}>
         {action}
       </div>
     </li>

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { forbidExtraProps, nonNegativeInteger } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 import { SingleDatePickerInputPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -17,7 +18,7 @@ import openDirectionShape from '../shapes/OpenDirectionShape';
 import { ICON_BEFORE_POSITION, ICON_AFTER_POSITION, OPEN_DOWN } from '../constants';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   children: PropTypes.node,
   placeholder: PropTypes.string,
@@ -82,13 +83,20 @@ const defaultProps = {
   regular: false,
   verticalSpacing: undefined,
 
-  onChange() {},
-  onClearDate() {},
-  onFocus() {},
-  onKeyDownShiftTab() {},
-  onKeyDownTab() {},
-  onKeyDownArrowDown() {},
-  onKeyDownQuestionMark() {},
+  onChange() {
+  },
+  onClearDate() {
+  },
+  onFocus() {
+  },
+  onKeyDownShiftTab() {
+  },
+  onKeyDownTab() {
+  },
+  onKeyDownArrowDown() {
+  },
+  onKeyDownQuestionMark() {
+  },
 
   // i18n
   phrases: SingleDatePickerInputPhrases,
@@ -128,24 +136,23 @@ function SingleDatePickerInput({
   small,
   regular,
   verticalSpacing,
-  styles,
+  classes: styles,
 }) {
   const calendarIcon = customInputIcon || (
-    <CalendarIcon {...css(styles.SingleDatePickerInput_calendarIcon_svg)} />
+    <CalendarIcon className={styles.SingleDatePickerInput_calendarIcon_svg} />
   );
   const closeIcon = customCloseIcon || (
     <CloseButton
-      {...css(
-        styles.SingleDatePickerInput_clearDate_svg,
-        small && styles.SingleDatePickerInput_clearDate_svg__small,
-      )}
+      className={clsx(styles.SingleDatePickerInput_clearDate_svg, {
+        [styles.SingleDatePickerInput_clearDate_svg__small]: small,
+      })}
     />
   );
 
   const screenReaderText = screenReaderMessage || phrases.keyboardForwardNavigationInstructions;
   const inputIcon = (showDefaultInputIcon || customInputIcon !== null) && (
     <button
-      {...css(styles.SingleDatePickerInput_calendarIcon)}
+      className={styles.SingleDatePickerInput_calendarIcon}
       type="button"
       disabled={disabled}
       aria-label={phrases.focusStartDate}
@@ -157,14 +164,13 @@ function SingleDatePickerInput({
 
   return (
     <div
-      {...css(
-        styles.SingleDatePickerInput,
-        disabled && styles.SingleDatePickerInput__disabled,
-        isRTL && styles.SingleDatePickerInput__rtl,
-        !noBorder && styles.SingleDatePickerInput__withBorder,
-        block && styles.SingleDatePickerInput__block,
-        showClearDate && styles.SingleDatePickerInput__showClearDate,
-      )}
+      className={clsx(styles.SingleDatePickerInput, {
+        [styles.SingleDatePickerInput__disabled]: disabled,
+        [styles.SingleDatePickerInput__rtl]: isRTL,
+        [styles.SingleDatePickerInput__withBorder]: !noBorder,
+        [styles.SingleDatePickerInput__block]: block,
+        [styles.SingleDatePickerInput__showClearDate]: showClearDate,
+      })}
     >
       {inputIconPosition === ICON_BEFORE_POSITION && inputIcon}
 
@@ -198,12 +204,11 @@ function SingleDatePickerInput({
 
       {showClearDate && (
         <button
-          {...css(
-            styles.SingleDatePickerInput_clearDate,
-            small && styles.SingleDatePickerInput_clearDate__small,
-            !customCloseIcon && styles.SingleDatePickerInput_clearDate__default,
-            !displayValue && styles.SingleDatePickerInput_clearDate__hide,
-          )}
+          className={clsx(styles.SingleDatePickerInput_clearDate, {
+            [styles.SingleDatePickerInput_clearDate__small]: small,
+            [styles.SingleDatePickerInput_clearDate__default]: !customCloseIcon,
+            [styles.SingleDatePickerInput_clearDate__hide]: !displayValue,
+          })}
           type="button"
           aria-label={phrases.clearDate}
           disabled={disabled}

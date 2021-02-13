@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, nonNegativeInteger, or } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import moment from 'moment';
 import raf from 'raf';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 import { CalendarDayPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -39,7 +40,7 @@ const DayStyleShape = PropTypes.shape({
 });
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   day: momentPropTypes.momentObj,
   daySize: nonNegativeInteger,
   isOutsideDay: PropTypes.bool,
@@ -279,7 +280,7 @@ class CustomizableCalendarDay extends React.PureComponent {
       modifiers,
       tabIndex,
       renderDayContents,
-      styles,
+      classes: styles,
       phrases,
 
       defaultStyles: defaultStylesWithHover,
@@ -317,29 +318,30 @@ class CustomizableCalendarDay extends React.PureComponent {
 
     return (
       <td
-        {...css(
-          styles.CalendarDay,
-          useDefaultCursor && styles.CalendarDay__defaultCursor,
-          daySizeStyles,
-          getStyles(defaultStylesWithHover, isHovered),
-          isOutsideDay && getStyles(outsideStylesWithHover, isHovered),
-          modifiers.has('today') && getStyles(todayStylesWithHover, isHovered),
-          modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered),
-          modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered),
-          modifiers.has('hovered-start-first-possible-end') && getStyles(hoveredStartFirstPossibleEndStylesWithHover, isHovered),
-          modifiers.has('hovered-start-blocked-minimum-nights') && getStyles(hoveredStartBlockedMinNightsStylesWithHover, isHovered),
-          modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered),
-          modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered),
-          modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered),
-          hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered),
-          modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered),
-          modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered),
-          modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered),
-          selected && getStyles(selectedStylesWithHover, isHovered),
-          modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered),
-          modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered),
-          isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered),
-        )}
+        className={clsx(styles.CalendarDay, {
+          [styles.CalendarDay__defaultCursor]: useDefaultCursor,
+        })}
+        style={{
+          ...daySizeStyles,
+          ...getStyles(defaultStylesWithHover, isHovered),
+          ...(isOutsideDay && getStyles(outsideStylesWithHover, isHovered)),
+          ...(modifiers.has('today') && getStyles(todayStylesWithHover, isHovered)),
+          ...(modifiers.has('first-day-of-week') && getStyles(firstDayOfWeekStylesWithHover, isHovered)),
+          ...(modifiers.has('last-day-of-week') && getStyles(lastDayOfWeekStylesWithHover, isHovered)),
+          ...(modifiers.has('hovered-start-first-possible-end') && getStyles(hoveredStartFirstPossibleEndStylesWithHover, isHovered)),
+          ...(modifiers.has('hovered-start-blocked-minimum-nights') && getStyles(hoveredStartBlockedMinNightsStylesWithHover, isHovered)),
+          ...(modifiers.has('highlighted-calendar') && getStyles(highlightedCalendarStylesWithHover, isHovered)),
+          ...(modifiers.has('blocked-minimum-nights') && getStyles(blockedMinNightsStylesWithHover, isHovered)),
+          ...(modifiers.has('blocked-calendar') && getStyles(blockedCalendarStylesWithHover, isHovered)),
+          ...(hoveredSpan && getStyles(hoveredSpanStylesWithHover, isHovered)),
+          ...(modifiers.has('after-hovered-start') && getStyles(afterHoveredStartStylesWithHover, isHovered)),
+          ...(modifiers.has('selected-span') && getStyles(selectedSpanStylesWithHover, isHovered)),
+          ...(modifiers.has('last-in-range') && getStyles(lastInRangeStylesWithHover, isHovered)),
+          ...(selected && getStyles(selectedStylesWithHover, isHovered)),
+          ...(modifiers.has('selected-start') && getStyles(selectedStartStylesWithHover, isHovered)),
+          ...(modifiers.has('selected-end') && getStyles(selectedEndStylesWithHover, isHovered)),
+          ...(isOutsideRange && getStyles(blockedOutOfRangeStylesWithHover, isHovered)),
+        }}
         role="button" // eslint-disable-line jsx-a11y/no-noninteractive-element-to-interactive-role
         ref={this.setButtonRef}
         aria-disabled={modifiers.has('blocked')}

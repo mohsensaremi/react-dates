@@ -4,8 +4,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, mutuallyExclusiveProps, nonNegativeInteger } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import moment from 'moment';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 import { CalendarDayPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -30,7 +31,7 @@ import {
 import { getMonthUnit } from '../utils/calendarSystem';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   month: momentPropTypes.momentObj,
   horizontalMonthPadding: nonNegativeInteger,
   isVisible: PropTypes.bool,
@@ -188,7 +189,7 @@ class CalendarMonth extends React.PureComponent {
       renderDayContents,
       renderMonthElement,
       renderMonthText,
-      styles,
+      classes: styles,
       verticalBorderSpacing,
       calendarSystem,
     } = this.props;
@@ -200,18 +201,15 @@ class CalendarMonth extends React.PureComponent {
 
     return (
       <div
-        {...css(
-          styles.CalendarMonth,
-          { padding: `0 ${horizontalMonthPadding}px` },
-        )}
+        className={styles.CalendarMonth}
+        style={{ padding: `0 ${horizontalMonthPadding}px` }}
         data-visible={isVisible}
       >
         <div
           ref={this.setCaptionRef}
-          {...css(
-            styles.CalendarMonth_caption,
-            verticalScrollable && styles.CalendarMonth_caption__verticalScrollable,
-          )}
+          className={clsx(styles.CalendarMonth_caption, {
+            [styles.CalendarMonth_caption__verticalScrollable]: verticalScrollable,
+          })}
         >
           {renderMonthElement ? (
             renderMonthElement({
@@ -228,11 +226,13 @@ class CalendarMonth extends React.PureComponent {
         </div>
 
         <table
-          {...css(
-            !verticalBorderSpacing && styles.CalendarMonth_table,
-            verticalBorderSpacing && styles.CalendarMonth_verticalSpacing,
-            verticalBorderSpacing && { borderSpacing: `0px ${verticalBorderSpacing}px` },
-          )}
+          className={clsx({
+            [styles.CalendarMonth_table]: !verticalBorderSpacing,
+            [styles.CalendarMonth_verticalSpacing]: verticalBorderSpacing,
+          })}
+          style={{
+            ...(verticalBorderSpacing && { borderSpacing: `0px ${verticalBorderSpacing}px` }),
+          }}
           role="presentation"
         >
           <tbody>

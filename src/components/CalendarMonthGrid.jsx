@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps, mutuallyExclusiveProps, nonNegativeInteger } from 'airbnb-prop-types';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
 import moment from 'moment';
 import { addEventListener } from 'consolidated-events';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 
 import { CalendarDayPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -31,7 +32,7 @@ import {
 } from '../constants';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   enableOutsideDays: PropTypes.bool,
   firstVisibleMonthIndex: PropTypes.number,
   horizontalMonthPadding: nonNegativeInteger,
@@ -77,12 +78,18 @@ const defaultProps = {
   numberOfMonths: 1,
   modifiers: {},
   orientation: HORIZONTAL_ORIENTATION,
-  onDayClick() {},
-  onDayMouseEnter() {},
-  onDayMouseLeave() {},
-  onMonthChange() {},
-  onYearChange() {},
-  onMonthTransitionEnd() {},
+  onDayClick() {
+  },
+  onDayMouseEnter() {
+  },
+  onDayMouseLeave() {
+  },
+  onMonthChange() {
+  },
+  onYearChange() {
+  },
+  onMonthTransitionEnd() {
+  },
   renderMonthText: null,
   renderCalendarDay: undefined,
   renderDayContents: null,
@@ -112,7 +119,8 @@ function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths) {
   const months = [];
   for (let i = 0; i < (withoutTransitionMonths ? numberOfMonths : numberOfMonths + 2); i += 1) {
     months.push(month);
-    month = month.clone().add(1, 'month');
+    month = month.clone()
+      .add(1, 'month');
   }
 
   return months;
@@ -158,10 +166,12 @@ class CalendarMonthGrid extends React.PureComponent {
     if (hasMonthChanged && !hasNumberOfMonthsChanged) {
       if (isNextMonth(prevInitialMonth, initialMonth)) {
         newMonths = months.slice(1);
-        newMonths.push(months[months.length - 1].clone().add(1, 'month'));
+        newMonths.push(months[months.length - 1].clone()
+          .add(1, 'month'));
       } else if (isPrevMonth(prevInitialMonth, initialMonth)) {
         newMonths = months.slice(0, months.length - 1);
-        newMonths.unshift(months[0].clone().subtract(1, 'month'));
+        newMonths.unshift(months[0].clone()
+          .subtract(1, 'month'));
       } else {
         const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
         newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
@@ -217,7 +227,8 @@ class CalendarMonthGrid extends React.PureComponent {
     if (!withoutTransitionMonths) {
       initialMonthSubtraction -= 1;
     }
-    newMonth.set('month', newMonthVal).subtract(initialMonthSubtraction, 'months');
+    newMonth.set('month', newMonthVal)
+      .subtract(initialMonthSubtraction, 'months');
     onMonthChange(newMonth);
   }
 
@@ -230,7 +241,8 @@ class CalendarMonthGrid extends React.PureComponent {
     if (!withoutTransitionMonths) {
       initialMonthSubtraction -= 1;
     }
-    newMonth.set('year', newYearVal).subtract(initialMonthSubtraction, 'months');
+    newMonth.set('year', newYearVal)
+      .subtract(initialMonthSubtraction, 'months');
     onYearChange(newMonth);
   }
 
@@ -262,7 +274,7 @@ class CalendarMonthGrid extends React.PureComponent {
       focusedDate,
       isFocused,
       isRTL,
-      styles,
+      classes: styles,
       phrases,
       dayAriaLabelFormat,
       transitionDuration,
@@ -290,20 +302,21 @@ class CalendarMonthGrid extends React.PureComponent {
 
     return (
       <div
-        {...css(
-          styles.CalendarMonthGrid,
-          isHorizontal && styles.CalendarMonthGrid__horizontal,
-          isVertical && styles.CalendarMonthGrid__vertical,
-          isVerticalScrollable && styles.CalendarMonthGrid__vertical_scrollable,
-          isAnimating && styles.CalendarMonthGrid__animating,
-          isAnimating && transitionDuration && {
+        className={clsx(styles.CalendarMonthGrid, {
+          [styles.CalendarMonthGrid__horizontal]: isHorizontal,
+          [styles.CalendarMonthGrid__vertical]: isVertical,
+          [styles.CalendarMonthGrid__vertical_scrollable]: isVerticalScrollable,
+          [styles.CalendarMonthGrid__animating]: isAnimating,
+        })}
+        style={{
+          ...(isAnimating && transitionDuration && {
             transition: `transform ${transitionDuration}ms ease-in-out 0.1s`,
-          },
-          {
+          }),
+          ...({
             ...getTransformStyles(transformValue),
             width,
-          },
-        )}
+          }),
+        }}
         ref={this.setContainerRef}
         onTransitionEnd={onMonthTransitionEnd}
       >
@@ -316,23 +329,25 @@ class CalendarMonthGrid extends React.PureComponent {
           return (
             <div
               key={monthString}
-              {...css(
-                isHorizontal && styles.CalendarMonthGrid_month__horizontal,
-                hideForAnimation && styles.CalendarMonthGrid_month__hideForAnimation,
-                showForAnimation && !isVertical && !isRTL && {
+              className={clsx({
+                [styles.CalendarMonthGrid_month__horizontal]: isHorizontal,
+                [styles.CalendarMonthGrid_month__hideForAnimation]: hideForAnimation,
+                [styles.CalendarMonthGrid_month__hidden]: !isVisible && !isAnimating,
+              })}
+              style={{
+                ...(showForAnimation && !isVertical && !isRTL && {
                   position: 'absolute',
                   left: -calendarMonthWidth,
-                },
-                showForAnimation && !isVertical && isRTL && {
+                }),
+                ...(showForAnimation && !isVertical && isRTL && {
                   position: 'absolute',
                   right: 0,
-                },
-                showForAnimation && isVertical && {
+                }),
+                ...(showForAnimation && isVertical && {
                   position: 'absolute',
                   top: -translationValue,
-                },
-                !isVisible && !isAnimating && styles.CalendarMonthGrid_month__hidden,
-              )}
+                }),
+              }}
             >
               <CalendarMonth
                 month={month}

@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import { css, withStyles, withStylesPropTypes } from 'react-with-styles';
+import withStyles from '@material-ui/core/styles/withStyles';
+import clsx from 'clsx';
 import { Portal } from 'react-portal';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { addEventListener } from 'consolidated-events';
@@ -35,9 +36,10 @@ import {
   OPEN_UP,
   VERTICAL_ORIENTATION,
 } from '../constants';
+import PropTypes from 'prop-types';
 
 const propTypes = forbidExtraProps({
-  ...withStylesPropTypes,
+  classes: PropTypes.object.isRequired,
   ...SingleDatePickerShape,
 });
 
@@ -444,7 +446,7 @@ class SingleDatePicker extends React.PureComponent {
       isDayBlocked,
       isDayHighlighted,
       weekDayFormat,
-      styles,
+      classes: styles,
       verticalHeight,
       transitionDuration,
       verticalSpacing,
@@ -456,7 +458,7 @@ class SingleDatePicker extends React.PureComponent {
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
     const onOutsideClick = (!withFullScreenPortal && withPortal) ? this.onOutsideClick : undefined;
-    const closeIcon = customCloseIcon || (<CloseButton />);
+    const closeIcon = customCloseIcon || (<CloseButton/>);
 
     const inputHeight = getInputHeight(reactDates, small);
 
@@ -467,25 +469,26 @@ class SingleDatePicker extends React.PureComponent {
     return (
       <div
         ref={this.setDayPickerContainerRef}
-        {...css(
-          styles.SingleDatePicker_picker,
-          anchorDirection === ANCHOR_LEFT && styles.SingleDatePicker_picker__directionLeft,
-          anchorDirection === ANCHOR_RIGHT && styles.SingleDatePicker_picker__directionRight,
-          openDirection === OPEN_DOWN && styles.SingleDatePicker_picker__openDown,
-          openDirection === OPEN_UP && styles.SingleDatePicker_picker__openUp,
-          !withAnyPortal && openDirection === OPEN_DOWN && {
+        className={clsx(styles.SingleDatePicker_picker, {
+          [styles.SingleDatePicker_picker__directionLeft]: anchorDirection === ANCHOR_LEFT,
+          [styles.SingleDatePicker_picker__directionRight]: anchorDirection === ANCHOR_RIGHT,
+          [styles.SingleDatePicker_picker__openDown]: openDirection === OPEN_DOWN,
+          [styles.SingleDatePicker_picker__openUp]: openDirection === OPEN_UP,
+          [styles.SingleDatePicker_picker__horizontal]: orientation === HORIZONTAL_ORIENTATION,
+          [styles.SingleDatePicker_picker__vertical]: orientation === VERTICAL_ORIENTATION,
+          [styles.SingleDatePicker_picker__portal]: withAnyPortal,
+          [styles.SingleDatePicker_picker__fullScreenPortal]: withFullScreenPortal,
+          [styles.SingleDatePicker_picker__rtl]: isRTL,
+        })}
+        style={{
+          ...(!withAnyPortal && openDirection === OPEN_DOWN && {
             top: inputHeight + verticalSpacing,
-          },
-          !withAnyPortal && openDirection === OPEN_UP && {
+          }),
+          ...(!withAnyPortal && openDirection === OPEN_UP && {
             bottom: inputHeight + verticalSpacing,
-          },
-          orientation === HORIZONTAL_ORIENTATION && styles.SingleDatePicker_picker__horizontal,
-          orientation === VERTICAL_ORIENTATION && styles.SingleDatePicker_picker__vertical,
-          withAnyPortal && styles.SingleDatePicker_picker__portal,
-          withFullScreenPortal && styles.SingleDatePicker_picker__fullScreenPortal,
-          isRTL && styles.SingleDatePicker_picker__rtl,
-          dayPickerContainerStyles,
-        )}
+          }),
+          ...dayPickerContainerStyles,
+        }}
         onClick={onOutsideClick}
       >
         <DayPickerSingleDateController
@@ -540,12 +543,12 @@ class SingleDatePicker extends React.PureComponent {
 
         {withFullScreenPortal && (
           <button
-            {...css(styles.SingleDatePicker_closeButton)}
+            className={styles.SingleDatePicker_closeButton}
             aria-label={phrases.closeDatePicker}
             type="button"
             onClick={this.onOutsideClick}
           >
-            <div {...css(styles.SingleDatePicker_closeButton_svg)}>
+            <div className={styles.SingleDatePicker_closeButton_svg}>
               {closeIcon}
             </div>
           </button>
@@ -587,7 +590,7 @@ class SingleDatePicker extends React.PureComponent {
       verticalSpacing,
       reopenPickerOnClearDate,
       keepOpenOnDateSelect,
-      styles,
+      classes: styles,
       isOutsideRange,
       isDayBlocked,
     } = this.props;
@@ -642,10 +645,9 @@ class SingleDatePicker extends React.PureComponent {
     return (
       <div
         ref={this.setContainerRef}
-        {...css(
-          styles.SingleDatePicker,
-          block && styles.SingleDatePicker__block,
-        )}
+        className={clsx(styles.SingleDatePicker, {
+          [styles.SingleDatePicker__block]: block,
+        })}
       >
         {enableOutsideClick && (
           <ClickAwayListener onClickAway={this.onOutsideClick}>
