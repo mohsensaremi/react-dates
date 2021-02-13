@@ -3,7 +3,6 @@ import moment from 'moment';
 import momentJalaali from 'moment-jalaali';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
-import DirectionProvider, { DIRECTIONS } from 'react-with-direction/dist/DirectionProvider';
 
 import {
   VERTICAL_ORIENTATION,
@@ -12,6 +11,7 @@ import {
 
 import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
 import MuiThemeRTL from '../examples/MuiThemeRTL';
+import RTL from '../examples/RTL';
 
 const TestInput = (props) => (
   <div style={{ marginTop: 16 }}>
@@ -108,7 +108,7 @@ storiesOf('DateRangePicker (DRP)', module)
     );
   }))
   .add('with DirectionProvider', withInfo()(() => (
-    <DirectionProvider direction={DIRECTIONS.RTL}>
+    <RTL>
       <DateRangePickerWrapper
         startDatePlaceholderText="تاریخ شروع"
         endDatePlaceholderText="تاریخ پایان"
@@ -117,7 +117,7 @@ storiesOf('DateRangePicker (DRP)', module)
         showClearDates
         isRTL
       />
-    </DirectionProvider>
+    </RTL>
   )))
   .add('vertical with custom height', withInfo()(() => (
     <DateRangePickerWrapper

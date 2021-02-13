@@ -1,13 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
-import DirectionProvider, { DIRECTIONS } from 'react-with-direction/dist/DirectionProvider';
 import DayPicker from '../src/components/DayPicker';
 
 import {
   VERTICAL_ORIENTATION,
   VERTICAL_SCROLLABLE,
 } from '../src/constants';
+import RTL from '../examples/RTL';
 
 const TestPrevIcon = () => (
   <div
@@ -152,13 +152,13 @@ storiesOf('DayPicker', module)
     />
   )))
   .add('vertical with DirectionProvider', withInfo()(() => (
-    <DirectionProvider direction={DIRECTIONS.RTL}>
+    <RTL>
       <DayPicker
         numberOfMonths={2}
         orientation={VERTICAL_ORIENTATION}
         isRTL
       />
-    </DirectionProvider>
+    </RTL>
   )))
   .add('vertically scrollable with DirectionProvider', withInfo()(() => (
     <DirectionProvider direction={DIRECTIONS.RTL}>

@@ -3,7 +3,6 @@ import moment from 'moment';
 import momentJalaali from 'moment-jalaali';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
-import DirectionProvider, { DIRECTIONS } from 'react-with-direction/dist/DirectionProvider';
 import isInclusivelyBeforeDay from '../src/utils/isInclusivelyBeforeDay';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
@@ -13,8 +12,8 @@ import {
 } from '../src/constants';
 
 import SingleDatePickerWrapper from '../examples/SingleDatePickerWrapper';
-import DateRangePickerWrapper from '../examples/DateRangePickerWrapper';
 import MuiThemeRTL from '../examples/MuiThemeRTL';
+import RTL from '../examples/RTL';
 
 const TestInput = (props) => (
   <div style={{ marginTop: 16 }}>
@@ -76,7 +75,7 @@ storiesOf('SingleDatePicker (SDP)', module)
     );
   }))
   .add('with DirectionProvider', withInfo()(() => (
-    <DirectionProvider direction={DIRECTIONS.RTL}>
+    <RTL>
       <SingleDatePickerWrapper
         placeholder="تاریخ شروع"
         anchorDirection={ANCHOR_RIGHT}
@@ -84,7 +83,7 @@ storiesOf('SingleDatePicker (SDP)', module)
         showClearDate
         isRTL
       />
-    </DirectionProvider>
+    </RTL>
   )))
   .add('with custom month navigation and blocked navigation (minDate and maxDate)', withInfo()(() => (
     <SingleDatePickerWrapper
