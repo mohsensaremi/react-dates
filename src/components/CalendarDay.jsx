@@ -6,7 +6,6 @@ import moment from 'moment';
 import raf from 'raf';
 import withStyles from '@material-ui/core/styles/withStyles';
 import clsx from 'clsx';
-import { lighten, darken } from '@material-ui/core/styles/colorManipulator';
 
 import { CalendarDayPhrases } from '../defaultPhrases';
 import getPhrasePropTypes from '../utils/getPhrasePropTypes';
@@ -114,7 +113,7 @@ class CalendarDay extends React.PureComponent {
       classes: styles,
     } = this.props;
 
-    if (!day) return <td />;
+    if (!day) return <td/>;
 
     const {
       daySizeStyles,
@@ -186,11 +185,11 @@ CalendarDay.propTypes = propTypes;
 CalendarDay.defaultProps = defaultProps;
 
 export { CalendarDay as PureCalendarDay };
-export default withStyles((theme) => ({
+export default withStyles(({ reactDates: { color, font } }) => ({
   CalendarDay: {
     boxSizing: 'border-box',
     cursor: 'pointer',
-    fontSize: theme.typography.fontSize,
+    fontSize: font.size,
     textAlign: 'center',
 
     ':active': {
@@ -203,27 +202,27 @@ export default withStyles((theme) => ({
   },
 
   CalendarDay__default: {
-    border: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.primary,
-    background: '#fff',
+    border: `1px solid ${color.core.borderLight}`,
+    color: color.text,
+    background: color.background,
 
     ':hover': {
-      background: theme.palette.action.hover,
-      border: `1px solid ${theme.palette.divider}`,
+      background: color.core.borderLight,
+      border: `1px solid ${color.core.borderLight}`,
       color: 'inherit',
     },
   },
 
   CalendarDay__hovered_offset: {
-    background: theme.palette.action.hover,
-    border: `1px double ${theme.palette.divider}`,
+    background: color.core.borderBright,
+    border: `1px double ${color.core.borderLight}`,
     color: 'inherit',
   },
 
   CalendarDay__outside: {
     border: 0,
-    // background: color.outside.backgroundColor,
-    // color: color.outside.color,
+    background: color.outside.backgroundColor,
+    color: color.outside.color,
 
     ':hover': {
       border: 0,
@@ -231,134 +230,134 @@ export default withStyles((theme) => ({
   },
 
   CalendarDay__blocked_minimum_nights: {
-    background: theme.palette.action.disabledBackground,
-    border: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.disabled,
+    background: color.minimumNights.backgroundColor,
+    border: `1px solid ${color.minimumNights.borderColor}`,
+    color: color.minimumNights.color,
 
-    // ':hover': {
-    //   background: color.minimumNights.backgroundColor_hover,
-    //   color: color.minimumNights.color_active,
-    // },
-    //
-    // ':active': {
-    //   background: color.minimumNights.backgroundColor_active,
-    //   color: color.minimumNights.color_active,
-    // },
+    ':hover': {
+      background: color.minimumNights.backgroundColor_hover,
+      color: color.minimumNights.color_active,
+    },
+
+    ':active': {
+      background: color.minimumNights.backgroundColor_active,
+      color: color.minimumNights.color_active,
+    },
   },
 
   CalendarDay__highlighted_calendar: {
-    background: theme.palette.action.active,
-    color: theme.palette.text.primary,
+    background: color.highlighted.backgroundColor,
+    color: color.highlighted.color,
 
-    // ':hover': {
-    //   background: color.highlighted.backgroundColor_hover,
-    //   color: color.highlighted.color_active,
-    // },
-    //
-    // ':active': {
-    //   background: color.highlighted.backgroundColor_active,
-    //   color: color.highlighted.color_active,
-    // },
+    ':hover': {
+      background: color.highlighted.backgroundColor_hover,
+      color: color.highlighted.color_active,
+    },
+
+    ':active': {
+      background: color.highlighted.backgroundColor_active,
+      color: color.highlighted.color_active,
+    },
   },
 
   CalendarDay__selected_span: {
-    background: lighten(theme.palette.primary.main, 0.5),
-    border: `1px double ${theme.palette.divider}`,
-    color: theme.palette.primary.contrastText,
+    background: color.selectedSpan.backgroundColor,
+    border: `1px double ${color.selectedSpan.borderColor}`,
+    color: color.selectedSpan.color,
 
-    // ':hover': {
-    //   background: color.selectedSpan.backgroundColor_hover,
-    //   border: `1px double ${color.selectedSpan.borderColor}`,
-    //   color: color.selectedSpan.color_active,
-    // },
-    //
-    // ':active': {
-    //   background: color.selectedSpan.backgroundColor_active,
-    //   border: `1px double ${color.selectedSpan.borderColor}`,
-    //   color: color.selectedSpan.color_active,
-    // },
+    ':hover': {
+      background: color.selectedSpan.backgroundColor_hover,
+      border: `1px double ${color.selectedSpan.borderColor}`,
+      color: color.selectedSpan.color_active,
+    },
+
+    ':active': {
+      background: color.selectedSpan.backgroundColor_active,
+      border: `1px double ${color.selectedSpan.borderColor}`,
+      color: color.selectedSpan.color_active,
+    },
   },
 
   CalendarDay__selected: {
-    background: theme.palette.primary.main,
-    border: `1px double ${theme.palette.divider}`,
-    color: theme.palette.primary.contrastText,
+    background: color.selected.backgroundColor,
+    border: `1px double ${color.selected.borderColor}`,
+    color: color.selected.color,
 
-    // ':hover': {
-    //   background: color.selected.backgroundColor_hover,
-    //   border: `1px double ${color.selected.borderColor}`,
-    //   color: color.selected.color_active,
-    // },
-    //
-    // ':active': {
-    //   background: color.selected.backgroundColor_active,
-    //   border: `1px double ${color.selected.borderColor}`,
-    //   color: color.selected.color_active,
-    // },
+    ':hover': {
+      background: color.selected.backgroundColor_hover,
+      border: `1px double ${color.selected.borderColor}`,
+      color: color.selected.color_active,
+    },
+
+    ':active': {
+      background: color.selected.backgroundColor_active,
+      border: `1px double ${color.selected.borderColor}`,
+      color: color.selected.color_active,
+    },
   },
 
   CalendarDay__hovered_span: {
-    background: lighten(theme.palette.primary.main, 0.8),
-    border: `1px double ${theme.palette.divider}`,
-    color: darken(theme.palette.primary.main, 0.5),
+    background: color.hoveredSpan.backgroundColor,
+    border: `1px double ${color.hoveredSpan.borderColor}`,
+    color: color.hoveredSpan.color,
 
-    // ':hover': {
-    //   background: color.hoveredSpan.backgroundColor_hover,
-    //   border: `1px double ${color.hoveredSpan.borderColor}`,
-    //   color: color.hoveredSpan.color_active,
-    // },
-    //
-    // ':active': {
-    //   background: color.hoveredSpan.backgroundColor_active,
-    //   border: `1px double ${color.hoveredSpan.borderColor}`,
-    //   color: color.hoveredSpan.color_active,
-    // },
+    ':hover': {
+      background: color.hoveredSpan.backgroundColor_hover,
+      border: `1px double ${color.hoveredSpan.borderColor}`,
+      color: color.hoveredSpan.color_active,
+    },
+
+    ':active': {
+      background: color.hoveredSpan.backgroundColor_active,
+      border: `1px double ${color.hoveredSpan.borderColor}`,
+      color: color.hoveredSpan.color_active,
+    },
   },
 
   CalendarDay__blocked_calendar: {
-    background: theme.palette.action.disabledBackground,
-    border: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.disabled,
+    background: color.blocked_calendar.backgroundColor,
+    border: `1px solid ${color.blocked_calendar.borderColor}`,
+    color: color.blocked_calendar.color,
 
-    // ':hover': {
-    //   background: color.blocked_calendar.backgroundColor_hover,
-    //   border: `1px solid ${color.blocked_calendar.borderColor}`,
-    //   color: color.blocked_calendar.color_active,
-    // },
-    //
-    // ':active': {
-    //   background: color.blocked_calendar.backgroundColor_active,
-    //   border: `1px solid ${color.blocked_calendar.borderColor}`,
-    //   color: color.blocked_calendar.color_active,
-    // },
+    ':hover': {
+      background: color.blocked_calendar.backgroundColor_hover,
+      border: `1px solid ${color.blocked_calendar.borderColor}`,
+      color: color.blocked_calendar.color_active,
+    },
+
+    ':active': {
+      background: color.blocked_calendar.backgroundColor_active,
+      border: `1px solid ${color.blocked_calendar.borderColor}`,
+      color: color.blocked_calendar.color_active,
+    },
   },
 
   CalendarDay__blocked_out_of_range: {
-    background: theme.palette.action.disabledBackground,
-    border: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.disabled,
+    background: color.blocked_out_of_range.backgroundColor,
+    border: `1px solid ${color.blocked_out_of_range.borderColor}`,
+    color: color.blocked_out_of_range.color,
 
-    // ':hover': {
-    //   background: color.blocked_out_of_range.backgroundColor_hover,
-    //   border: `1px solid ${color.blocked_out_of_range.borderColor}`,
-    //   color: color.blocked_out_of_range.color_active,
-    // },
-    //
-    // ':active': {
-    //   background: color.blocked_out_of_range.backgroundColor_active,
-    //   border: `1px solid ${color.blocked_out_of_range.borderColor}`,
-    //   color: color.blocked_out_of_range.color_active,
-    // },
+    ':hover': {
+      background: color.blocked_out_of_range.backgroundColor_hover,
+      border: `1px solid ${color.blocked_out_of_range.borderColor}`,
+      color: color.blocked_out_of_range.color_active,
+    },
+
+    ':active': {
+      background: color.blocked_out_of_range.backgroundColor_active,
+      border: `1px solid ${color.blocked_out_of_range.borderColor}`,
+      color: color.blocked_out_of_range.color_active,
+    },
   },
 
   CalendarDay__hovered_start_first_possible_end: {
-    // background: color.core.borderLighter,
-    // border: `1px double ${color.core.borderLighter}`,
+    background: color.core.borderLighter,
+    border: `1px double ${color.core.borderLighter}`,
   },
 
   CalendarDay__hovered_start_blocked_min_nights: {
-    // background: color.core.borderLighter,
-    // border: `1px double ${color.core.borderLight}`,
+    background: color.core.borderLighter,
+    border: `1px double ${color.core.borderLight}`,
   },
 
   CalendarDay__selected_start: {},

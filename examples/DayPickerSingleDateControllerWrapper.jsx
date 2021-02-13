@@ -6,6 +6,7 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 import omit from 'lodash/omit';
 
+import MuiReactDatesThemeProvides from './MuiReactDatesThemeProvides';
 import DayPickerSingleDateController from '../src/components/DayPickerSingleDateController';
 
 import ScrollableOrientationShape from '../src/shapes/ScrollableOrientationShape';
@@ -68,7 +69,8 @@ const defaultProps = {
   withPortal: false,
   initialVisibleMonth: null,
   numberOfMonths: 2,
-  onOutsideClick() {},
+  onOutsideClick() {
+  },
   keepOpenOnDateSelect: false,
   renderCalendarInfo: null,
   isRTL: false,
@@ -78,8 +80,10 @@ const defaultProps = {
   navNext: null,
   renderNavPrevButton: null,
   renderNavNextButton: null,
-  onPrevMonthClick() {},
-  onNextMonthClick() {},
+  onPrevMonthClick() {
+  },
+  onNextMonthClick() {
+  },
 
   // internationalization
   monthFormat: 'MMMM YYYY',
@@ -120,21 +124,23 @@ class DayPickerSingleDateControllerWrapper extends React.Component {
     const dateString = date && date.format('YYYY-MM-DD');
 
     return (
-      <div>
-        {showInput && (
-          <div style={{ marginBottom: 16 }}>
-            <input type="text" name="start date" value={dateString || ''} readOnly />
-          </div>
-        )}
+      <MuiReactDatesThemeProvides>
+        <div>
+          {showInput && (
+            <div style={{ marginBottom: 16 }}>
+              <input type="text" name="start date" value={dateString || ''} readOnly/>
+            </div>
+          )}
 
-        <DayPickerSingleDateController
-          {...props}
-          onDateChange={this.onDateChange}
-          onFocusChange={this.onFocusChange}
-          focused={focused}
-          date={date}
-        />
-      </div>
+          <DayPickerSingleDateController
+            {...props}
+            onDateChange={this.onDateChange}
+            onFocusChange={this.onFocusChange}
+            focused={focused}
+            date={date}
+          />
+        </div>
+      </MuiReactDatesThemeProvides>
     );
   }
 }

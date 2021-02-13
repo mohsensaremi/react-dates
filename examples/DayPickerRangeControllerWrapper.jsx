@@ -6,6 +6,7 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 import omit from 'lodash/omit';
 
+import MuiReactDatesThemeProvides from './MuiReactDatesThemeProvides';
 import DayPickerRangeController from '../src/components/DayPickerRangeController';
 
 import ScrollableOrientationShape from '../src/shapes/ScrollableOrientationShape';
@@ -88,7 +89,8 @@ const defaultProps = {
   withPortal: false,
   initialVisibleMonth: null,
   numberOfMonths: 2,
-  onOutsideClick() {},
+  onOutsideClick() {
+  },
   keepOpenOnDateSelect: false,
   renderCalendarInfo: null,
   isRTL: false,
@@ -102,8 +104,10 @@ const defaultProps = {
   navNext: null,
   renderNavPrevButton: null,
   renderNavNextButton: null,
-  onPrevMonthClick() {},
-  onNextMonthClick() {},
+  onPrevMonthClick() {
+  },
+  onNextMonthClick() {
+  },
 
   // internationalization
   monthFormat: 'MMMM YYYY',
@@ -128,7 +132,9 @@ class DayPickerRangeControllerWrapper extends React.Component {
     const { daysViolatingMinNightsCanBeClicked, minimumNights } = this.props;
     let doesNotMeetMinNights = false;
     if (daysViolatingMinNightsCanBeClicked && startDate && endDate) {
-      const dayDiff = endDate.diff(startDate.clone().startOf('day').hour(12), 'days');
+      const dayDiff = endDate.diff(startDate.clone()
+        .startOf('day')
+        .hour(12), 'days');
       doesNotMeetMinNights = dayDiff < minimumNights && dayDiff >= 0;
     }
     this.setState({
@@ -166,27 +172,30 @@ class DayPickerRangeControllerWrapper extends React.Component {
 
     const startDateString = startDate && startDate.format('YYYY-MM-DD');
     const endDateString = endDate && endDate.format('YYYY-MM-DD');
-    const renderCalendarInfo = errorMessage ? () => <div>{errorMessage}</div> : renderCalendarInfoProp;
+    const renderCalendarInfo = errorMessage ? () =>
+      <div>{errorMessage}</div> : renderCalendarInfoProp;
 
     return (
-      <div style={{ height: '100%' }}>
-        {showInputs && (
-          <div style={{ marginBottom: 16 }}>
-            <input type="text" name="start date" value={startDateString} readOnly />
-            <input type="text" name="end date" value={endDateString} readOnly />
-          </div>
-        )}
+      <MuiReactDatesThemeProvides>
+        <div style={{ height: '100%' }}>
+          {showInputs && (
+            <div style={{ marginBottom: 16 }}>
+              <input type="text" name="start date" value={startDateString} readOnly/>
+              <input type="text" name="end date" value={endDateString} readOnly/>
+            </div>
+          )}
 
-        <DayPickerRangeController
-          {...props}
-          onDatesChange={this.onDatesChange}
-          onFocusChange={this.onFocusChange}
-          focusedInput={focusedInput}
-          startDate={startDate}
-          endDate={endDate}
-          renderCalendarInfo={renderCalendarInfo}
-        />
-      </div>
+          <DayPickerRangeController
+            {...props}
+            onDatesChange={this.onDatesChange}
+            onFocusChange={this.onFocusChange}
+            focusedInput={focusedInput}
+            startDate={startDate}
+            endDate={endDate}
+            renderCalendarInfo={renderCalendarInfo}
+          />
+        </div>
+      </MuiReactDatesThemeProvides>
     );
   }
 }

@@ -4,6 +4,7 @@ import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment';
 import omit from 'lodash/omit';
 
+import MuiReactDatesThemeProvides from './MuiReactDatesThemeProvides';
 import SingleDatePicker from '../src/components/SingleDatePicker';
 
 import { SingleDatePickerPhrases } from '../src/defaultPhrases';
@@ -60,9 +61,12 @@ const defaultProps = {
   // navigation related props
   navPrev: null,
   navNext: null,
-  onPrevMonthClick() {},
-  onNextMonthClick() {},
-  onClose() {},
+  onPrevMonthClick() {
+  },
+  onNextMonthClick() {
+  },
+  onClose() {
+  },
 
   // day presentation and interaction related props
   renderCalendarDay: undefined,
@@ -70,10 +74,12 @@ const defaultProps = {
   enableOutsideDays: false,
   isDayBlocked: () => false,
   isOutsideRange: day => !isInclusivelyAfterDay(day, moment()),
-  isDayHighlighted: () => {},
+  isDayHighlighted: () => {
+  },
 
   // internationalization props
-  displayFormat: () => moment.localeData().longDateFormat('L'),
+  displayFormat: () => moment.localeData()
+    .longDateFormat('L'),
   monthFormat: 'MMMM YYYY',
   phrases: SingleDatePickerPhrases,
 };
@@ -109,14 +115,16 @@ class SingleDatePickerWrapper extends React.Component {
     ]);
 
     return (
-      <SingleDatePicker
-        {...props}
-        id="date_input"
-        date={date}
-        focused={focused}
-        onDateChange={this.onDateChange}
-        onFocusChange={this.onFocusChange}
-      />
+      <MuiReactDatesThemeProvides>
+        <SingleDatePicker
+          {...props}
+          id="date_input"
+          date={date}
+          focused={focused}
+          onDateChange={this.onDateChange}
+          onFocusChange={this.onFocusChange}
+        />
+      </MuiReactDatesThemeProvides>
     );
   }
 }
