@@ -1,4 +1,10 @@
 import React from 'react';
+import {createMuiTheme} from "@material-ui/core/styles";
+import defaultTheme from '../src/theme/DefaultTheme';
+
+const theme = createMuiTheme({
+  reactDates: defaultTheme.reactDates,
+});
 
 if (process.env.NODE_ENV !== 'production') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
@@ -6,17 +12,13 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 import moment from 'moment';
-import aphroditeInterface from 'react-with-styles-interface-aphrodite';
 
 import { configure, addDecorator, setAddon } from '@storybook/react';
 import infoAddon from '@storybook/addon-info';
 import { setOptions } from '@storybook/addon-options';
 
-import registerInterfaceWithDefaultTheme from '../src/utils/registerInterfaceWithDefaultTheme';
-
 import '../css/storybook.scss';
-
-registerInterfaceWithDefaultTheme(aphroditeInterface);
+import { ThemeProvider } from '@material-ui/core/styles';
 
 addDecorator((story) => {
   moment.locale('en');
@@ -35,25 +37,27 @@ const helperText = `All examples are built using a wrapper component that is not
   the ${wrapperSource} to see how to integrate react-dates into your own app.`;
 
 addDecorator(story => (
-  <div>
-    <div
-      style={{
-        background: '#fff',
-        height: 6 * 8,
-        width: '100%',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        padding: '8px 40px 8px 8px',
-        overflow: 'scroll',
-      }}
-      dangerouslySetInnerHTML={{ __html: helperText }}
-    />
+  <ThemeProvider theme={theme}>
+    <div>
+      <div
+        style={{
+          background: '#fff',
+          height: 6 * 8,
+          width: '100%',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          padding: '8px 40px 8px 8px',
+          overflow: 'scroll',
+        }}
+        dangerouslySetInnerHTML={{ __html: helperText }}
+      />
 
-    <div style={{ marginTop: 7 * 8 }}>
-      {story()}
+      <div style={{ marginTop: 7 * 8 }}>
+        {story()}
+      </div>
     </div>
-  </div>
+  </ThemeProvider>
 ));
 
 setOptions({

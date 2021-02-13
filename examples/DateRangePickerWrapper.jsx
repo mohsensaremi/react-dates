@@ -3,18 +3,16 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment';
 import omit from 'lodash/omit';
-
-import MuiReactDatesThemeProvides from './MuiReactDatesThemeProvides';
 import DateRangePicker from '../src/components/DateRangePicker';
 
 import { DateRangePickerPhrases } from '../src/defaultPhrases';
 import DateRangePickerShape from '../src/shapes/DateRangePickerShape';
 import {
-  START_DATE,
+  ANCHOR_LEFT,
   END_DATE,
   HORIZONTAL_ORIENTATION,
-  ANCHOR_LEFT,
   NAV_POSITION_TOP,
+  START_DATE,
 } from '../src/constants';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
@@ -149,18 +147,16 @@ class DateRangePickerWrapper extends React.Component {
     ]);
 
     return (
-      <MuiReactDatesThemeProvides>
-        <div>
-          <DateRangePicker
-            {...props}
-            onDatesChange={this.onDatesChange}
-            onFocusChange={this.onFocusChange}
-            focusedInput={focusedInput}
-            startDate={startDate}
-            endDate={endDate}
-          />
-        </div>
-      </MuiReactDatesThemeProvides>
+      <div>
+        <DateRangePicker
+          {...props}
+          onDatesChange={this.onDatesChange}
+          onFocusChange={this.onFocusChange}
+          focusedInput={focusedInput}
+          startDate={startDate}
+          endDate={endDate}
+        />
+      </div>
     );
   }
 }

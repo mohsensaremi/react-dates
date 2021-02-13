@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import momentPropTypes from 'react-moment-proptypes';
 import moment from 'moment';
 import omit from 'lodash/omit';
-
-import MuiReactDatesThemeProvides from './MuiReactDatesThemeProvides';
 import SingleDatePicker from '../src/components/SingleDatePicker';
 
 import { SingleDatePickerPhrases } from '../src/defaultPhrases';
 import SingleDatePickerShape from '../src/shapes/SingleDatePickerShape';
-import { HORIZONTAL_ORIENTATION, ANCHOR_LEFT } from '../src/constants';
+import { ANCHOR_LEFT, HORIZONTAL_ORIENTATION } from '../src/constants';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
 const propTypes = {
@@ -115,16 +113,14 @@ class SingleDatePickerWrapper extends React.Component {
     ]);
 
     return (
-      <MuiReactDatesThemeProvides>
-        <SingleDatePicker
-          {...props}
-          id="date_input"
-          date={date}
-          focused={focused}
-          onDateChange={this.onDateChange}
-          onFocusChange={this.onFocusChange}
-        />
-      </MuiReactDatesThemeProvides>
+      <SingleDatePicker
+        {...props}
+        id="date_input"
+        date={date}
+        focused={focused}
+        onDateChange={this.onDateChange}
+        onFocusChange={this.onFocusChange}
+      />
     );
   }
 }

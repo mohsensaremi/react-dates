@@ -5,13 +5,11 @@ import momentPropTypes from 'react-moment-proptypes';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import moment from 'moment';
 import omit from 'lodash/omit';
-
-import MuiReactDatesThemeProvides from './MuiReactDatesThemeProvides';
 import DayPickerRangeController from '../src/components/DayPickerRangeController';
 
 import ScrollableOrientationShape from '../src/shapes/ScrollableOrientationShape';
 
-import { START_DATE, END_DATE, HORIZONTAL_ORIENTATION } from '../src/constants';
+import { END_DATE, HORIZONTAL_ORIENTATION, START_DATE } from '../src/constants';
 import isInclusivelyAfterDay from '../src/utils/isInclusivelyAfterDay';
 
 const propTypes = forbidExtraProps({
@@ -176,26 +174,24 @@ class DayPickerRangeControllerWrapper extends React.Component {
       <div>{errorMessage}</div> : renderCalendarInfoProp;
 
     return (
-      <MuiReactDatesThemeProvides>
-        <div style={{ height: '100%' }}>
-          {showInputs && (
-            <div style={{ marginBottom: 16 }}>
-              <input type="text" name="start date" value={startDateString} readOnly/>
-              <input type="text" name="end date" value={endDateString} readOnly/>
-            </div>
-          )}
+      <div style={{ height: '100%' }}>
+        {showInputs && (
+          <div style={{ marginBottom: 16 }}>
+            <input type="text" name="start date" value={startDateString} readOnly/>
+            <input type="text" name="end date" value={endDateString} readOnly/>
+          </div>
+        )}
 
-          <DayPickerRangeController
-            {...props}
-            onDatesChange={this.onDatesChange}
-            onFocusChange={this.onFocusChange}
-            focusedInput={focusedInput}
-            startDate={startDate}
-            endDate={endDate}
-            renderCalendarInfo={renderCalendarInfo}
-          />
-        </div>
-      </MuiReactDatesThemeProvides>
+        <DayPickerRangeController
+          {...props}
+          onDatesChange={this.onDatesChange}
+          onFocusChange={this.onFocusChange}
+          focusedInput={focusedInput}
+          startDate={startDate}
+          endDate={endDate}
+          renderCalendarInfo={renderCalendarInfo}
+        />
+      </div>
     );
   }
 }
