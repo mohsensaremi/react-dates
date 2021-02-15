@@ -2,6 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import withStyles from '@material-ui/core/styles/withStyles';
 import clsx from 'clsx';
+import Popper from '@material-ui/core/Popper';
+import Popover from '@material-ui/core/Popover';
 import { Portal } from 'react-portal';
 import { forbidExtraProps } from 'airbnb-prop-types';
 import { addEventListener } from 'consolidated-events';
@@ -139,6 +141,11 @@ const defaultProps = {
   dayAriaLabelFormat: undefined,
 
   calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
+
+  usePopper: false,
+  usePopover: false,
+  PopperProps: undefined,
+  PopoverProps: undefined,
 };
 
 class SingleDatePicker extends React.PureComponent {
@@ -215,10 +222,14 @@ class SingleDatePicker extends React.PureComponent {
       onClose,
       date,
       appendToBody,
+      usePopper,
     } = this.props;
 
     if (!focused) return;
-    if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    if (
+      (appendToBody || usePopper)
+      && this.dayPickerContainer.contains(event.target)
+    ) return;
 
     this.setState({
       isInputFocused: false,
@@ -340,7 +351,13 @@ class SingleDatePicker extends React.PureComponent {
       withFullScreenPortal,
       appendToBody,
       focused,
+      usePopper,
+      usePopover,
     } = this.props;
+
+    if (!focused || usePopper || usePopover) {
+      return;
+    }
 
     const { dayPickerContainerStyles } = this.state;
 
@@ -389,7 +406,44 @@ class SingleDatePicker extends React.PureComponent {
       withPortal,
       withFullScreenPortal,
       appendToBody,
+      usePopper,
+      usePopover,
+      PopperProps,
+      PopoverProps,
     } = this.props;
+
+    if (usePopper) {
+      return (
+        <Popper
+          {...PopperProps}
+          open={focused}
+          anchorEl={this.container}
+        >
+          {this.renderDayPicker()}
+        </Popper>
+      );
+    }
+    if (usePopover) {
+      return (
+        <Popover
+          {...PopoverProps}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          open={focused}
+          anchorEl={this.container}
+          onClose={this.onOutsideClick}
+          disableRestoreFocus
+        >
+          {this.renderDayPicker()}
+        </Popover>
+      );
+    }
 
     if (!focused) {
       return null;
@@ -465,6 +519,8 @@ class SingleDatePicker extends React.PureComponent {
       small,
       theme: { reactDates },
       calendarSystem,
+      usePopper,
+      usePopover,
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
@@ -481,6 +537,7 @@ class SingleDatePicker extends React.PureComponent {
       <div
         ref={this.setDayPickerContainerRef}
         className={clsx(styles.SingleDatePicker_picker, {
+          [styles.SingleDatePicker_pickerAbsolute]: !usePopper && !usePopover,
           [styles.SingleDatePicker_picker__directionLeft]: anchorDirection === ANCHOR_LEFT,
           [styles.SingleDatePicker_picker__directionRight]: anchorDirection === ANCHOR_RIGHT,
           [styles.SingleDatePicker_picker__openDown]: openDirection === OPEN_DOWN,
@@ -612,6 +669,8 @@ class SingleDatePicker extends React.PureComponent {
       classes: styles,
       isOutsideRange,
       isDayBlocked,
+      usePopper,
+      usePopover,
     } = this.props;
 
     const { isInputFocused } = this.state;
@@ -635,7 +694,7 @@ class SingleDatePicker extends React.PureComponent {
         required={required}
         readOnly={readOnly}
         openDirection={openDirection}
-        showCaret={!withPortal && !withFullScreenPortal && !hideFang}
+        showCaret={!usePopper && !usePopover && !withPortal && !withFullScreenPortal && !hideFang}
         showClearDate={showClearDate}
         showDefaultInputIcon={showDefaultInputIcon}
         inputIconPosition={inputIconPosition}
@@ -671,14 +730,20 @@ class SingleDatePicker extends React.PureComponent {
           [styles.SingleDatePicker__block]: block,
         })}
       >
-        {enableOutsideClick && (
-          <ClickAwayListener onClickAway={this.onOutsideClick}>
-            <div>
-              {input}
-            </div>
-          </ClickAwayListener>
-        )}
-        {enableOutsideClick || input}
+        {
+          usePopover ? input : (
+            <>
+              {enableOutsideClick && (
+                <ClickAwayListener onClickAway={this.onOutsideClick}>
+                  <div>
+                    {input}
+                  </div>
+                </ClickAwayListener>
+              )}
+              {enableOutsideClick || input}
+            </>
+          )
+        }
       </div>
     );
   }
@@ -701,6 +766,9 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
   SingleDatePicker_picker: {
     zIndex: zIndex + 1,
     backgroundColor: color.background,
+  },
+
+  SingleDatePicker_pickerAbsolute: {
     position: 'absolute',
   },
 

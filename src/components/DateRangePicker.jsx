@@ -5,6 +5,8 @@ import { forbidExtraProps } from 'airbnb-prop-types';
 import { addEventListener } from 'consolidated-events';
 import isTouchDevice from 'is-touch-device';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Popper from '@material-ui/core/Popper';
+import Popover from '@material-ui/core/Popover';
 import { darken } from 'color2k';
 import withStyles from '@material-ui/core/styles/withStyles';
 import clsx from 'clsx';
@@ -149,6 +151,11 @@ const defaultProps = {
   dayAriaLabelFormat: undefined,
 
   calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
+
+  usePopper: false,
+  usePopover: false,
+  PopperProps: undefined,
+  PopoverProps: undefined,
 };
 
 class DateRangePicker extends React.PureComponent {
@@ -222,10 +229,14 @@ class DateRangePicker extends React.PureComponent {
       startDate,
       endDate,
       appendToBody,
+      usePopper,
     } = this.props;
 
     if (!this.isOpened()) return;
-    if (appendToBody && this.dayPickerContainer.contains(event.target)) return;
+    if (
+      (appendToBody || usePopper)
+      && this.dayPickerContainer.contains(event.target)
+    ) return;
 
     this.setState({
       isDateRangePickerInputFocused: false,
@@ -355,7 +366,12 @@ class DateRangePicker extends React.PureComponent {
       this.setState({ dayPickerContainerStyles: {} });
     }
 
-    if (!this.isOpened()) {
+    const {
+      usePopper,
+      usePopover,
+    } = this.props;
+
+    if (!this.isOpened() || usePopper || usePopover) {
       return;
     }
 
@@ -403,7 +419,48 @@ class DateRangePicker extends React.PureComponent {
   }
 
   maybeRenderDayPickerWithPortal() {
-    const { withPortal, withFullScreenPortal, appendToBody } = this.props;
+    const {
+      withPortal,
+      withFullScreenPortal,
+      appendToBody,
+      usePopper,
+      usePopover,
+      PopperProps,
+      PopoverProps,
+    } = this.props;
+
+    if (usePopper) {
+      return (
+        <Popper
+          {...PopperProps}
+          open={this.isOpened()}
+          anchorEl={this.container}
+        >
+          {this.renderDayPicker()}
+        </Popper>
+      );
+    }
+    if (usePopover) {
+      return (
+        <Popover
+          {...PopoverProps}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          open={this.isOpened()}
+          anchorEl={this.container}
+          onClose={this.onOutsideClick}
+          disableRestoreFocus
+        >
+          {this.renderDayPicker()}
+        </Popover>
+      );
+    }
 
     if (!this.isOpened()) {
       return null;
@@ -485,6 +542,8 @@ class DateRangePicker extends React.PureComponent {
       disabled,
       theme: { reactDates },
       calendarSystem,
+      usePopper,
+      usePopover,
     } = this.props;
 
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
@@ -510,6 +569,7 @@ class DateRangePicker extends React.PureComponent {
       <div
         ref={this.setDayPickerContainerRef}
         className={clsx(styles.DateRangePicker_picker, {
+          [styles.DateRangePicker_pickerAbsolute]: !usePopper && !usePopover,
           [styles.DateRangePicker_picker__directionLeft]: anchorDirection === ANCHOR_LEFT,
           [styles.DateRangePicker_picker__directionRight]: anchorDirection === ANCHOR_RIGHT,
           [styles.DateRangePicker_picker__horizontal]: orientation === HORIZONTAL_ORIENTATION,
@@ -652,6 +712,8 @@ class DateRangePicker extends React.PureComponent {
       small,
       regular,
       classes: styles,
+      usePopper,
+      usePopover,
     } = this.props;
 
     const { isDateRangePickerInputFocused } = this.state;
@@ -681,7 +743,7 @@ class DateRangePicker extends React.PureComponent {
         endDateTitleText={endDateTitleText}
         displayFormat={displayFormat}
         showClearDates={showClearDates}
-        showCaret={!withPortal && !withFullScreenPortal && !hideFang}
+        showCaret={!usePopper && !usePopover && !withPortal && !withFullScreenPortal && !hideFang}
         showDefaultInputIcon={showDefaultInputIcon}
         inputIconPosition={inputIconPosition}
         customInputIcon={customInputIcon}
@@ -723,14 +785,20 @@ class DateRangePicker extends React.PureComponent {
           [styles.DateRangePicker__block]: block,
         })}
       >
-        {enableOutsideClick && (
-          <ClickAwayListener onClickAway={this.onOutsideClick}>
-            <div>
-              {input}
-            </div>
-          </ClickAwayListener>
-        )}
-        {enableOutsideClick || input}
+        {
+          usePopover ? input : (
+            <>
+              {enableOutsideClick && (
+                <ClickAwayListener onClickAway={this.onOutsideClick}>
+                  <div>
+                    {input}
+                  </div>
+                </ClickAwayListener>
+              )}
+              {enableOutsideClick || input}
+            </>
+          )
+        }
       </div>
     );
   }
@@ -753,6 +821,9 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
   DateRangePicker_picker: {
     zIndex: zIndex + 1,
     backgroundColor: color.background,
+  },
+
+  DateRangePicker_pickerAbsolute: {
     position: 'absolute',
   },
 

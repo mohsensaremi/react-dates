@@ -123,4 +123,9 @@ export default {
   dayAriaLabelFormat: PropTypes.string,
 
   calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
+
+  usePopper: PropTypes.bool,
+  usePopover: PropTypes.bool,
+  PopperProps: PropTypes.object,
+  PopoverProps: PropTypes.object,
 };
