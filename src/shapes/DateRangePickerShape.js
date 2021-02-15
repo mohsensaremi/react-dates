@@ -18,6 +18,14 @@ import { CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI } from '../constants'
 
 export default {
   classes: PropTypes.object.isRequired,
+  DateRangePickerInputClasses: PropTypes.object,
+  StartDateInputClasses: PropTypes.object,
+  EndDateInputClasses: PropTypes.object,
+  DayPickerClasses: PropTypes.object,
+  CalendarMonthGridClasses: PropTypes.object,
+  DayPickerNavigationClasses: PropTypes.object,
+  CalendarMonthClasses: PropTypes.object,
+  CalendarDayClasses: PropTypes.object,
   theme: PropTypes.object.isRequired,
   // required props for a functional interactive DateRangePicker
   startDate: momentPropTypes.momentObj,

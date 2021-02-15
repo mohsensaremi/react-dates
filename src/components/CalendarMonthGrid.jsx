@@ -33,6 +33,8 @@ import {
 
 const propTypes = forbidExtraProps({
   classes: PropTypes.object.isRequired,
+  CalendarMonthClasses: PropTypes.object,
+  CalendarDayClasses: PropTypes.object,
   enableOutsideDays: PropTypes.bool,
   firstVisibleMonthIndex: PropTypes.number,
   horizontalMonthPadding: nonNegativeInteger,
@@ -70,6 +72,8 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  CalendarMonthClasses: undefined,
+  CalendarDayClasses: undefined,
   enableOutsideDays: false,
   firstVisibleMonthIndex: 0,
   horizontalMonthPadding: 13,
@@ -252,6 +256,8 @@ class CalendarMonthGrid extends React.PureComponent {
 
   render() {
     const {
+      CalendarMonthClasses,
+      CalendarDayClasses,
       enableOutsideDays,
       firstVisibleMonthIndex,
       horizontalMonthPadding,
@@ -350,6 +356,8 @@ class CalendarMonthGrid extends React.PureComponent {
               }}
             >
               <CalendarMonth
+                classes={CalendarMonthClasses}
+                CalendarDayClasses={CalendarDayClasses}
                 month={month}
                 isVisible={isVisible}
                 enableOutsideDays={enableOutsideDays}

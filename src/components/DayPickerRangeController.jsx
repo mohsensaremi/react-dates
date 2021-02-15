@@ -45,6 +45,11 @@ import DayPicker from './DayPicker';
 import getPooledMoment from '../utils/getPooledMoment';
 
 const propTypes = forbidExtraProps({
+  DayPickerClasses: PropTypes.object,
+  CalendarMonthGridClasses: PropTypes.object,
+  DayPickerNavigationClasses: PropTypes.object,
+  CalendarDayClasses: PropTypes.object,
+  CalendarMonthClasses: PropTypes.object,
   startDate: momentPropTypes.momentObj,
   endDate: momentPropTypes.momentObj,
   onDatesChange: PropTypes.func,
@@ -123,6 +128,11 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  DayPickerClasses: undefined,
+  CalendarMonthGridClasses: undefined,
+  DayPickerNavigationClasses: undefined,
+  CalendarDayClasses: undefined,
+  CalendarMonthClasses: undefined,
   startDate: undefined, // TODO: use null
   endDate: undefined, // TODO: use null
   minDate: null,
@@ -1306,6 +1316,11 @@ export default class DayPickerRangeController extends React.PureComponent {
 
   render() {
     const {
+      DayPickerClasses,
+      CalendarMonthGridClasses,
+      DayPickerNavigationClasses,
+      CalendarDayClasses,
+      CalendarMonthClasses,
       numberOfMonths,
       orientation,
       monthFormat,
@@ -1360,6 +1375,11 @@ export default class DayPickerRangeController extends React.PureComponent {
 
     return (
       <DayPicker
+        classes={DayPickerClasses}
+        CalendarMonthGridClasses={CalendarMonthGridClasses}
+        DayPickerNavigationClasses={DayPickerNavigationClasses}
+        CalendarDayClasses={CalendarDayClasses}
+        CalendarMonthClasses={CalendarMonthClasses}
         orientation={orientation}
         enableOutsideDays={enableOutsideDays}
         modifiers={visibleDays}

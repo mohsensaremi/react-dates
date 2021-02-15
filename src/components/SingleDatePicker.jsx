@@ -42,6 +42,13 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  SingleDatePickerInputClasses: undefined,
+  DateInputClasses: undefined,
+  DayPickerClasses: undefined,
+  CalendarMonthGridClasses: undefined,
+  CalendarDayClasses: undefined,
+  CalendarMonthClasses: undefined,
+  DayPickerNavigationClasses: undefined,
   // required props for a functional interactive SingleDatePicker
   date: null,
   focused: false,
@@ -401,6 +408,11 @@ class SingleDatePicker extends React.PureComponent {
 
   renderDayPicker() {
     const {
+      DayPickerClasses,
+      CalendarMonthGridClasses,
+      CalendarDayClasses,
+      CalendarMonthClasses,
+      DayPickerNavigationClasses,
       anchorDirection,
       openDirection,
       onDateChange,
@@ -491,6 +503,11 @@ class SingleDatePicker extends React.PureComponent {
         onClick={onOutsideClick}
       >
         <DayPickerSingleDateController
+          DayPickerClasses={DayPickerClasses}
+          CalendarMonthGridClasses={CalendarMonthGridClasses}
+          CalendarDayClasses={CalendarDayClasses}
+          CalendarMonthClasses={CalendarMonthClasses}
+          DayPickerNavigationClasses={DayPickerNavigationClasses}
           date={date}
           minDate={minDate}
           maxDate={maxDate}
@@ -560,6 +577,8 @@ class SingleDatePicker extends React.PureComponent {
 
   render() {
     const {
+      SingleDatePickerInputClasses,
+      DateInputClasses,
       id,
       placeholder,
       label,
@@ -603,6 +622,8 @@ class SingleDatePicker extends React.PureComponent {
 
     const input = (
       <SingleDatePickerInputController
+        SingleDatePickerInputClasses={SingleDatePickerInputClasses}
+        DateInputClasses={DateInputClasses}
         id={id}
         placeholder={placeholder}
         label={label}

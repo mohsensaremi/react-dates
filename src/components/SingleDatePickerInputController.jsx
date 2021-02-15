@@ -25,6 +25,8 @@ import {
 } from '../constants';
 
 const propTypes = forbidExtraProps({
+  SingleDatePickerInputClasses: PropTypes.object,
+  DateInputClasses: PropTypes.object,
   children: PropTypes.node,
 
   date: momentPropTypes.momentObj,
@@ -76,6 +78,8 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  SingleDatePickerInputClasses: undefined,
+  DateInputClasses: undefined,
   children: null,
 
   date: null,
@@ -202,6 +206,8 @@ export default class SingleDatePickerInputController extends React.PureComponent
 
   render() {
     const {
+      SingleDatePickerInputClasses,
+      DateInputClasses,
       children,
       id,
       placeholder,
@@ -237,6 +243,8 @@ export default class SingleDatePickerInputController extends React.PureComponent
 
     return (
       <SingleDatePickerInput
+        classes={SingleDatePickerInputClasses}
+        DateInputClasses={DateInputClasses}
         id={id}
         placeholder={placeholder}
         label={label}

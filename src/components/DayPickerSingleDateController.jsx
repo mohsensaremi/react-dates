@@ -35,6 +35,7 @@ import DayPicker from './DayPicker';
 import getPooledMoment from '../utils/getPooledMoment';
 
 const propTypes = forbidExtraProps({
+  DayPickerClasses: PropTypes.object,
   date: momentPropTypes.momentObj,
   minDate: momentPropTypes.momentObj,
   maxDate: momentPropTypes.momentObj,
@@ -105,6 +106,7 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  DayPickerClasses: undefined,
   date: undefined, // TODO: use null
   minDate: null,
   maxDate: null,
@@ -708,6 +710,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
 
   render() {
     const {
+      DayPickerClasses,
       numberOfMonths,
       orientation,
       monthFormat,
@@ -760,6 +763,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
 
     return (
       <DayPicker
+        classes={DayPickerClasses}
         orientation={orientation}
         enableOutsideDays={enableOutsideDays}
         modifiers={visibleDays}

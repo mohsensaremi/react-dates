@@ -19,6 +19,7 @@ import { ICON_BEFORE_POSITION, ICON_AFTER_POSITION, OPEN_DOWN } from '../constan
 
 const propTypes = forbidExtraProps({
   classes: PropTypes.object.isRequired,
+  DateInputClasses: PropTypes.object,
   id: PropTypes.string.isRequired,
   children: PropTypes.node,
   placeholder: PropTypes.string,
@@ -59,6 +60,7 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  DateInputClasses: undefined,
   children: null,
   placeholder: 'Select Date',
   label: undefined,
@@ -105,6 +107,7 @@ const defaultProps = {
 };
 
 function SingleDatePickerInput({
+  DateInputClasses,
   id,
   children,
   placeholder,
@@ -178,6 +181,7 @@ function SingleDatePickerInput({
       {inputIconPosition === ICON_BEFORE_POSITION && inputIcon}
 
       <DateInput
+        classes={DateInputClasses}
         id={id}
         placeholder={placeholder}
         label={label}

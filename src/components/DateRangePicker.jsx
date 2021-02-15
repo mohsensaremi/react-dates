@@ -45,6 +45,14 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  DateRangePickerInputClasses: undefined,
+  StartDateInputClasses: undefined,
+  EndDateInputClasses: undefined,
+  DayPickerClasses: undefined,
+  CalendarMonthGridClasses: undefined,
+  DayPickerNavigationClasses: undefined,
+  CalendarMonthClasses: undefined,
+  CalendarDayClasses: undefined,
   // required props for a functional interactive DateRangePicker
   startDate: null,
   endDate: null,
@@ -414,6 +422,11 @@ class DateRangePicker extends React.PureComponent {
 
   renderDayPicker() {
     const {
+      DayPickerClasses,
+      CalendarMonthGridClasses,
+      DayPickerNavigationClasses,
+      CalendarMonthClasses,
+      CalendarDayClasses,
       anchorDirection,
       openDirection,
       isDayBlocked,
@@ -517,6 +530,11 @@ class DateRangePicker extends React.PureComponent {
         onClick={onOutsideClick}
       >
         <DayPickerRangeController
+          DayPickerClasses={DayPickerClasses}
+          CalendarMonthGridClasses={CalendarMonthGridClasses}
+          DayPickerNavigationClasses={DayPickerNavigationClasses}
+          CalendarMonthClasses={CalendarMonthClasses}
+          CalendarDayClasses={CalendarDayClasses}
           orientation={orientation}
           enableOutsideDays={enableOutsideDays}
           numberOfMonths={numberOfMonths}
@@ -589,6 +607,9 @@ class DateRangePicker extends React.PureComponent {
 
   render() {
     const {
+      DateRangePickerInputClasses,
+      StartDateInputClasses,
+      EndDateInputClasses,
       startDate,
       startDateId,
       startDatePlaceholderText,
@@ -641,6 +662,9 @@ class DateRangePicker extends React.PureComponent {
 
     const input = (
       <DateRangePickerInputController
+        DateRangePickerInputClasses={DateRangePickerInputClasses}
+        StartDateInputClasses={StartDateInputClasses}
+        EndDateInputClasses={EndDateInputClasses}
         startDate={startDate}
         startDateId={startDateId}
         startDatePlaceholderText={startDatePlaceholderText}

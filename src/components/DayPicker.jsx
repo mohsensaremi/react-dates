@@ -59,6 +59,10 @@ const NEXT_NAV = 'next_nav';
 
 const propTypes = forbidExtraProps({
   classes: PropTypes.object.isRequired,
+  CalendarMonthGridClasses: PropTypes.object,
+  CalendarDayClasses: PropTypes.object,
+  CalendarMonthClasses: PropTypes.object,
+  DayPickerNavigationClasses: PropTypes.object,
   theme: PropTypes.object.isRequired,
 
   // calendar presentation props
@@ -133,6 +137,10 @@ const propTypes = forbidExtraProps({
 });
 
 export const defaultProps = {
+  CalendarMonthGridClasses: undefined,
+  CalendarDayClasses: undefined,
+  CalendarMonthClasses: undefined,
+  DayPickerNavigationClasses: undefined,
   // calendar presentation props
   enableOutsideDays: false,
   numberOfMonths: 2,
@@ -922,6 +930,7 @@ class DayPicker extends React.PureComponent {
 
   renderNavigation(navDirection) {
     const {
+      DayPickerNavigationClasses,
       dayPickerNavigationInlineStyles,
       disablePrev,
       disableNext,
@@ -952,6 +961,7 @@ class DayPicker extends React.PureComponent {
 
     return (
       <DayPickerNavigation
+        classes={DayPickerNavigationClasses}
         disablePrev={disablePrev}
         disableNext={disableNext}
         inlineStyles={dayPickerNavigationInlineStyles}
@@ -1048,6 +1058,9 @@ class DayPicker extends React.PureComponent {
     } = this.state;
 
     const {
+      CalendarMonthGridClasses,
+      CalendarDayClasses,
+      CalendarMonthClasses,
       enableOutsideDays,
       numberOfMonths,
       orientation,
@@ -1216,6 +1229,9 @@ class DayPicker extends React.PureComponent {
                 >
                   {verticalScrollable && this.renderNavigation(PREV_NAV)}
                   <CalendarMonthGrid
+                    classes={CalendarMonthGridClasses}
+                    CalendarDayClasses={CalendarDayClasses}
+                    CalendarMonthClasses={CalendarMonthClasses}
                     setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                     translationValue={translationValue}
                     enableOutsideDays={enableOutsideDays}

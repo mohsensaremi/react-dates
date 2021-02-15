@@ -32,6 +32,7 @@ import { getMonthUnit } from '../utils/calendarSystem';
 
 const propTypes = forbidExtraProps({
   classes: PropTypes.object.isRequired,
+  CalendarDayClasses: PropTypes.object,
   month: momentPropTypes.momentObj,
   horizontalMonthPadding: nonNegativeInteger,
   isVisible: PropTypes.bool,
@@ -64,6 +65,7 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  CalendarDayClasses: undefined,
   month: moment(),
   horizontalMonthPadding: 13,
   isVisible: true,
@@ -169,6 +171,7 @@ class CalendarMonth extends React.PureComponent {
 
   render() {
     const {
+      CalendarDayClasses,
       dayAriaLabelFormat,
       daySize,
       focusedDate,
@@ -253,6 +256,7 @@ class CalendarMonth extends React.PureComponent {
                   phrases,
                   modifiers: modifiers[toISODateString(day, undefined, calendarSystem)],
                   ariaLabelFormat: dayAriaLabelFormat,
+                  classes: CalendarDayClasses,
                 }))}
               </CalendarWeek>
             ))}

@@ -28,6 +28,8 @@ import {
 
 const propTypes = forbidExtraProps({
   classes: PropTypes.object.isRequired,
+  StartDateInputClasses: PropTypes.object,
+  EndDateInputClasses: PropTypes.object,
 
   children: PropTypes.node,
 
@@ -86,6 +88,8 @@ const propTypes = forbidExtraProps({
 });
 
 const defaultProps = {
+  StartDateInputClasses: undefined,
+  EndDateInputClasses: undefined,
   children: null,
   startDateId: START_DATE,
   endDateId: END_DATE,
@@ -149,6 +153,8 @@ const defaultProps = {
 };
 
 function DateRangePickerInput({
+  StartDateInputClasses,
+  EndDateInputClasses,
   children,
   startDate,
   startDateId,
@@ -243,6 +249,7 @@ function DateRangePickerInput({
       })}
     >
       <DateInput
+        classes={StartDateInputClasses}
         id={startDateId}
         placeholder={startDatePlaceholderText}
         label={startDateLabelText}
@@ -281,6 +288,7 @@ function DateRangePickerInput({
       {children}
 
       <DateInput
+        classes={EndDateInputClasses}
         id={endDateId}
         placeholder={endDatePlaceholderText}
         label={endDateLabelText}
