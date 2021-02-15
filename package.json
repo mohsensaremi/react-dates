@@ -1,6 +1,6 @@
 {
   "name": "@mohsen_saremi/react-dates-mui",
-  "version": "21.8.9",
+  "version": "21.8.10",
   "description": "A responsive and accessible date range picker component built with React",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "tag": "git tag v$npm_package_version",
     "gh-pages:clean": "rimraf _gh-pages/$(git branch | sed -n -e 's/^\\* \\(.*\\)/\\1/p')",
     "gh-pages:build": "$(npm bin)/build-storybook -o _gh-pages/$(git branch | sed -n -e 's/^\\* \\(.*\\)/\\1/p')",
-    "gh-pages:publish": "$(npm bin)/git-directory-deploy --directory _gh-pages/$(git branch | sed -n -e 's/^\\* \\(.*\\)/\\1/p')",
+    "gh-pages:publish": "$(npm bin)/git-directory-deploy --directory _gh-pages",
     "gh-pages": "npm run gh-pages:clean && npm run gh-pages:build && npm run gh-pages:publish",
     "version:patch": "npm --no-git-tag-version version patch",
     "version:minor": "npm --no-git-tag-version version minor",
