@@ -112,4 +112,10 @@ storiesOf('SDP - Input Props', module)
       showClearDate
       regular
     />
+  )))
+  .add('usePopper', withInfo()(() => (
+    <SingleDatePickerWrapper usePopper />
+  )))
+  .add('usePopover', withInfo()(() => (
+    <SingleDatePickerWrapper usePopover />
   )));

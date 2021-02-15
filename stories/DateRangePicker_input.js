@@ -187,4 +187,10 @@ storiesOf('DRP - Input Props', module)
       showClearDates
       regular
     />
+  )))
+  .add('use Popper', withInfo()(() => (
+    <DateRangePickerWrapper usePopper />
+  )))
+  .add('use Popover', withInfo()(() => (
+    <DateRangePickerWrapper usePopover />
   )));
