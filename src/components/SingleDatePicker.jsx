@@ -51,6 +51,7 @@ const defaultProps = {
   // input related props
   id: 'date',
   placeholder: 'Date',
+  label: undefined,
   ariaLabel: undefined,
   titleText: undefined,
   disabled: false,
@@ -561,6 +562,7 @@ class SingleDatePicker extends React.PureComponent {
     const {
       id,
       placeholder,
+      label,
       ariaLabel,
       titleText,
       disabled,
@@ -603,6 +605,7 @@ class SingleDatePicker extends React.PureComponent {
       <SingleDatePickerInputController
         id={id}
         placeholder={placeholder}
+        label={label}
         ariaLabel={ariaLabel}
         titleText={titleText}
         focused={focused}

@@ -32,10 +32,12 @@ export default {
   // input related props
   startDateId: PropTypes.string.isRequired,
   startDatePlaceholderText: PropTypes.string,
+  startDateLabelText: PropTypes.string,
   startDateOffset: PropTypes.func,
   endDateOffset: PropTypes.func,
   endDateId: PropTypes.string.isRequired,
   endDatePlaceholderText: PropTypes.string,
+  endDateLabelText: PropTypes.string,
   startDateAriaLabel: PropTypes.string,
   endDateAriaLabel: PropTypes.string,
   startDateTitleText: PropTypes.string,

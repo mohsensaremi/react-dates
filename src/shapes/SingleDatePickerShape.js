@@ -27,6 +27,7 @@ export default {
   // input related props
   id: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  label: PropTypes.string,
   ariaLabel: PropTypes.string,
   titleText: PropTypes.string,
   disabled: PropTypes.bool,

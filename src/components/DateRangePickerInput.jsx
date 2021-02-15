@@ -239,6 +239,7 @@ function DateRangePickerInput({
       <DateInput
         id={startDateId}
         placeholder={startDatePlaceholderText}
+        label={startDateLabelText}
         ariaLabel={startDateAriaLabel}
         titleText={startDateTitleText}
         displayValue={startDate}
@@ -276,6 +277,7 @@ function DateRangePickerInput({
       <DateInput
         id={endDateId}
         placeholder={endDatePlaceholderText}
+        label={endDateLabelText}
         ariaLabel={endDateAriaLabel}
         titleText={endDateTitleText}
         displayValue={endDate}

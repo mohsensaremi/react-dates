@@ -22,6 +22,7 @@ const propTypes = forbidExtraProps({
   id: PropTypes.string.isRequired,
   children: PropTypes.node,
   placeholder: PropTypes.string,
+  label: PropTypes.string,
   ariaLabel: PropTypes.string,
   titleText: PropTypes.string,
   displayValue: PropTypes.string,
@@ -60,6 +61,7 @@ const propTypes = forbidExtraProps({
 const defaultProps = {
   children: null,
   placeholder: 'Select Date',
+  label: undefined,
   ariaLabel: undefined,
   titleText: undefined,
   displayValue: '',
@@ -106,6 +108,7 @@ function SingleDatePickerInput({
   id,
   children,
   placeholder,
+  label,
   ariaLabel,
   titleText,
   displayValue,
@@ -177,6 +180,7 @@ function SingleDatePickerInput({
       <DateInput
         id={id}
         placeholder={placeholder}
+        label={label}
         ariaLabel={ariaLabel}
         titleText={titleText}
         displayValue={displayValue}

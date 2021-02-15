@@ -30,6 +30,7 @@ const propTypes = forbidExtraProps({
   theme: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
+  label: PropTypes.string,
   displayValue: PropTypes.string,
   ariaLabel: PropTypes.string,
   titleText: PropTypes.string,
@@ -64,6 +65,7 @@ const propTypes = forbidExtraProps({
 
 const defaultProps = {
   placeholder: 'Select Date',
+  label: undefined,
   displayValue: '',
   ariaLabel: undefined,
   titleText: undefined,
@@ -195,6 +197,7 @@ class DateInput extends React.PureComponent {
     const {
       id,
       placeholder,
+      label,
       ariaLabel,
       titleText,
       displayValue,
@@ -272,7 +275,8 @@ class DateInput extends React.PureComponent {
           id={id}
           value={value}
           onChange={this.onChange}
-          label={placeholder}
+          label={label}
+          placeholder={placeholder}
           disabled={disabled}
           required={required}
           variant="outlined"
