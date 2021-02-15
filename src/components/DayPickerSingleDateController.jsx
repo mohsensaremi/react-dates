@@ -103,6 +103,10 @@ const propTypes = forbidExtraProps({
   isRTL: PropTypes.bool,
 
   calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
+
+  selectableMonth: PropTypes.bool,
+  selectableYear: PropTypes.bool,
+  selectableMonthFormat: PropTypes.string,
 });
 
 const defaultProps = {
@@ -187,6 +191,10 @@ const defaultProps = {
   isRTL: false,
 
   calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
+
+  selectableMonth: false,
+  selectableYear: false,
+  selectableMonthFormat: 'MMMM',
 };
 
 export default class DayPickerSingleDateController extends React.PureComponent {
@@ -752,6 +760,9 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       verticalBorderSpacing,
       horizontalMonthPadding,
       calendarSystem,
+      selectableMonth,
+      selectableYear,
+      selectableMonthFormat,
     } = this.props;
 
     const {
@@ -764,6 +775,9 @@ export default class DayPickerSingleDateController extends React.PureComponent {
     return (
       <DayPicker
         classes={DayPickerClasses}
+        selectableMonth={selectableMonth}
+        selectableYear={selectableYear}
+        selectableMonthFormat={selectableMonthFormat}
         orientation={orientation}
         enableOutsideDays={enableOutsideDays}
         modifiers={visibleDays}

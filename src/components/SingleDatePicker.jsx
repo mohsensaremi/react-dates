@@ -146,6 +146,10 @@ const defaultProps = {
   usePopover: false,
   PopperProps: undefined,
   PopoverProps: undefined,
+
+  selectableMonth: false,
+  selectableYear: false,
+  selectableMonthFormat: "MMMM",
 };
 
 class SingleDatePicker extends React.PureComponent {
@@ -521,6 +525,9 @@ class SingleDatePicker extends React.PureComponent {
       calendarSystem,
       usePopper,
       usePopover,
+      selectableMonth,
+      selectableYear,
+      selectableMonthFormat,
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
@@ -565,6 +572,9 @@ class SingleDatePicker extends React.PureComponent {
           CalendarDayClasses={CalendarDayClasses}
           CalendarMonthClasses={CalendarMonthClasses}
           DayPickerNavigationClasses={DayPickerNavigationClasses}
+          selectableMonth={selectableMonth}
+          selectableYear={selectableYear}
+          selectableMonthFormat={selectableMonthFormat}
           date={date}
           minDate={minDate}
           maxDate={maxDate}

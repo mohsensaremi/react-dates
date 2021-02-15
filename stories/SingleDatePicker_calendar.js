@@ -6,6 +6,8 @@ import { withInfo } from '@storybook/addon-info';
 import SingleDatePickerWrapper from '../examples/SingleDatePickerWrapper';
 
 import { VERTICAL_ORIENTATION, ANCHOR_RIGHT, OPEN_UP } from '../src/constants';
+import MuiThemeRTL from '../examples/MuiThemeRTL';
+import momentJalaali from 'moment-jalaali';
 
 const TestPrevIcon = () => (
   <div
@@ -54,7 +56,7 @@ const TestCustomInfoPanel = () => (
 
 storiesOf('SDP - Calendar Props', module)
   .add('default', withInfo()(() => (
-    <SingleDatePickerWrapper autoFocus />
+    <SingleDatePickerWrapper autoFocus/>
   )))
   .add('open up', withInfo()(() => (
     <div style={{ marginTop: '450px' }}>
@@ -71,7 +73,7 @@ storiesOf('SDP - Calendar Props', module)
     />
   )))
   .add('with custom day size', withInfo()(() => (
-    <SingleDatePickerWrapper daySize={50} autoFocus />
+    <SingleDatePickerWrapper daySize={50} autoFocus/>
   )))
   .add('anchored right', withInfo()(() => (
     <div style={{ float: 'right' }}>
@@ -99,12 +101,12 @@ storiesOf('SDP - Calendar Props', module)
       autoFocus
       calendarInfoPosition="after"
       renderCalendarInfo={() => (
-        <TestCustomInfoPanel />
+        <TestCustomInfoPanel/>
       )}
     />
   )))
   .add('horizontal with fullscreen portal', withInfo()(() => (
-    <SingleDatePickerWrapper withFullScreenPortal autoFocus />
+    <SingleDatePickerWrapper withFullScreenPortal autoFocus/>
   )))
   .add('vertical with full screen portal', withInfo()(() => (
     <SingleDatePickerWrapper
@@ -116,15 +118,19 @@ storiesOf('SDP - Calendar Props', module)
   .add('disable scroll', withInfo()(() => (
     <div style={{ height: '100vh' }}>
       <div>This content scrolls.</div>
-      <SingleDatePickerWrapper disableScroll autoFocus />
+      <SingleDatePickerWrapper disableScroll autoFocus/>
     </div>
   )))
-  .add('appended to body', withInfo()(() => <SingleDatePickerWrapper appendToBody autoFocus />))
+  .add('appended to body', withInfo()(() => <SingleDatePickerWrapper appendToBody autoFocus/>))
   .add('appended to body (in scrollable container)', withInfo()(() => (
-    <div style={{ height: 200, overflow: 'auto', background: 'whitesmoke' }}>
+    <div style={{
+      height: 200,
+      overflow: 'auto',
+      background: 'whitesmoke'
+    }}>
       <div>This content scrolls.</div>
       <div style={{ marginBottom: 300 }}>
-        <SingleDatePickerWrapper appendToBody autoFocus />
+        <SingleDatePickerWrapper appendToBody autoFocus/>
       </div>
     </div>
   )))
@@ -136,14 +142,15 @@ storiesOf('SDP - Calendar Props', module)
   )))
   .add('with month specified on open', withInfo()(() => (
     <SingleDatePickerWrapper
-      initialVisibleMonth={() => moment().add(10, 'months')}
+      initialVisibleMonth={() => moment()
+        .add(10, 'months')}
       autoFocus
     />
   )))
   .add('with custom arrows', withInfo()(() => (
     <SingleDatePickerWrapper
-      navPrev={<TestPrevIcon />}
-      navNext={<TestNextIcon />}
+      navPrev={<TestPrevIcon/>}
+      navNext={<TestNextIcon/>}
       autoFocus
     />
   )))
@@ -157,7 +164,7 @@ storiesOf('SDP - Calendar Props', module)
   .add('with info panel default', withInfo()(() => (
     <SingleDatePickerWrapper
       renderCalendarInfo={() => (
-        <TestCustomInfoPanel borderPosition='borderBottom' />
+        <TestCustomInfoPanel borderPosition='borderBottom'/>
       )}
       autoFocus
     />
@@ -166,7 +173,7 @@ storiesOf('SDP - Calendar Props', module)
     <SingleDatePickerWrapper
       calendarInfoPosition="before"
       renderCalendarInfo={() => (
-        <TestCustomInfoPanel />
+        <TestCustomInfoPanel/>
       )}
       autoFocus
     />
@@ -175,7 +182,7 @@ storiesOf('SDP - Calendar Props', module)
     <SingleDatePickerWrapper
       calendarInfoPosition="after"
       renderCalendarInfo={() => (
-        <TestCustomInfoPanel />
+        <TestCustomInfoPanel/>
       )}
       autoFocus
     />
@@ -184,7 +191,7 @@ storiesOf('SDP - Calendar Props', module)
     <SingleDatePickerWrapper
       calendarInfoPosition="bottom"
       renderCalendarInfo={() => (
-        <TestCustomInfoPanel />
+        <TestCustomInfoPanel/>
       )}
       autoFocus
     />
@@ -193,7 +200,7 @@ storiesOf('SDP - Calendar Props', module)
     <SingleDatePickerWrapper
       calendarInfoPosition="top"
       renderCalendarInfo={() => (
-        <TestCustomInfoPanel />
+        <TestCustomInfoPanel/>
       )}
       autoFocus
     />
@@ -233,4 +240,33 @@ storiesOf('SDP - Calendar Props', module)
       verticalSpacing={0}
       autoFocus
     />
-  )));
+  )))
+  .add('selectable month and year', withInfo()(() => (
+    <SingleDatePickerWrapper
+      selectableMonth
+      selectableYear
+    />
+  )))
+  .add('selectable month and year (Persian)', withInfo()(() => {
+    moment.locale('fa');
+    momentJalaali.loadPersian({ dialect: 'persian-modern', usePersianDigits: true });
+
+    return (
+      <div dir="rtl">
+        <MuiThemeRTL>
+          <SingleDatePickerWrapper
+            // initialDate={momentJalaali('1400/11/01', 'jYYYY/jMM/jDD')}
+            selectableMonth
+            selectableYear
+            selectableMonthFormat="jMMMM"
+            placeholder="تقویم فارسی"
+            defaultInitialVisibleMonth={momentJalaali()}
+            renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
+            renderDayContents={(day) => momentJalaali(day).format('jD')}
+            calendarSystem="jalali"
+            isRTL
+          />
+        </MuiThemeRTL>
+      </div>
+    );
+  }));

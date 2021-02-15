@@ -134,6 +134,10 @@ const propTypes = forbidExtraProps({
   dayAriaLabelFormat: PropTypes.string,
 
   calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
+
+  selectableMonth: PropTypes.bool,
+  selectableYear: PropTypes.bool,
+  selectableMonthFormat: PropTypes.string,
 });
 
 export const defaultProps = {
@@ -210,6 +214,10 @@ export const defaultProps = {
   dayAriaLabelFormat: undefined,
 
   calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
+
+  selectableMonth: false,
+  selectableYear: false,
+  selectableMonthFormat: 'MMMM',
 };
 
 class DayPicker extends React.PureComponent {
@@ -1095,6 +1103,9 @@ class DayPicker extends React.PureComponent {
       horizontalMonthPadding,
       navPosition,
       calendarSystem,
+      selectableMonth,
+      selectableYear,
+      selectableMonthFormat,
     } = this.props;
 
     const { reactDates: { spacing: { dayPickerHorizontalPadding } } } = theme;
@@ -1232,6 +1243,9 @@ class DayPicker extends React.PureComponent {
                     classes={CalendarMonthGridClasses}
                     CalendarDayClasses={CalendarDayClasses}
                     CalendarMonthClasses={CalendarMonthClasses}
+                    selectableMonth={selectableMonth}
+                    selectableYear={selectableYear}
+                    selectableMonthFormat={selectableMonthFormat}
                     setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                     translationValue={translationValue}
                     enableOutsideDays={enableOutsideDays}

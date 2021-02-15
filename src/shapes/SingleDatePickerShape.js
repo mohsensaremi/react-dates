@@ -115,4 +115,8 @@ export default {
   usePopover: PropTypes.bool,
   PopperProps: PropTypes.object,
   PopoverProps: PropTypes.object,
+
+  selectableMonth: PropTypes.bool,
+  selectableYear: PropTypes.bool,
+  selectableMonthFormat: PropTypes.string,
 };
