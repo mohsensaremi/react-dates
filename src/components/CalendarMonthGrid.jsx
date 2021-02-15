@@ -128,15 +128,17 @@ const defaultProps = {
   selectableMonthFormat: 'MMMM',
 };
 
-function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths) {
+function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths, calendarSystem) {
+  const monthUnit = getMonthUnit(calendarSystem);
   let month = initialMonth.clone();
-  if (!withoutTransitionMonths) month = month.subtract(1, 'month');
+  if (!withoutTransitionMonths) month = month.subtract(1, monthUnit);
 
   const months = [];
   for (let i = 0; i < (withoutTransitionMonths ? numberOfMonths : numberOfMonths + 2); i += 1) {
+    console.log('getMonths', monthUnit, month.format('YYYY-MM-DD'), month.format('jYYYY-jMM-jDD'));
     months.push(month);
     month = month.clone()
-      .add(1, 'month');
+      .add(1, monthUnit);
   }
 
   return months;
@@ -147,7 +149,12 @@ class CalendarMonthGrid extends React.PureComponent {
     super(props);
     const withoutTransitionMonths = props.orientation === VERTICAL_SCROLLABLE;
     this.state = {
-      months: getMonths(props.initialMonth, props.numberOfMonths, withoutTransitionMonths),
+      months: getMonths(
+        props.initialMonth,
+        props.numberOfMonths,
+        withoutTransitionMonths,
+        props.calendarSystem,
+      ),
       yearSelectOpen: false,
       monthSelectOpen: false,
     };
@@ -177,7 +184,7 @@ class CalendarMonthGrid extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { initialMonth, numberOfMonths, orientation } = nextProps;
+    const { initialMonth, numberOfMonths, orientation, calendarSystem } = nextProps;
     const { months } = this.state;
 
     const {
@@ -199,13 +206,23 @@ class CalendarMonthGrid extends React.PureComponent {
           .subtract(1, 'month'));
       } else {
         const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
-        newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
+        newMonths = getMonths(
+          initialMonth,
+          numberOfMonths,
+          withoutTransitionMonths,
+          calendarSystem,
+        );
       }
     }
 
     if (hasNumberOfMonthsChanged) {
       const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
-      newMonths = getMonths(initialMonth, numberOfMonths, withoutTransitionMonths);
+      newMonths = getMonths(
+        initialMonth,
+        numberOfMonths,
+        withoutTransitionMonths,
+        calendarSystem,
+      );
     }
 
     const momentLocale = moment.locale();
