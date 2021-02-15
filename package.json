@@ -1,6 +1,6 @@
 {
   "name": "@mohsen_saremi/react-dates-mui",
-  "version": "21.8.11",
+  "version": "21.8.12",
   "description": "A responsive and accessible date range picker component built with React",
   "main": "index.js",
   "scripts": {
@@ -110,11 +110,11 @@
     "style-loader": "^0.20.3",
     "typescript": "*",
     "webpack": "^4.31.0",
-    "@material-ui/core": "^4.0.0"
+    "@material-ui/core": "^4.0.0",
+    "clsx": "^1.0.4"
   },
   "dependencies": {
     "airbnb-prop-types": "^2.16.0",
-    "clsx": "^1.0.4",
     "color2k": "^1.1.0",
     "consolidated-events": "^1.1.1 || ^2.0.0",
     "enzyme-shallow-equal": "^1.0.4",
@@ -133,7 +133,8 @@
     "moment-jalaali": "^0.7.4",
     "react": "^0.14 || ^15.5.4 || ^16.1.1",
     "react-dom": "^0.14 || ^15.5.4 || ^16.1.1",
-    "@material-ui/core": "^4.0.0"
+    "@material-ui/core": "^4.0.0",
+    "clsx": "^1.0.4"
   },
   "greenkeeper": {
     "ignore": [
