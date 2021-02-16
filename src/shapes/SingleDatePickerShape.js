@@ -119,4 +119,5 @@ export default {
   selectableMonth: PropTypes.bool,
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
+  selectableYearFormat: PropTypes.string,
 };

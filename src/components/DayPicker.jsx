@@ -138,6 +138,7 @@ const propTypes = forbidExtraProps({
   selectableMonth: PropTypes.bool,
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
+  selectableYearFormat: PropTypes.string,
 });
 
 export const defaultProps = {
@@ -150,7 +151,8 @@ export const defaultProps = {
   numberOfMonths: 2,
   orientation: HORIZONTAL_ORIENTATION,
   withPortal: false,
-  onOutsideClick() {},
+  onOutsideClick() {
+  },
   hidden: false,
   initialVisibleMonth: () => moment(),
   firstDayOfWeek: null,
@@ -179,12 +181,18 @@ export const defaultProps = {
   noNavButtons: false,
   noNavNextButton: false,
   noNavPrevButton: false,
-  onPrevMonthClick() {},
-  onNextMonthClick() {},
-  onMonthChange() {},
-  onYearChange() {},
-  onGetNextScrollableMonths() {},
-  onGetPrevScrollableMonths() {},
+  onPrevMonthClick() {
+  },
+  onNextMonthClick() {
+  },
+  onMonthChange() {
+  },
+  onYearChange() {
+  },
+  onGetNextScrollableMonths() {
+  },
+  onGetPrevScrollableMonths() {
+  },
 
   // month props
   renderMonthText: null,
@@ -195,17 +203,23 @@ export const defaultProps = {
   modifiers: {},
   renderCalendarDay: undefined,
   renderDayContents: null,
-  onDayClick() {},
-  onDayMouseEnter() {},
-  onDayMouseLeave() {},
+  onDayClick() {
+  },
+  onDayMouseEnter() {
+  },
+  onDayMouseLeave() {
+  },
 
   // accessibility props
   isFocused: false,
   getFirstFocusableDay: null,
-  onBlur() {},
+  onBlur() {
+  },
   showKeyboardShortcuts: false,
-  onTab() {},
-  onShiftTab() {},
+  onTab() {
+  },
+  onShiftTab() {
+  },
 
   // internationalization
   monthFormat: 'MMMM YYYY',
@@ -218,6 +232,7 @@ export const defaultProps = {
   selectableMonth: false,
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
+  selectableYearFormat: 'YYYY',
 };
 
 class DayPicker extends React.PureComponent {
@@ -226,7 +241,8 @@ class DayPicker extends React.PureComponent {
 
     const currentMonth = props.hidden ? moment() : props.initialVisibleMonth();
 
-    let focusedDate = currentMonth.clone().startOf('month');
+    let focusedDate = currentMonth.clone()
+      .startOf('month');
     if (props.getFirstFocusableDay) {
       focusedDate = props.getFirstFocusableDay(currentMonth);
     }
@@ -248,7 +264,8 @@ class DayPicker extends React.PureComponent {
       focusedDate: (!props.hidden || props.isFocused) ? focusedDate : null,
       nextFocusedDate: null,
       showKeyboardShortcuts: props.showKeyboardShortcuts,
-      onKeyboardShortcutsPanelClose() {},
+      onKeyboardShortcutsPanelClose() {
+      },
       isTouchDevice: isTouchDevice(),
       withMouseInteractions: true,
       calendarInfoWidth: 0,
@@ -363,7 +380,7 @@ class DayPicker extends React.PureComponent {
     }
 
     if (renderMonthText !== null && prevRenderMonthText !== null
-        && renderMonthText(currentMonth) !== prevRenderMonthText(currentMonth)) {
+      && renderMonthText(currentMonth) !== prevRenderMonthText(currentMonth)) {
       this.setState({
         monthTitleHeight: null,
       });
@@ -665,7 +682,8 @@ class DayPicker extends React.PureComponent {
   getFirstDayOfWeek() {
     const { firstDayOfWeek } = this.props;
     if (firstDayOfWeek == null) {
-      return moment.localeData().firstDayOfWeek();
+      return moment.localeData()
+        .firstDayOfWeek();
     }
 
     return firstDayOfWeek;
@@ -678,7 +696,9 @@ class DayPicker extends React.PureComponent {
 
     const weekHeaders = [];
     for (let i = 0; i < 7; i += 1) {
-      weekHeaders.push(currentMonth.clone().day((i + firstDayOfWeek) % 7).format(weekDayFormat));
+      weekHeaders.push(currentMonth.clone()
+        .day((i + firstDayOfWeek) % 7)
+        .format(weekDayFormat));
     }
 
     return weekHeaders;
@@ -710,7 +730,8 @@ class DayPicker extends React.PureComponent {
 
     // eslint-disable-next-line max-len
     if (newMonth && (!focusedDate || !isDayVisible(focusedDate, newMonth, numberOfMonths, calendarSystem))) {
-      focusedDate = newMonth.clone().startOf('month');
+      focusedDate = newMonth.clone()
+        .startOf('month');
     }
 
     return focusedDate;
@@ -729,7 +750,8 @@ class DayPicker extends React.PureComponent {
 
     this.calendarMonthWeeks = [];
     const monthUnit = getMonthUnit(calendarSystem);
-    let month = currentMonth.clone().subtract(1, getMonthUnit(monthUnit));
+    let month = currentMonth.clone()
+      .subtract(1, getMonthUnit(monthUnit));
     const firstDayOfWeek = this.getFirstDayOfWeek();
     for (let i = 0; i < numberOfMonths + 2; i += 1) {
       const numberOfWeeks = getNumberOfCalendarMonthWeeks(month, firstDayOfWeek, monthUnit);
@@ -768,7 +790,8 @@ class DayPicker extends React.PureComponent {
     if (onGetPrevScrollableMonths) onGetPrevScrollableMonths(e);
 
     this.setState(({ currentMonth, scrollableMonthMultiple }) => ({
-      currentMonth: currentMonth.clone().subtract(numberOfMonths, 'month'),
+      currentMonth: currentMonth.clone()
+        .subtract(numberOfMonths, 'month'),
       scrollableMonthMultiple: scrollableMonthMultiple + 1,
     }));
   }
@@ -843,14 +866,16 @@ class DayPicker extends React.PureComponent {
     if (monthTransition === PREV_TRANSITION) {
       newMonth.subtract(1, 'month');
       if (onPrevMonthClick) onPrevMonthClick(newMonth);
-      const newInvisibleMonth = newMonth.clone().subtract(1, 'month');
+      const newInvisibleMonth = newMonth.clone()
+        .subtract(1, 'month');
       // eslint-disable-next-line max-len
       const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, monthUnit);
       this.calendarMonthWeeks = [numberOfWeeks, ...this.calendarMonthWeeks.slice(0, -1)];
     } else if (monthTransition === NEXT_TRANSITION) {
       newMonth.add(1, 'month');
       if (onNextMonthClick) onNextMonthClick(newMonth);
-      const newInvisibleMonth = newMonth.clone().add(numberOfMonths, 'month');
+      const newInvisibleMonth = newMonth.clone()
+        .add(numberOfMonths, 'month');
       // eslint-disable-next-line max-len
       const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, monthUnit);
       this.calendarMonthWeeks = [...this.calendarMonthWeeks.slice(1), numberOfWeeks];
@@ -1106,6 +1131,7 @@ class DayPicker extends React.PureComponent {
       selectableMonth,
       selectableYear,
       selectableMonthFormat,
+      selectableYearFormat,
     } = this.props;
 
     const { reactDates: { spacing: { dayPickerHorizontalPadding } } } = theme;
@@ -1219,9 +1245,13 @@ class DayPicker extends React.PureComponent {
               <div // eslint-disable-line jsx-a11y/no-noninteractive-element-interactions
                 className={styles.DayPicker_focusRegion}
                 ref={this.setContainerRef}
-                onClick={(e) => { e.stopPropagation(); }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
                 onKeyDown={this.onKeyDown}
-                onMouseUp={() => { this.setState({ withMouseInteractions: true }); }}
+                onMouseUp={() => {
+                  this.setState({ withMouseInteractions: true });
+                }}
                 tabIndex={-1}
                 role="application"
                 aria-roledescription={phrases.roleDescription}
@@ -1246,6 +1276,7 @@ class DayPicker extends React.PureComponent {
                     selectableMonth={selectableMonth}
                     selectableYear={selectableYear}
                     selectableMonthFormat={selectableMonthFormat}
+                    selectableYearFormat={selectableYearFormat}
                     setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                     translationValue={translationValue}
                     enableOutsideDays={enableOutsideDays}
@@ -1445,4 +1476,7 @@ export default withStyles(({
       },
     }),
   },
-}), { pureComponent: typeof React.PureComponent !== 'undefined', withTheme: true })(DayPicker);
+}), {
+  pureComponent: typeof React.PureComponent !== 'undefined',
+  withTheme: true,
+})(DayPicker);

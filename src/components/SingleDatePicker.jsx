@@ -149,7 +149,8 @@ const defaultProps = {
 
   selectableMonth: false,
   selectableYear: false,
-  selectableMonthFormat: "MMMM",
+  selectableMonthFormat: 'MMMM',
+  selectableYearFormat: 'YYYY',
 };
 
 class SingleDatePicker extends React.PureComponent {
@@ -528,6 +529,7 @@ class SingleDatePicker extends React.PureComponent {
       selectableMonth,
       selectableYear,
       selectableMonthFormat,
+      selectableYearFormat,
     } = this.props;
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
@@ -575,6 +577,7 @@ class SingleDatePicker extends React.PureComponent {
           selectableMonth={selectableMonth}
           selectableYear={selectableYear}
           selectableMonthFormat={selectableMonthFormat}
+          selectableYearFormat={selectableYearFormat}
           date={date}
           minDate={minDate}
           maxDate={maxDate}

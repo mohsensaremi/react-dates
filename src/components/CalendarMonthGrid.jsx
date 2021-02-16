@@ -34,7 +34,7 @@ import {
   VERTICAL_ORIENTATION,
   VERTICAL_SCROLLABLE,
 } from '../constants';
-import { getMonthFormat, getMonthUnit, getYearUnit } from '../utils/calendarSystem';
+import { getMonthUnit, getYearUnit } from '../utils/calendarSystem';
 
 const propTypes = forbidExtraProps({
   classes: PropTypes.object.isRequired,
@@ -78,6 +78,7 @@ const propTypes = forbidExtraProps({
   selectableMonth: PropTypes.bool,
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
+  selectableYearFormat: PropTypes.string,
 });
 
 const defaultProps = {
@@ -126,6 +127,7 @@ const defaultProps = {
   selectableMonth: false,
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
+  selectableYearFormat: 'YYYY',
 };
 
 function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths, calendarSystem) {
@@ -135,7 +137,6 @@ function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths, calend
 
   const months = [];
   for (let i = 0; i < (withoutTransitionMonths ? numberOfMonths : numberOfMonths + 2); i += 1) {
-    console.log('getMonths', monthUnit, month.format('YYYY-MM-DD'), month.format('jYYYY-jMM-jDD'));
     months.push(month);
     month = month.clone()
       .add(1, monthUnit);
@@ -173,6 +174,7 @@ class CalendarMonthGrid extends React.PureComponent {
     this.onOpenYearSelect = this.onOpenYearSelect.bind(this);
     this.onCloseYearSelect = this.onCloseYearSelect.bind(this);
     this.getSelectableMonths = this.getSelectableMonths.bind(this);
+    this.getSelectableYears = this.getSelectableYears.bind(this);
   }
 
   componentDidMount() {
@@ -184,7 +186,12 @@ class CalendarMonthGrid extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { initialMonth, numberOfMonths, orientation, calendarSystem } = nextProps;
+    const {
+      initialMonth,
+      numberOfMonths,
+      orientation,
+      calendarSystem,
+    } = nextProps;
     const { months } = this.state;
 
     const {
@@ -270,27 +277,38 @@ class CalendarMonthGrid extends React.PureComponent {
     if (!withoutTransitionMonths) {
       initialMonthSubtraction -= 1;
     }
-    newMonth.month(newMonthVal)
+    newMonth[monthUnit](newMonthVal)
       .subtract(initialMonthSubtraction, `${monthUnit}s`);
     onMonthChange(newMonth);
   }
 
   onSelectableMonthSelect(currentMonth, newMonthVal) {
-    this.onMonthSelect(currentMonth, newMonthVal);
     this.onCloseMonthSelect();
+    setImmediate(() => {
+      this.onMonthSelect(currentMonth, newMonthVal);
+    });
+  }
+
+  onSelectableYearSelect(currentMonth, newYearVal) {
+    this.onCloseYearSelect();
+    setImmediate(() => {
+      this.onYearSelect(currentMonth, newYearVal);
+    });
   }
 
   onYearSelect(currentMonth, newYearVal) {
     const newMonth = currentMonth.clone();
-    const { onYearChange, orientation } = this.props;
+    const { onYearChange, orientation, calendarSystem } = this.props;
     const { months } = this.state;
+    const monthUnit = getMonthUnit(calendarSystem);
+    const yearUnit = getYearUnit(calendarSystem);
     const withoutTransitionMonths = orientation === VERTICAL_SCROLLABLE;
     let initialMonthSubtraction = months.indexOf(currentMonth);
     if (!withoutTransitionMonths) {
       initialMonthSubtraction -= 1;
     }
-    newMonth.set('year', newYearVal)
-      .subtract(initialMonthSubtraction, 'months');
+    newMonth[yearUnit](newYearVal)
+      .subtract(initialMonthSubtraction, `${monthUnit}s`);
     onYearChange(newMonth);
   }
 
@@ -331,16 +349,38 @@ class CalendarMonthGrid extends React.PureComponent {
     const yearUnit = getYearUnit(calendarSystem);
     const monthUnit = getMonthUnit(calendarSystem);
 
-    const month = currentMonth.clone().startOf(yearUnit);
+    const month = currentMonth.clone()
+      .startOf(yearUnit);
     const selectableMonths = [];
     for (let i = 0; i < 12; i += 1) {
       selectableMonths.push({
-        moment: month,
         title: month.format(selectableMonthFormat),
-        index: i,
+        value: i,
       });
-      month.add(1, monthUnit)
-        .startOf(monthUnit);
+      month.add(1, monthUnit);
+    }
+
+    return selectableMonths;
+  }
+
+  getSelectableYears(currentMonth) {
+    const {
+      calendarSystem,
+      selectableYearFormat,
+    } = this.props;
+
+    const yearUnit = getYearUnit(calendarSystem);
+
+    const year = currentMonth.clone()
+      .startOf(yearUnit)
+      .add(30, yearUnit);
+    const selectableMonths = [];
+    for (let i = 200; i >= 0; i -= 1) {
+      selectableMonths.push({
+        title: year.format(selectableYearFormat),
+        value: year[yearUnit](),
+      });
+      year.add(-1, yearUnit);
     }
 
     return selectableMonths;
@@ -352,7 +392,8 @@ class CalendarMonthGrid extends React.PureComponent {
     const {
       selectableMonth,
       selectableYear,
-      calendarSystem,
+      selectableMonthFormat,
+      selectableYearFormat,
       classes: styles,
     } = this.props;
 
@@ -361,15 +402,15 @@ class CalendarMonthGrid extends React.PureComponent {
       yearSelectOpen,
     } = this.state;
 
-    const [yearText, monthText] = month.format(getMonthFormat(calendarSystem))
-      .split('-');
+    const monthText = month.format(selectableMonthFormat);
+    const yearText = month.format(selectableYearFormat);
 
     const IconMonth = monthSelectOpen ? ChevronUp : ChevronDown;
     const IconYear = yearSelectOpen ? ChevronUp : ChevronDown;
 
     return (
       <div className={styles.CalendarMonthGrid_selectableYearMonth_buttons}>
-        <strong
+        <strong // eslint-disable-line jsx-a11y/no-static-element-interactions
           className={styles.CalendarMonthGrid_selectableYearMonth_button}
           onClick={yearSelectOpen ? this.onCloseYearSelect : this.onOpenYearSelect}
         >
@@ -385,7 +426,7 @@ class CalendarMonthGrid extends React.PureComponent {
             )
           }
         </strong>
-        <strong
+        <strong // eslint-disable-line jsx-a11y/no-static-element-interactions
           className={styles.CalendarMonthGrid_selectableYearMonth_button}
           onClick={monthSelectOpen ? this.onCloseMonthSelect : this.onOpenMonthSelect}
         >
@@ -473,9 +514,9 @@ class CalendarMonthGrid extends React.PureComponent {
             >
               {this.getSelectableMonths(months[1])
                 .map((month) => (
-                  <div
-                    key={month.index}
-                    onClick={() => this.onSelectableMonthSelect(months[1], month.index)}
+                  <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+                    key={month.value}
+                    onClick={() => this.onSelectableMonthSelect(months[1], month.value)}
                   >
                     {month.title}
                   </div>
@@ -488,7 +529,15 @@ class CalendarMonthGrid extends React.PureComponent {
             <div
               className={styles.CalendarMonthGrid_selectableYearMonth_wrapper}
             >
-              yearSelectOpen
+              {this.getSelectableYears(months[1])
+                .map((year) => (
+                  <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+                    key={year.value}
+                    onClick={() => this.onSelectableYearSelect(months[1], year.value)}
+                  >
+                    {year.title}
+                  </div>
+                ))}
             </div>
           )
         }
@@ -645,6 +694,7 @@ export default withStyles(({
     height: '100%',
     background: color.background,
     zIndex: zIndex + 2,
+    overflow: 'auto',
   },
 
   CalendarMonthGrid_selectableYearMonth_buttons: {

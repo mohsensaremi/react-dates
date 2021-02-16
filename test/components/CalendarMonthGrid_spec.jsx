@@ -20,6 +20,7 @@ describe('CalendarMonthGrid', () => {
     const translationValue = 100;
     const transformStyles = getTransformStyles(`translateX(${translationValue}px)`);
     const wrapper = shallow(<CalendarMonthGrid translationValue={translationValue} />).dive();
+    console.log(wrapper.debug());
     Object.keys(transformStyles).forEach((key) => {
       expect(wrapper.prop('style')[key]).to.equal(transformStyles[key]);
     });

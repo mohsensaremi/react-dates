@@ -259,6 +259,7 @@ storiesOf('SDP - Calendar Props', module)
             selectableMonth
             selectableYear
             selectableMonthFormat="jMMMM"
+            selectableYearFormat="jYYYY"
             placeholder="تقویم فارسی"
             defaultInitialVisibleMonth={momentJalaali()}
             renderMonthText={(month) => momentJalaali(month).format('jMMMM jYYYY')}
