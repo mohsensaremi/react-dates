@@ -1,6 +1,6 @@
 {
   "name": "@mohsen_saremi/react-dates-mui",
-  "version": "21.8.14",
+  "version": "21.8.15",
   "description": "A responsive and accessible date range picker component built with React",
   "main": "index.js",
   "scripts": {
