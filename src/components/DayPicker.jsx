@@ -860,7 +860,6 @@ class DayPicker extends React.PureComponent {
 
     if (!monthTransition) return;
 
-    const monthUnit = getMonthUnit(calendarSystem);
     const newMonth = currentMonth.clone();
     const firstDayOfWeek = this.getFirstDayOfWeek();
     if (monthTransition === PREV_TRANSITION) {
