@@ -751,10 +751,10 @@ class DayPicker extends React.PureComponent {
     this.calendarMonthWeeks = [];
     const monthUnit = getMonthUnit(calendarSystem);
     let month = currentMonth.clone()
-      .subtract(1, getMonthUnit(monthUnit));
+      .subtract(1, monthUnit);
     const firstDayOfWeek = this.getFirstDayOfWeek();
     for (let i = 0; i < numberOfMonths + 2; i += 1) {
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(month, firstDayOfWeek, monthUnit);
+      const numberOfWeeks = getNumberOfCalendarMonthWeeks(month, firstDayOfWeek, calendarSystem);
       this.calendarMonthWeeks.push(numberOfWeeks);
       month = month.add(1, monthUnit);
     }
@@ -869,7 +869,7 @@ class DayPicker extends React.PureComponent {
       const newInvisibleMonth = newMonth.clone()
         .subtract(1, 'month');
       // eslint-disable-next-line max-len
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, monthUnit);
+      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, calendarSystem);
       this.calendarMonthWeeks = [numberOfWeeks, ...this.calendarMonthWeeks.slice(0, -1)];
     } else if (monthTransition === NEXT_TRANSITION) {
       newMonth.add(1, 'month');
@@ -877,7 +877,7 @@ class DayPicker extends React.PureComponent {
       const newInvisibleMonth = newMonth.clone()
         .add(numberOfMonths, 'month');
       // eslint-disable-next-line max-len
-      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, monthUnit);
+      const numberOfWeeks = getNumberOfCalendarMonthWeeks(newInvisibleMonth, firstDayOfWeek, calendarSystem);
       this.calendarMonthWeeks = [...this.calendarMonthWeeks.slice(1), numberOfWeeks];
     } else if (monthTransition === MONTH_SELECTION_TRANSITION) {
       if (onMonthChange) onMonthChange(newMonth);
