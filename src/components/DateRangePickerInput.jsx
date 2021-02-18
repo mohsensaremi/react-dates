@@ -64,6 +64,8 @@ const propTypes = forbidExtraProps({
   showClearDates: PropTypes.bool,
   disabled: DisabledShape,
   required: PropTypes.bool,
+  variant: PropTypes.string,
+  margin: PropTypes.string,
   readOnly: PropTypes.bool,
   openDirection: openDirectionShape,
   showCaret: PropTypes.bool,
@@ -129,6 +131,8 @@ const defaultProps = {
   showClearDates: false,
   disabled: false,
   required: false,
+  variant: 'outlined',
+  margin: undefined,
   readOnly: false,
   openDirection: OPEN_DOWN,
   showCaret: false,
@@ -183,6 +187,8 @@ function DateRangePickerInput({
   showClearDates,
   disabled,
   required,
+  variant,
+  margin,
   readOnly,
   showCaret,
   openDirection,
@@ -262,6 +268,8 @@ function DateRangePickerInput({
           isFocused={isFocused}
           disabled={startDateDisabled}
           required={required}
+          variant={variant}
+          margin={margin}
           readOnly={readOnly}
           showCaret={showCaret}
           openDirection={openDirection}
@@ -299,6 +307,8 @@ function DateRangePickerInput({
           isFocused={isFocused}
           disabled={endDateDisabled}
           required={required}
+          variant={variant}
+          margin={margin}
           readOnly={readOnly}
           showCaret={showCaret}
           openDirection={openDirection}

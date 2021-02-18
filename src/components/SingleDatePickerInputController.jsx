@@ -47,6 +47,8 @@ const propTypes = forbidExtraProps({
   inputIconPosition: IconPositionShape,
   disabled: DisabledShape,
   required: PropTypes.bool,
+  variant: PropTypes.string,
+  margin: PropTypes.string,
   readOnly: PropTypes.bool,
   openDirection: openDirectionShape,
   noBorder: PropTypes.bool,
@@ -96,6 +98,8 @@ const defaultProps = {
   inputIconPosition: ICON_BEFORE_POSITION,
   disabled: false,
   required: false,
+  variant: 'outlined',
+  margin: undefined,
   readOnly: false,
   openDirection: OPEN_DOWN,
   noBorder: true,
@@ -218,6 +222,8 @@ export default class SingleDatePickerInputController extends React.PureComponent
       focused,
       isFocused,
       required,
+      variant,
+      margin,
       readOnly,
       openDirection,
       showClearDate,
@@ -254,6 +260,8 @@ export default class SingleDatePickerInputController extends React.PureComponent
         isFocused={isFocused}
         disabled={disabled}
         required={required}
+        variant={variant}
+        margin={margin}
         readOnly={readOnly}
         openDirection={openDirection}
         showCaret={showCaret}

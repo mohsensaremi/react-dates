@@ -39,6 +39,8 @@ export default {
   titleText: PropTypes.string,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
+  variant: PropTypes.string,
+  margin: PropTypes.string,
   readOnly: PropTypes.bool,
   screenReaderInputMessage: PropTypes.string,
   showClearDate: PropTypes.bool,

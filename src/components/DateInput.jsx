@@ -38,6 +38,8 @@ const propTypes = forbidExtraProps({
   focused: PropTypes.bool,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
+  variant: PropTypes.string,
+  margin: PropTypes.string,
   readOnly: PropTypes.bool,
   openDirection: openDirectionShape,
   showCaret: PropTypes.bool,
@@ -73,6 +75,8 @@ const defaultProps = {
   focused: false,
   disabled: false,
   required: false,
+  variant: 'outlined',
+  margin: undefined,
   readOnly: null,
   openDirection: OPEN_DOWN,
   showCaret: false,
@@ -207,6 +211,8 @@ class DateInput extends React.PureComponent {
       onFocus,
       disabled,
       required,
+      variant,
+      margin,
       readOnly,
       openDirection,
       verticalSpacing,
@@ -279,7 +285,8 @@ class DateInput extends React.PureComponent {
           placeholder={placeholder}
           disabled={disabled}
           required={required}
-          variant="outlined"
+          variant={variant}
+          margin={margin}
           fullWidth
         />
 

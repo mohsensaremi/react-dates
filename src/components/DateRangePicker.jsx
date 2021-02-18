@@ -74,6 +74,8 @@ const defaultProps = {
   endDateOffset: undefined,
   disabled: false,
   required: false,
+  variant: 'outlined',
+  margin: undefined,
   readOnly: false,
   screenReaderInputMessage: '',
   showClearDates: false,
@@ -706,6 +708,8 @@ class DateRangePicker extends React.PureComponent {
       customCloseIcon,
       disabled,
       required,
+      variant,
+      margin,
       readOnly,
       openDirection,
       phrases,
@@ -765,6 +769,8 @@ class DateRangePicker extends React.PureComponent {
         customCloseIcon={customCloseIcon}
         disabled={disabled}
         required={required}
+        variant={variant}
+        margin={margin}
         readOnly={readOnly}
         openDirection={openDirection}
         reopenPickerOnClearDates={reopenPickerOnClearDates}

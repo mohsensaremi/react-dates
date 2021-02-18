@@ -66,6 +66,8 @@ const defaultProps = {
   titleText: undefined,
   disabled: false,
   required: false,
+  variant: 'outlined',
+  margin: undefined,
   readOnly: false,
   screenReaderInputMessage: '',
   showClearDate: false,
@@ -672,6 +674,8 @@ class SingleDatePicker extends React.PureComponent {
       disabled,
       focused,
       required,
+      variant,
+      margin,
       readOnly,
       openDirection,
       showClearDate,
@@ -720,6 +724,8 @@ class SingleDatePicker extends React.PureComponent {
         isFocused={isInputFocused}
         disabled={disabled}
         required={required}
+        variant={variant}
+        margin={margin}
         readOnly={readOnly}
         openDirection={openDirection}
         showCaret={!usePopper && !usePopover && !withPortal && !withFullScreenPortal && !hideFang}

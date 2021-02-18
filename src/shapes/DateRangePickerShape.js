@@ -52,6 +52,8 @@ export default {
   endDateTitleText: PropTypes.string,
   disabled: DisabledShape,
   required: PropTypes.bool,
+  variant: PropTypes.string,
+  margin: PropTypes.string,
   readOnly: PropTypes.bool,
   screenReaderInputMessage: PropTypes.string,
   showClearDates: PropTypes.bool,
