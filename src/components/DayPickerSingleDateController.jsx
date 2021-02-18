@@ -36,6 +36,10 @@ import getPooledMoment from '../utils/getPooledMoment';
 
 const propTypes = forbidExtraProps({
   DayPickerClasses: PropTypes.object,
+  CalendarMonthGridClasses: PropTypes.object,
+  CalendarDayClasses: PropTypes.object,
+  CalendarMonthClasses: PropTypes.object,
+  DayPickerNavigationClasses: PropTypes.object,
   date: momentPropTypes.momentObj,
   minDate: momentPropTypes.momentObj,
   maxDate: momentPropTypes.momentObj,
@@ -120,6 +124,10 @@ const propTypes = forbidExtraProps({
 
 const defaultProps = {
   DayPickerClasses: undefined,
+  CalendarMonthGridClasses: undefined,
+  CalendarDayClasses: undefined,
+  CalendarMonthClasses: undefined,
+  DayPickerNavigationClasses: undefined,
   date: undefined, // TODO: use null
   minDate: null,
   maxDate: null,
@@ -737,6 +745,10 @@ export default class DayPickerSingleDateController extends React.PureComponent {
   render() {
     const {
       DayPickerClasses,
+      CalendarMonthGridClasses,
+      CalendarDayClasses,
+      CalendarMonthClasses,
+      DayPickerNavigationClasses,
       numberOfMonths,
       orientation,
       monthFormat,
@@ -801,6 +813,10 @@ export default class DayPickerSingleDateController extends React.PureComponent {
     return (
       <DayPicker
         classes={DayPickerClasses}
+        CalendarMonthGridClasses={CalendarMonthGridClasses}
+        CalendarDayClasses={CalendarDayClasses}
+        CalendarMonthClasses={CalendarMonthClasses}
+        DayPickerNavigationClasses={DayPickerNavigationClasses}
         selectableMonth={selectableMonth}
         selectableYear={selectableYear}
         selectableMonthFormat={selectableMonthFormat}

@@ -20,6 +20,7 @@ const propTypes = {
     'onDateChange',
     'focused',
     'onFocusChange',
+    'classes',
   ]),
 };
 

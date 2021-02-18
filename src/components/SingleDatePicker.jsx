@@ -39,7 +39,6 @@ import {
   VERTICAL_ORIENTATION,
 } from '../constants';
 import getDaySize from '../utils/getDaySize';
-import CalendarMonthGrid from './CalendarMonthGrid';
 
 const propTypes = forbidExtraProps({
   ...SingleDatePickerShape,
