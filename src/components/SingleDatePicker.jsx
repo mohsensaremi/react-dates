@@ -432,9 +432,9 @@ class SingleDatePicker extends React.PureComponent {
     if (usePopper) {
       return (
         <Popper
-          {...PopperProps}
           open={focused}
           anchorEl={this.container}
+          {...PopperProps}
         >
           {this.renderDayPicker()}
         </Popper>
@@ -443,7 +443,6 @@ class SingleDatePicker extends React.PureComponent {
     if (usePopover) {
       return (
         <Popover
-          {...PopoverProps}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'center',
@@ -456,6 +455,7 @@ class SingleDatePicker extends React.PureComponent {
           anchorEl={this.container}
           onClose={this.onOutsideClick}
           disableRestoreFocus
+          {...PopoverProps}
         >
           {this.renderDayPicker()}
         </Popover>
