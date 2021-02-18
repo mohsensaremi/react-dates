@@ -39,6 +39,7 @@ import {
   VERTICAL_ORIENTATION,
 } from '../constants';
 import getDaySize from '../utils/getDaySize';
+import CalendarMonthGrid from './CalendarMonthGrid';
 
 const propTypes = forbidExtraProps({
   ...SingleDatePickerShape,
@@ -154,6 +155,12 @@ const defaultProps = {
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
   selectableYearFormat: 'YYYY',
+  selectableYearIcon: undefined,
+  openYearIcon: undefined,
+  closeYearIcon: undefined,
+  selectableMonthIcon: undefined,
+  openMonthIcon: undefined,
+  closeMonthIcon: undefined,
 
   appendToInput: false,
 };
@@ -535,6 +542,12 @@ class SingleDatePicker extends React.PureComponent {
       selectableYear,
       selectableMonthFormat,
       selectableYearFormat,
+      selectableYearIcon,
+      openYearIcon,
+      closeYearIcon,
+      selectableMonthIcon,
+      openMonthIcon,
+      closeMonthIcon,
       appendToInput,
     } = this.props;
 
@@ -594,6 +607,12 @@ class SingleDatePicker extends React.PureComponent {
           selectableYear={selectableYear}
           selectableMonthFormat={selectableMonthFormat}
           selectableYearFormat={selectableYearFormat}
+          selectableYearIcon={selectableYearIcon}
+          openYearIcon={openYearIcon}
+          closeYearIcon={closeYearIcon}
+          selectableMonthIcon={selectableMonthIcon}
+          openMonthIcon={openMonthIcon}
+          closeMonthIcon={closeMonthIcon}
           date={date}
           minDate={minDate}
           maxDate={maxDate}

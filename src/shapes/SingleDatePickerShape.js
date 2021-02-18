@@ -122,6 +122,12 @@ export default {
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
   selectableYearFormat: PropTypes.string,
+  selectableYearIcon: PropTypes.node,
+  openYearIcon: PropTypes.node,
+  closeYearIcon: PropTypes.node,
+  selectableMonthIcon: PropTypes.node,
+  openMonthIcon: PropTypes.node,
+  closeMonthIcon: PropTypes.node,
 
   appendToInput: PropTypes.bool,
 };

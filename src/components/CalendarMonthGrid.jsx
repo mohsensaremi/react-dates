@@ -79,6 +79,12 @@ const propTypes = forbidExtraProps({
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
   selectableYearFormat: PropTypes.string,
+  selectableYearIcon: PropTypes.node,
+  openYearIcon: PropTypes.node,
+  closeYearIcon: PropTypes.node,
+  selectableMonthIcon: PropTypes.node,
+  openMonthIcon: PropTypes.node,
+  closeMonthIcon: PropTypes.node,
 });
 
 const defaultProps = {
@@ -128,6 +134,12 @@ const defaultProps = {
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
   selectableYearFormat: 'YYYY',
+  selectableYearIcon: undefined,
+  openYearIcon: undefined,
+  closeYearIcon: undefined,
+  selectableMonthIcon: undefined,
+  openMonthIcon: undefined,
+  closeMonthIcon: undefined,
 };
 
 function getMonths(initialMonth, numberOfMonths, withoutTransitionMonths, calendarSystem) {
@@ -395,6 +407,12 @@ class CalendarMonthGrid extends React.PureComponent {
       selectableMonthFormat,
       selectableYearFormat,
       classes: styles,
+      selectableYearIcon,
+      openYearIcon,
+      closeYearIcon,
+      selectableMonthIcon,
+      openMonthIcon,
+      closeMonthIcon,
     } = this.props;
 
     const {
@@ -405,41 +423,47 @@ class CalendarMonthGrid extends React.PureComponent {
     const monthText = month.format(selectableMonthFormat);
     const yearText = month.format(selectableYearFormat);
 
-    const IconMonth = monthSelectOpen ? ChevronUp : ChevronDown;
-    const IconYear = yearSelectOpen ? ChevronUp : ChevronDown;
+    const DefaultIconMonth = monthSelectOpen ? ChevronUp : ChevronDown;
+    const DefaultIconYear = yearSelectOpen ? ChevronUp : ChevronDown;
+
+    const defaultMonthIcon = (
+      <DefaultIconMonth
+        className={styles.CalendarMonthGrid_selectableYearMonth_svg}
+      />
+    );
+
+    const defaultYearIcon = (
+      <DefaultIconYear
+        className={styles.CalendarMonthGrid_selectableYearMonth_svg}
+      />
+    );
+
+    const monthIcon = monthSelectOpen
+      ? (openMonthIcon || selectableMonthIcon || defaultMonthIcon)
+      : (closeMonthIcon || selectableMonthIcon || defaultMonthIcon);
+
+    const yearIcon = yearSelectOpen
+      ? (openYearIcon || selectableYearIcon || defaultYearIcon)
+      : (closeYearIcon || selectableYearIcon || defaultYearIcon);
 
     return (
       <div className={styles.CalendarMonthGrid_selectableYearMonth_buttons}>
-        <strong // eslint-disable-line jsx-a11y/no-static-element-interactions
-          className={styles.CalendarMonthGrid_selectableYearMonth_button}
-          onClick={yearSelectOpen ? this.onCloseYearSelect : this.onOpenYearSelect}
-        >
-          {yearText}
-          {
-            selectableYear && (
-              <IconYear
-                className={clsx({
-                  [styles.CalendarMonthGrid_openSelectableYearMonth_svg]: false,
-                  [styles.CalendarMonthGrid_closeSelectableYearMonth_svg]: true,
-                })}
-              />
-            )
-          }
-        </strong>
         <strong // eslint-disable-line jsx-a11y/no-static-element-interactions
           className={styles.CalendarMonthGrid_selectableYearMonth_button}
           onClick={monthSelectOpen ? this.onCloseMonthSelect : this.onOpenMonthSelect}
         >
           {monthText}
           {
-            selectableMonth && (
-              <IconMonth
-                className={clsx({
-                  [styles.CalendarMonthGrid_openSelectableYearMonth_svg]: false,
-                  [styles.CalendarMonthGrid_closeSelectableYearMonth_svg]: true,
-                })}
-              />
-            )
+            selectableMonth && monthIcon
+          }
+        </strong>
+        <strong // eslint-disable-line jsx-a11y/no-static-element-interactions
+          className={styles.CalendarMonthGrid_selectableYearMonth_button}
+          onClick={yearSelectOpen ? this.onCloseYearSelect : this.onOpenYearSelect}
+        >
+          {yearText}
+          {
+            selectableYear && yearIcon
           }
         </strong>
       </div>
@@ -716,14 +740,7 @@ export default withStyles(({
     },
   },
 
-  CalendarMonthGrid_openSelectableYearMonth_svg: {
-    marginLeft: 4,
-    marginRight: 4,
-    height: 15,
-    width: 15,
-  },
-
-  CalendarMonthGrid_closeSelectableYearMonth_svg: {
+  CalendarMonthGrid_selectableYearMonth_svg: {
     marginLeft: 4,
     marginRight: 4,
     height: 15,

@@ -139,6 +139,12 @@ const propTypes = forbidExtraProps({
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
   selectableYearFormat: PropTypes.string,
+  selectableYearIcon: PropTypes.node,
+  openYearIcon: PropTypes.node,
+  closeYearIcon: PropTypes.node,
+  selectableMonthIcon: PropTypes.node,
+  openMonthIcon: PropTypes.node,
+  closeMonthIcon: PropTypes.node,
 
   appendToInput: PropTypes.bool,
 });
@@ -235,6 +241,12 @@ export const defaultProps = {
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
   selectableYearFormat: 'YYYY',
+  selectableYearIcon: undefined,
+  openYearIcon: undefined,
+  closeYearIcon: undefined,
+  selectableMonthIcon: undefined,
+  openMonthIcon: undefined,
+  closeMonthIcon: undefined,
 
   appendToInput: false,
 };
@@ -1135,6 +1147,12 @@ class DayPicker extends React.PureComponent {
       selectableYear,
       selectableMonthFormat,
       selectableYearFormat,
+      selectableYearIcon,
+      openYearIcon,
+      closeYearIcon,
+      selectableMonthIcon,
+      openMonthIcon,
+      closeMonthIcon,
       appendToInput,
     } = this.props;
 
@@ -1281,6 +1299,12 @@ class DayPicker extends React.PureComponent {
                     selectableYear={selectableYear}
                     selectableMonthFormat={selectableMonthFormat}
                     selectableYearFormat={selectableYearFormat}
+                    selectableYearIcon={selectableYearIcon}
+                    openYearIcon={openYearIcon}
+                    closeYearIcon={closeYearIcon}
+                    selectableMonthIcon={selectableMonthIcon}
+                    openMonthIcon={openMonthIcon}
+                    closeMonthIcon={closeMonthIcon}
                     setMonthTitleHeight={!monthTitleHeight ? this.setMonthTitleHeight : undefined}
                     translationValue={translationValue}
                     enableOutsideDays={enableOutsideDays}
