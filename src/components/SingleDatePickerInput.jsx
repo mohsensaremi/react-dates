@@ -238,7 +238,6 @@ SingleDatePickerInput.defaultProps = defaultProps;
 export default withStyles(({ reactDates: { border, color } }) => ({
   SingleDatePickerInput: {
     display: 'inline-block',
-    backgroundColor: color.background,
   },
 
   SingleDatePickerInput__withBorder: {

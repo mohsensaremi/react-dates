@@ -120,4 +120,6 @@ export default {
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
   selectableYearFormat: PropTypes.string,
+
+  appendToInput: PropTypes.bool,
 };

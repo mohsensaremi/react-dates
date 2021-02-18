@@ -122,6 +122,7 @@ storiesOf('DRP - Calendar Props', module)
       </div>
     </div>
   )))
+  .add('appended to input', withInfo()(() => <DateRangePickerWrapper appendToInput block />))
   .add('does not autoclose the DayPicker on date selection', withInfo()(() => (
     <DateRangePickerWrapper
       keepOpenOnDateSelect

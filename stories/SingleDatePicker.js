@@ -43,6 +43,31 @@ storiesOf('SingleDatePicker (SDP)', module)
       <TestInput placeholder="Input 3" />
     </div>
   )))
+  .add('as part of a form appended to input', withInfo()(() => (
+    <div style={{ width: 300 }}>
+      <SingleDatePickerWrapper block appendToInput numberOfMonths={1} />
+      <TestInput
+        placeholder="Input 1"
+        style={{
+          height: 48,
+          width: '100%',
+          fontSize: 18,
+          fontWeight: 200,
+          padding: '12px 16px',
+        }}
+      />
+      <TestInput
+        placeholder="Input 2"
+        style={{
+          height: 48,
+          width: '100%',
+          fontSize: 18,
+          fontWeight: 200,
+          padding: '12px 16px',
+        }}
+      />
+    </div>
+  )))
   .add('non-english locale (Chinese)', withInfo()(() => {
     moment.locale('zh-cn');
     return (

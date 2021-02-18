@@ -128,4 +128,6 @@ export default {
   usePopover: PropTypes.bool,
   PopperProps: PropTypes.object,
   PopoverProps: PropTypes.object,
+
+  appendToInput: PropTypes.bool,
 };

@@ -134,6 +134,7 @@ storiesOf('SDP - Calendar Props', module)
       </div>
     </div>
   )))
+  .add('appended to input', withInfo()(() => <SingleDatePickerWrapper appendToInput block />))
   .add('does not autoclose the DayPicker on date selection', withInfo()(() => (
     <SingleDatePickerWrapper
       keepOpenOnDateSelect

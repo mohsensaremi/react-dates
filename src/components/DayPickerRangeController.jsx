@@ -125,6 +125,8 @@ const propTypes = forbidExtraProps({
   isRTL: PropTypes.bool,
 
   calendarSystem: PropTypes.oneOf([CALENDAR_SYSTEM_GREGORIAN, CALENDAR_SYSTEM_JALALI]),
+
+  appendToInput: PropTypes.bool,
 });
 
 const defaultProps = {
@@ -209,6 +211,8 @@ const defaultProps = {
   isRTL: false,
 
   calendarSystem: CALENDAR_SYSTEM_GREGORIAN,
+
+  appendToInput: false,
 };
 
 const getChooseAvailableDatePhrase = (phrases, focusedInput) => {
@@ -1363,6 +1367,7 @@ export default class DayPickerRangeController extends React.PureComponent {
       verticalBorderSpacing,
       horizontalMonthPadding,
       calendarSystem,
+      appendToInput,
     } = this.props;
 
     const {
@@ -1437,6 +1442,7 @@ export default class DayPickerRangeController extends React.PureComponent {
         transitionDuration={transitionDuration}
         horizontalMonthPadding={horizontalMonthPadding}
         calendarSystem={calendarSystem}
+        appendToInput={appendToInput}
       />
     );
   }

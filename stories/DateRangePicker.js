@@ -72,6 +72,14 @@ storiesOf('DateRangePicker (DRP)', module)
       <TestInput placeholder="Input 3" />
     </div>
   )))
+  .add('as part of a form appended to input', withInfo()(() => (
+    <div style={{ width: 300 }}>
+      <DateRangePickerWrapper appendToInput block numberOfMonths={1} />
+      <TestInput placeholder="Input 1" />
+      <TestInput placeholder="Input 2" />
+      <TestInput placeholder="Input 3" />
+    </div>
+  )))
   .add('non-english locale', withInfo()(() => {
     moment.locale('zh-cn');
     return (

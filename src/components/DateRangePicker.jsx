@@ -41,6 +41,7 @@ import {
   START_DATE,
   VERTICAL_ORIENTATION,
 } from '../constants';
+import getDaySize from '../utils/getDaySize';
 
 const propTypes = forbidExtraProps({
   ...DateRangePickerShape,
@@ -112,7 +113,7 @@ const defaultProps = {
   verticalHeight: null,
   transitionDuration: undefined,
   verticalSpacing: DEFAULT_VERTICAL_SPACING,
-  horizontalMonthPadding: undefined,
+  horizontalMonthPadding: 13,
 
   // navigation related props
   dayPickerNavigationInlineStyles: null,
@@ -156,6 +157,8 @@ const defaultProps = {
   usePopover: false,
   PopperProps: undefined,
   PopoverProps: undefined,
+
+  appendToInput: false,
 };
 
 class DateRangePicker extends React.PureComponent {
@@ -544,7 +547,16 @@ class DateRangePicker extends React.PureComponent {
       calendarSystem,
       usePopper,
       usePopover,
+      appendToInput,
     } = this.props;
+
+    const calculatedDaySize = getDaySize(
+      daySize,
+      horizontalMonthPadding,
+      appendToInput,
+      this.container,
+      reactDates,
+    );
 
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
@@ -569,7 +581,8 @@ class DateRangePicker extends React.PureComponent {
       <div
         ref={this.setDayPickerContainerRef}
         className={clsx(styles.DateRangePicker_picker, {
-          [styles.DateRangePicker_pickerAbsolute]: !usePopper && !usePopover,
+          [styles.DateRangePicker_pickerAbsolute]: !usePopper && !usePopover && !appendToInput,
+          [styles.DateRangePicker_pickerAppendToInput]: appendToInput,
           [styles.DateRangePicker_picker__directionLeft]: anchorDirection === ANCHOR_LEFT,
           [styles.DateRangePicker_picker__directionRight]: anchorDirection === ANCHOR_RIGHT,
           [styles.DateRangePicker_picker__horizontal]: orientation === HORIZONTAL_ORIENTATION,
@@ -580,10 +593,10 @@ class DateRangePicker extends React.PureComponent {
         })}
         style={{
           ...(!withAnyPortal && openDirection === OPEN_DOWN && {
-            top: inputHeight + verticalSpacing,
+            top: (appendToInput ? 0 : inputHeight) + verticalSpacing - (appendToInput ? 11 : 0),
           }),
           ...(!withAnyPortal && openDirection === OPEN_UP && {
-            bottom: inputHeight + verticalSpacing,
+            bottom: (appendToInput ? 0 : inputHeight) + verticalSpacing - (appendToInput ? 11 : 0),
           }),
           ...dayPickerContainerStyles,
         }}
@@ -614,7 +627,7 @@ class DateRangePicker extends React.PureComponent {
           renderMonthText={renderMonthText}
           renderWeekHeaderElement={renderWeekHeaderElement}
           withPortal={withAnyPortal}
-          daySize={daySize}
+          daySize={calculatedDaySize}
           initialVisibleMonth={initialVisibleMonthThunk}
           hideKeyboardShortcutsPanel={hideKeyboardShortcutsPanel}
           dayPickerNavigationInlineStyles={dayPickerNavigationInlineStyles}
@@ -647,6 +660,7 @@ class DateRangePicker extends React.PureComponent {
           disabled={disabled}
           horizontalMonthPadding={horizontalMonthPadding}
           calendarSystem={calendarSystem}
+          appendToInput={appendToInput}
         />
 
         {withFullScreenPortal && (
@@ -825,6 +839,10 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
 
   DateRangePicker_pickerAbsolute: {
     position: 'absolute',
+  },
+
+  DateRangePicker_pickerAppendToInput: {
+    position: 'relative',
   },
 
   DateRangePicker_picker__rtl: {

@@ -248,90 +248,90 @@ function DateRangePickerInput({
         [styles.DateRangePickerInput__showClearDates]: showClearDates,
       })}
     >
-      <DateInput
-        classes={StartDateInputClasses}
-        id={startDateId}
-        placeholder={startDatePlaceholderText}
-        label={startDateLabelText}
-        ariaLabel={startDateAriaLabel}
-        titleText={startDateTitleText}
-        displayValue={startDate}
-        screenReaderMessage={screenReaderStartDateText}
-        focused={isStartDateFocused}
-        isFocused={isFocused}
-        disabled={startDateDisabled}
-        required={required}
-        readOnly={readOnly}
-        showCaret={showCaret}
-        openDirection={openDirection}
-        onChange={onStartDateChange}
-        onFocus={onStartDateFocus}
-        onKeyDownShiftTab={onStartDateShiftTab}
-        onKeyDownArrowDown={onKeyDownArrowDown}
-        onKeyDownQuestionMark={onKeyDownQuestionMark}
-        verticalSpacing={verticalSpacing}
-        small={small}
-        regular={regular}
-        isStartDate
-        startAdornment={inputIconPosition === ICON_BEFORE_POSITION && inputIcon}
-        endAdornment={(
-          <div
-            className={styles.DateRangePickerInput_arrow}
-            aria-hidden="true"
-            role="presentation"
-          >
-            {arrowIcon}
-          </div>
-        )}
-      />
-
-      {children}
-
-      <DateInput
-        classes={EndDateInputClasses}
-        id={endDateId}
-        placeholder={endDatePlaceholderText}
-        label={endDateLabelText}
-        ariaLabel={endDateAriaLabel}
-        titleText={endDateTitleText}
-        displayValue={endDate}
-        screenReaderMessage={screenReaderEndDateText}
-        focused={isEndDateFocused}
-        isFocused={isFocused}
-        disabled={endDateDisabled}
-        required={required}
-        readOnly={readOnly}
-        showCaret={showCaret}
-        openDirection={openDirection}
-        onChange={onEndDateChange}
-        onFocus={onEndDateFocus}
-        onKeyDownArrowDown={onKeyDownArrowDown}
-        onKeyDownQuestionMark={onKeyDownQuestionMark}
-        onKeyDownTab={onEndDateTab}
-        verticalSpacing={verticalSpacing}
-        small={small}
-        regular={regular}
-        isEndDate
-        endAdornment={showClearDates && (
-          <>
-            <button
-              type="button"
-              aria-label={phrases.clearDates}
-              className={clsx(styles.DateRangePickerInput_clearDates, {
-                [styles.DateRangePickerInput_clearDates__small]: small,
-                [styles.DateRangePickerInput_clearDates_default]: !customCloseIcon,
-                [styles.DateRangePickerInput_clearDates__hide]: !(startDate || endDate),
-              })}
-              onClick={onClearDates}
-              disabled={disabled}
+      <div className={styles.DateRangePickerInput_inputs}>
+        <DateInput
+          classes={StartDateInputClasses}
+          id={startDateId}
+          placeholder={startDatePlaceholderText}
+          label={startDateLabelText}
+          ariaLabel={startDateAriaLabel}
+          titleText={startDateTitleText}
+          displayValue={startDate}
+          screenReaderMessage={screenReaderStartDateText}
+          focused={isStartDateFocused}
+          isFocused={isFocused}
+          disabled={startDateDisabled}
+          required={required}
+          readOnly={readOnly}
+          showCaret={showCaret}
+          openDirection={openDirection}
+          onChange={onStartDateChange}
+          onFocus={onStartDateFocus}
+          onKeyDownShiftTab={onStartDateShiftTab}
+          onKeyDownArrowDown={onKeyDownArrowDown}
+          onKeyDownQuestionMark={onKeyDownQuestionMark}
+          verticalSpacing={verticalSpacing}
+          small={small}
+          regular={regular}
+          isStartDate
+          startAdornment={inputIconPosition === ICON_BEFORE_POSITION && inputIcon}
+          endAdornment={(
+            <div
+              className={styles.DateRangePickerInput_arrow}
+              aria-hidden="true"
+              role="presentation"
             >
-              {closeIcon}
-            </button>
-            {inputIconPosition === ICON_AFTER_POSITION && inputIcon}
-          </>
-        )}
-      />
+              {arrowIcon}
+            </div>
+          )}
+        />
 
+        <DateInput
+          classes={EndDateInputClasses}
+          id={endDateId}
+          placeholder={endDatePlaceholderText}
+          label={endDateLabelText}
+          ariaLabel={endDateAriaLabel}
+          titleText={endDateTitleText}
+          displayValue={endDate}
+          screenReaderMessage={screenReaderEndDateText}
+          focused={isEndDateFocused}
+          isFocused={isFocused}
+          disabled={endDateDisabled}
+          required={required}
+          readOnly={readOnly}
+          showCaret={showCaret}
+          openDirection={openDirection}
+          onChange={onEndDateChange}
+          onFocus={onEndDateFocus}
+          onKeyDownArrowDown={onKeyDownArrowDown}
+          onKeyDownQuestionMark={onKeyDownQuestionMark}
+          onKeyDownTab={onEndDateTab}
+          verticalSpacing={verticalSpacing}
+          small={small}
+          regular={regular}
+          isEndDate
+          endAdornment={showClearDates && (
+            <>
+              <button
+                type="button"
+                aria-label={phrases.clearDates}
+                className={clsx(styles.DateRangePickerInput_clearDates, {
+                  [styles.DateRangePickerInput_clearDates__small]: small,
+                  [styles.DateRangePickerInput_clearDates_default]: !customCloseIcon,
+                  [styles.DateRangePickerInput_clearDates__hide]: !(startDate || endDate),
+                })}
+                onClick={onClearDates}
+                disabled={disabled}
+              >
+                {closeIcon}
+              </button>
+              {inputIconPosition === ICON_AFTER_POSITION && inputIcon}
+            </>
+          )}
+        />
+      </div>
+      {children}
     </div>
   );
 }
@@ -341,7 +341,6 @@ DateRangePickerInput.defaultProps = defaultProps;
 
 export default withStyles(({ reactDates: { border, color, sizing } }) => ({
   DateRangePickerInput: {
-    backgroundColor: color.background,
     display: 'inline-flex',
     alignItems: 'center',
   },
@@ -362,6 +361,10 @@ export default withStyles(({ reactDates: { border, color, sizing } }) => ({
   },
 
   DateRangePickerInput__block: {
+    display: 'block',
+  },
+
+  DateRangePickerInput_inputs: {
     display: 'flex',
   },
 

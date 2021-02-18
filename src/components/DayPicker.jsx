@@ -139,6 +139,8 @@ const propTypes = forbidExtraProps({
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
   selectableYearFormat: PropTypes.string,
+
+  appendToInput: PropTypes.bool,
 });
 
 export const defaultProps = {
@@ -233,6 +235,8 @@ export const defaultProps = {
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
   selectableYearFormat: 'YYYY',
+
+  appendToInput: false,
 };
 
 class DayPicker extends React.PureComponent {
@@ -1131,6 +1135,7 @@ class DayPicker extends React.PureComponent {
       selectableYear,
       selectableMonthFormat,
       selectableYearFormat,
+      appendToInput,
     } = this.props;
 
     const { reactDates: { spacing: { dayPickerHorizontalPadding } } } = theme;
@@ -1192,16 +1197,16 @@ class DayPicker extends React.PureComponent {
     const fullHorizontalWidth = wrapperHorizontalWidth + calendarInfoPanelWidth + 1;
 
     const transitionContainerStyle = {
-      width: isHorizontal && wrapperHorizontalWidth,
+      width: isHorizontal && (appendToInput ? '100%' : wrapperHorizontalWidth),
       height,
     };
 
     const dayPickerWrapperStyle = {
-      width: isHorizontal && wrapperHorizontalWidth,
+      width: isHorizontal && (appendToInput ? '100%' : wrapperHorizontalWidth),
     };
 
     const dayPickerStyle = {
-      width: isHorizontal && fullHorizontalWidth,
+      width: isHorizontal && (appendToInput ? '100%' : fullHorizontalWidth),
 
       // These values are to center the datepicker (approximately) on the page
       marginLeft: isHorizontal && withPortal ? -fullHorizontalWidth / 2 : null,

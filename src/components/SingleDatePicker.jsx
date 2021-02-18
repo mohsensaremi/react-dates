@@ -38,6 +38,7 @@ import {
   OPEN_UP,
   VERTICAL_ORIENTATION,
 } from '../constants';
+import getDaySize from '../utils/getDaySize';
 
 const propTypes = forbidExtraProps({
   ...SingleDatePickerShape,
@@ -151,6 +152,8 @@ const defaultProps = {
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
   selectableYearFormat: 'YYYY',
+
+  appendToInput: false,
 };
 
 class SingleDatePicker extends React.PureComponent {
@@ -530,7 +533,17 @@ class SingleDatePicker extends React.PureComponent {
       selectableYear,
       selectableMonthFormat,
       selectableYearFormat,
+      appendToInput,
     } = this.props;
+
+    const calculatedDaySize = getDaySize(
+      daySize,
+      horizontalMonthPadding,
+      appendToInput,
+      this.container,
+      reactDates,
+    );
+
     const { dayPickerContainerStyles, isDayPickerFocused, showKeyboardShortcuts } = this.state;
 
     const onOutsideClick = (!withFullScreenPortal && withPortal) ? this.onOutsideClick : undefined;
@@ -546,7 +559,8 @@ class SingleDatePicker extends React.PureComponent {
       <div
         ref={this.setDayPickerContainerRef}
         className={clsx(styles.SingleDatePicker_picker, {
-          [styles.SingleDatePicker_pickerAbsolute]: !usePopper && !usePopover,
+          [styles.SingleDatePicker_pickerAbsolute]: !usePopper && !usePopover && !appendToInput,
+          [styles.SingleDatePicker_pickerAppendToInput]: appendToInput,
           [styles.SingleDatePicker_picker__directionLeft]: anchorDirection === ANCHOR_LEFT,
           [styles.SingleDatePicker_picker__directionRight]: anchorDirection === ANCHOR_RIGHT,
           [styles.SingleDatePicker_picker__openDown]: openDirection === OPEN_DOWN,
@@ -559,10 +573,10 @@ class SingleDatePicker extends React.PureComponent {
         })}
         style={{
           ...(!withAnyPortal && openDirection === OPEN_DOWN && {
-            top: inputHeight + verticalSpacing,
+            top: (appendToInput ? 0 : inputHeight) + verticalSpacing - (appendToInput ? 11 : 0),
           }),
           ...(!withAnyPortal && openDirection === OPEN_UP && {
-            bottom: inputHeight + verticalSpacing,
+            bottom: (appendToInput ? 0 : inputHeight) + verticalSpacing - (appendToInput ? 11 : 0),
           }),
           ...dayPickerContainerStyles,
         }}
@@ -614,7 +628,7 @@ class SingleDatePicker extends React.PureComponent {
           onBlur={this.onDayPickerBlur}
           phrases={phrases}
           dayAriaLabelFormat={dayAriaLabelFormat}
-          daySize={daySize}
+          daySize={calculatedDaySize}
           isRTL={isRTL}
           isOutsideRange={isOutsideRange}
           isDayBlocked={isDayBlocked}
@@ -625,6 +639,7 @@ class SingleDatePicker extends React.PureComponent {
           transitionDuration={transitionDuration}
           horizontalMonthPadding={horizontalMonthPadding}
           calendarSystem={calendarSystem}
+          appendToInput={appendToInput}
         />
 
         {withFullScreenPortal && (
@@ -783,6 +798,10 @@ export default withStyles(({ reactDates: { color, zIndex } }) => ({
 
   SingleDatePicker_pickerAbsolute: {
     position: 'absolute',
+  },
+
+  SingleDatePicker_pickerAppendToInput: {
+    position: 'relative',
   },
 
   SingleDatePicker_picker__rtl: {

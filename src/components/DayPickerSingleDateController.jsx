@@ -108,6 +108,8 @@ const propTypes = forbidExtraProps({
   selectableYear: PropTypes.bool,
   selectableMonthFormat: PropTypes.string,
   selectableYearFormat: PropTypes.string,
+
+  appendToInput: PropTypes.bool,
 });
 
 const defaultProps = {
@@ -197,6 +199,8 @@ const defaultProps = {
   selectableYear: false,
   selectableMonthFormat: 'MMMM',
   selectableYearFormat: 'YYYY',
+
+  appendToInput: false,
 };
 
 export default class DayPickerSingleDateController extends React.PureComponent {
@@ -766,6 +770,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
       selectableYear,
       selectableMonthFormat,
       selectableYearFormat,
+      appendToInput,
     } = this.props;
 
     const {
@@ -837,6 +842,7 @@ export default class DayPickerSingleDateController extends React.PureComponent {
         verticalBorderSpacing={verticalBorderSpacing}
         horizontalMonthPadding={horizontalMonthPadding}
         calendarSystem={calendarSystem}
+        appendToInput={appendToInput}
       />
     );
   }
