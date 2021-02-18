@@ -118,4 +118,7 @@ storiesOf('SDP - Input Props', module)
   )))
   .add('usePopover', withInfo()(() => (
     <SingleDatePickerWrapper usePopover />
+  )))
+  .add('standard variant', withInfo()(() => (
+    <SingleDatePickerWrapper variant="standard" />
   )));

@@ -193,4 +193,7 @@ storiesOf('DRP - Input Props', module)
   )))
   .add('use Popover', withInfo()(() => (
     <DateRangePickerWrapper usePopover />
+  )))
+  .add('standard variant', withInfo()(() => (
+    <DateRangePickerWrapper variant="standard" />
   )));
